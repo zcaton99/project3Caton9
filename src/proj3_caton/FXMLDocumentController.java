@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 /**
  * @author Josh
@@ -49,7 +50,7 @@ public class FXMLDocumentController implements Initializable {
     private TextField Quantity;
     @FXML
     private Button logOut;
-    
+
     @FXML
     private Button createAccountButton;
     @FXML
@@ -74,11 +75,13 @@ public class FXMLDocumentController implements Initializable {
     //This Employee is used to store the currently logged in employee
     private Employee usersName;//todo implement this so that we can reference individual employees from a list
     private ArrayList<BikePart> bpDS = new ArrayList<>();
+
     /**
      * This is the handler for the sales associate sell function
      *
      * @param event the button click
      * @throws Exception any number of exceptions could be thrown here
+     * @author Joseph Bermingham
      */
     @FXML
     void Sell(ActionEvent event) throws Exception {
@@ -105,7 +108,7 @@ public class FXMLDocumentController implements Initializable {
     void LoadFIle(ActionEvent event) {
 
         //todo create a salse associate such that i can access the correct one in this method
-        SalesAssociate hardcoded = new SalesAssociate("default", "error","error", "error", "ShouldntBeUsingThis", "really now. please stop", "sopme phone number");
+        SalesAssociate hardcoded = new SalesAssociate("default", "error", "error", "error", "ShouldntBeUsingThis", "really now. please stop", "sopme phone number");
     }
 
     /**
@@ -153,7 +156,7 @@ public class FXMLDocumentController implements Initializable {
      * @param event the click
      * @throws IOException When there is an io exception
      * @author Josh Butler
-     * todo give it the ability to look through a list of logged on individuals to check for a valid user
+     *
      */
     @FXML
     private void loginButton(ActionEvent event) throws IOException {
@@ -161,7 +164,19 @@ public class FXMLDocumentController implements Initializable {
         Parent root = null;
         //todo make this actually look through a list of users. needs to be System admin compliant
         //todo have these actually create a user and set the employee field to themselves so we can access it
-        if (event.getSource() == Login && Username.getText().equals("officeman") && Password.getText().equals("pass")) {
+        //
+        String username = Username.getText();
+        String password = Password.getText();
+        for(Employee e: Main.empList){
+            if(e.getUsername().equalsIgnoreCase(username)&& e.getPassword(true).equalsIgnoreCase(password)){
+                String lastname = e.getLastName();
+                String[] type = e.getUsername().split(lastname);
+                System.out.println(type[1]+" This is the type that the program ");
+            }
+        }
+
+
+        /*   if (event.getSource() == Login && Username.getText().equals("officeman") && Password.getText().equals("pass")) {
             //get reference to the button's stage
             stage = (Stage) Login.getScene().getWindow();
             //load up OTHER FXML document
@@ -175,6 +190,7 @@ public class FXMLDocumentController implements Initializable {
             root = FXMLLoader.load(getClass().getResource("SysAdmin.fxml"));
         } else
             System.out.print("Error loading fxml");
+            */
         //create a new scene with root and set the stage
         //todo make sure that we check for a scene before we try and load it to prevent a null pointer exception
         try {
@@ -185,7 +201,7 @@ public class FXMLDocumentController implements Initializable {
             System.out.println("no user by that name found");
         }
     }
-    
+
     private final SysAdmin sysAdmin = new SysAdmin();
 
     /**
@@ -194,18 +210,18 @@ public class FXMLDocumentController implements Initializable {
      */
     @FXML
     void createAccountButton(ActionEvent event) {
-        
+
         String firstName = userTypeTextField.getText();
         String lastName = lastNameTextField.getText();
         String userType = usernameTextField.getText();
-        String username =  lastNameTextField.getText() + usernameTextField.getText(); //tells use the type of employee someone is
+        String username = lastNameTextField.getText() + usernameTextField.getText(); //tells use the type of employee someone is
         String pass = passwordTextField.getText();
         String email = emailTextField.getText();
         String phoneNum = phoneNumberTextField.getText();
 
         sysAdmin.addUser(firstName, lastName, userType, username, pass, email, phoneNum);
-        
-        
+
+
     }
 
     /**
@@ -252,6 +268,7 @@ public class FXMLDocumentController implements Initializable {
     /**
      * readBPDS reads in the initial warehouse data set from a file given by the user.
      * It also displays all BikeParts in the warehouse and denotes what each value is.
+     *
      * @param event on button press
      * @throws FileNotFoundException not sure why alll of the methods throw some thing
      * @throws IOException           i want to talk about why we do this. i can see it as really smart or not at all smart
@@ -287,9 +304,9 @@ public class FXMLDocumentController implements Initializable {
 
 
     /**
+     * @param event on button press
      * @author Josh Butler
      * Displays a specific BikePart by comparing user input to BikePart names.
-     * @param event on button press
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) {
@@ -305,9 +322,9 @@ public class FXMLDocumentController implements Initializable {
     }
 
     /**
+     * @param event //todo addInv the ability to create a file of the needed parts
      * @author Josh Butler
      * this method goes through the bike part warehouse and looks for parts with less than a hardcoded quantity (10)
-     * @param event //todo addInv the ability to create a file of the needed parts
      */
     @FXML
     public void checkQuant(ActionEvent event) {
@@ -321,15 +338,16 @@ public class FXMLDocumentController implements Initializable {
     }
 
     /**
+     * @param event on button press
      * @author Josh Butler
      * exits the program on click
-     * @param event on button press
      */
     @FXML
     public void Quit(ActionEvent event) {
         System.exit(1);
     }
-//todo not sure what this does
+
+    //todo not sure what this does
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO i don't know what this needs to do
