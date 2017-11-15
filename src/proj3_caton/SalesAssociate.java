@@ -157,8 +157,9 @@ public class SalesAssociate extends Employee {
     /*
      * this is a tester method for invoice
      */
-     public ArrayList<Object> closeinvoice(String name) {
-       return thisInvoice.close(name);
+     public Invoice closeinvoice(String name) {
+       thisInvoice.close(name);
+         return thisInvoice;
     }
 
     /**

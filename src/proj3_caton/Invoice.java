@@ -81,16 +81,14 @@ public class Invoice {
      * im not sure if the For Each loop works yet.
      * @author Joseph Bermingham
      */
-    public ArrayList<Object> close(String name) {
+    public void close(String name) {
        for(BikePart h: invoiceList) {
            invoice.println(h.toString());
        }
         invoice.println("Parts Purchased by " + name + " for $" + cost + "\n");
         invoice.close();
         ArrayList<Object> retList = new ArrayList<>();
-        retList.add(invoice);
-        retList.add(cost);
-        return retList;
+
     }
 }
 
