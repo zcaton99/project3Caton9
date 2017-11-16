@@ -20,7 +20,7 @@ class SysAdmin extends Employee {
     
     
     SysAdmin() {
-        super("a", "b", "d", "d", "e", "f", "g");
+        super("a", "b", "SystemAdmin", "d", "d", "f", "g");
     }
     
     public Employee findByName(String name){
@@ -91,7 +91,7 @@ class SysAdmin extends Employee {
             }
             
         }else if (firstTime == false && users.isEmpty() == false){//end of else if for first time
-            System.out.println(firstTime + "2");
+            System.out.println(firstTime + "This is the first name in of the thing being added in sysadmin");
             Employee ep = findByName(user[0]);
         
             if (ep == null){

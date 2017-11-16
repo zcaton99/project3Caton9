@@ -53,13 +53,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button createAccountButton;
     @FXML
-    private TextField userTypeTextField;
+    private TextField TypeTextField;
     @FXML
     private TextField lastNameTextField;
     @FXML
     private TextField passwordTextField;
     @FXML
-    private TextField usernameTextField;
+    private TextField NameTextField;
     @FXML
     private TextField emailTextField;
     @FXML
@@ -76,7 +76,7 @@ public class FXMLDocumentController implements Initializable {
     private CheckBox num;
     @FXML
     private CheckBox quant;
-    
+
     //todo move methods to their respective classes. so that the controller isnt a giant monster of a class
     //This Employee is used to store the currently logged in employee
     private Employee usersName;//todo implement this so that we can reference individual employees from a list
@@ -119,13 +119,13 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * This is the handler for the print invoice command. it only needs to call invoice.close on the Sales associate you want an invoice from
-     *
+     *@author joseph Bermingham
      * @param event on button press
      */
 
     @FXML
     void PrintInvoice(ActionEvent event) {
-        //needs to be able to reference a Sales associate. a capability we don't currently have
+       //todo this
     }
 
 
@@ -161,7 +161,7 @@ public class FXMLDocumentController implements Initializable {
      *
      * @param event the click
      * @throws IOException When there is an io exception
-     * @author Josh Butler
+     * @author Josh Butler,Joseph Bermingham
      *
      */
     @FXML
@@ -175,9 +175,12 @@ public class FXMLDocumentController implements Initializable {
         String password = Password.getText();
         for(Employee e: Main.empList){
             if(e.getUsername().equalsIgnoreCase(username)&& e.getPassword(true).equalsIgnoreCase(password)){
-                String lastname = e.getLastName();
-                String[] type = e.getUsername().split(lastname);
-                System.out.println(type[1]+" This is the type that the program ");
+               System.out.println(e.getUserType()+" this is a printline test statement");
+                if (e.getUserType().equalsIgnoreCase("systemAdmin")){
+                    stage = (Stage) Login.getScene().getWindow();
+                    root = FXMLLoader.load(getClass().getResource("SysAdmin.fxml"));
+                }
+
             }
             if (event.getSource() == Login && Username.getText().equals("officeman") && Password.getText().equals("pass")) {
             //get reference to the button's stage
@@ -223,10 +226,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     void createAccountButton(ActionEvent event) {
 
-        String firstName = userTypeTextField.getText();
+        String firstName = NameTextField.getText();
         String lastName = lastNameTextField.getText();
-        String userType = usernameTextField.getText();
-        String username = lastNameTextField.getText() + usernameTextField.getText(); //tells use the type of employee someone is
+        String userType = TypeTextField.getText();
+        System.out.println(userType+" usertype in the create account button");
+        String username = lastNameTextField.getText() + NameTextField.getText(); //tells use the type of employee someone is
         String pass = passwordTextField.getText();
         String email = emailTextField.getText();
         String phoneNum = phoneNumberTextField.getText();

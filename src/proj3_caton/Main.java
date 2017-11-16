@@ -36,6 +36,8 @@ public class Main extends Application {
     }
     public static void genList(){
         empList.clear();
+        SysAdmin bob = new SysAdmin();
+        empList.add(bob);
         try {
             Scanner in = new Scanner(new File("users.txt"));
             while (in.hasNext()) {

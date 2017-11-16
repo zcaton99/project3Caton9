@@ -4,11 +4,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj3_caton.FXMLDocumentController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj3_caton.FXMLDocumentController">
 
-    <TextField fx:id="userTypeTextField" layoutX="28.0" layoutY="23.0" promptText="First Name" />
+    <TextField fx:id="NameTextField" layoutX="28.0" layoutY="23.0" promptText="First Name" />
     <TextField fx:id="passwordTextField" layoutX="28.0" layoutY="111.0" promptText="Password" />
-    <TextField fx:id="usernameTextField" layoutX="28.0" layoutY="81.0" promptText="UserType" />
+    <TextField fx:id="TypeTextField" layoutX="28.0" layoutY="81.0" promptText="UserType" />
     <TextField fx:id="emailTextField" layoutX="208.0" layoutY="81.0" promptText="Email" />
     <TextField fx:id="phoneNumberTextField" layoutX="208.0" layoutY="111.0" promptText="Phone Number" />
     <Button layoutX="146.0" layoutY="145.0" mnemonicParsing="false" onAction="#createAccountButton" text="Create Account" />

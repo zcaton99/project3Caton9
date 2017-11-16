@@ -58,8 +58,9 @@ public class Employee {
     public Employee() {
         this.firstName = "John";
         this.lastName = "doe";
-        this.username = "SysAdmin";
+        this.username = "S";
         this.password = "A";
+        this.userType = "SalesAssociate";
         this.email = "J@J.com";
         this.phoneNumber = "867-867-5309";
     }
