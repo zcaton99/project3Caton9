@@ -7,15 +7,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-import javafx.scene.control.CheckBox;
 
 /**
  * @author Josh
@@ -119,13 +119,14 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * This is the handler for the print invoice command. it only needs to call invoice.close on the Sales associate you want an invoice from
-     *@author joseph Bermingham
+     *
      * @param event on button press
+     * @author joseph Bermingham
      */
 
     @FXML
     void PrintInvoice(ActionEvent event) {
-       //todo this
+        //todo this
     }
 
 
@@ -162,7 +163,6 @@ public class FXMLDocumentController implements Initializable {
      * @param event the click
      * @throws IOException When there is an io exception
      * @author Josh Butler,Joseph Bermingham
-     *
      */
     @FXML
     private void loginButton(ActionEvent event) throws IOException {
@@ -173,47 +173,39 @@ public class FXMLDocumentController implements Initializable {
         //
         String username = Username.getText();
         String password = Password.getText();
-        for(Employee e: Main.empList){
-            if(e.getUsername().equalsIgnoreCase(username)&& e.getPassword(true).equalsIgnoreCase(password)){
-               System.out.println(e.getUserType()+" this is a printline test statement");
-                if (e.getUserType().equalsIgnoreCase("systemAdmin")){
+        for (Employee e : Main.empList) {
+            if (e.getUsername().equalsIgnoreCase(username) && e.getPassword(true).equalsIgnoreCase(password)) {
+                System.out.println(e.getUserType() + " this is a printline test statement");
+                if (e.getUserType().equalsIgnoreCase("systemAdmin")) {
                     stage = (Stage) Login.getScene().getWindow();
                     root = FXMLLoader.load(getClass().getResource("SysAdmin.fxml"));
                 }
+                if (e.getUserType().equalsIgnoreCase("officeManager")) {
+                    //get reference to the button's stage
+                    stage = (Stage) Login.getScene().getWindow();
+                    //load up OTHER FXML document
+                    root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml"));
+                }
+                if (e.getUserType().equalsIgnoreCase("salesAssociate")) {
+                    stage = (Stage) Login.getScene().getWindow();
+                    //load up OTHER FXML document
+                    root = FXMLLoader.load(getClass().getResource("SalesAssociate.fxml"));
+                }
+                if (e.getUserType().equalsIgnoreCase("warehousemanager")) {
+                    stage = (Stage) Login.getScene().getWindow();
+                    //load up OTHER FXML document
+                    root = FXMLLoader.load(getClass().getResource("WarehouseManager.fxml"));
+                }
 
             }
-            if (event.getSource() == Login && Username.getText().equals("officeman") && Password.getText().equals("pass")) {
-            //get reference to the button's stage
-            stage = (Stage) Login.getScene().getWindow();
-            //load up OTHER FXML document
-            root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml"));
+            try {
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (NullPointerException excep) {
+                excep.printStackTrace();
+                System.out.println("no user by that name found");
             }
-        }
-
-
-        /*   if (event.getSource() == Login && Username.getText().equals("officeman") && Password.getText().equals("pass")) {
-            //get reference to the button's stage
-            stage = (Stage) Login.getScene().getWindow();
-            //load up OTHER FXML document
-            root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        } else if (event.getSource() == Login && Username.getText().equals("sm") && Password.getText().equals("p")) {
-            stage = (Stage) Login.getScene().getWindow();
-            //load up OTHER FXML document
-            root = FXMLLoader.load(getClass().getResource("SalesAssociate.fxml"));
-        } else if (event.getSource() == Login && Username.getText().equals("d") && Password.getText().equals("d")) {
-            stage = (Stage) Login.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("SysAdmin.fxml"));
-        } else
-            System.out.print("Error loading fxml");
-            */
-        //create a new scene with root and set the stage
-        //todo make sure that we check for a scene before we try and load it to prevent a null pointer exception
-        try {
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (NullPointerException e) {
-            System.out.println("no user by that name found");
         }
     }
 
@@ -229,7 +221,7 @@ public class FXMLDocumentController implements Initializable {
         String firstName = NameTextField.getText();
         String lastName = lastNameTextField.getText();
         String userType = TypeTextField.getText();
-        System.out.println(userType+" usertype in the create account button");
+        System.out.println(userType + " usertype in the create account button");
         String username = lastNameTextField.getText() + NameTextField.getText(); //tells use the type of employee someone is
         String pass = passwordTextField.getText();
         String email = emailTextField.getText();
@@ -251,7 +243,6 @@ public class FXMLDocumentController implements Initializable {
         String usernameDelete = deleteUserTextField.getText();
         //SysAdmin delAdmin = new SysAdmin();
         sysAdmin.deleteUser(usernameDelete);
-
     }
 
     /**
@@ -320,16 +311,16 @@ public class FXMLDocumentController implements Initializable {
 
 
     /**
+     * @param event on button press
      * @author Josh Butler
      * Displays a specific BikePart by comparing user input to BikePart names.
-     * @param event on button press
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) {
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
-        if(num.isSelected())
+        if (num.isSelected())
             display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), bpDS)));
-        else if(quant.isSelected())
+        else if (quant.isSelected())
             display.appendText((om.examineButtonMethodQuant(Integer.parseInt((partInfo.getText())), bpDS)));
         else
             display.appendText((om.examineButtonMethodname(partInfo.getText(), bpDS)));

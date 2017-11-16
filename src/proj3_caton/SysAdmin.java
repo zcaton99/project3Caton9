@@ -1,8 +1,6 @@
 package proj3_caton;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,14 +11,13 @@ class SysAdmin extends Employee {
     //String firstName, String lstName, String userName, String Password, String Email, String phonenum
     
     public ArrayList<Employee> users = new ArrayList<>();
-    public String fileName = "users.txt";
     //This must already exist or it creates null pointer exceptions
-    public File f = new File(fileName);//This is the file that lists users
+    private File userFile = new File("users.txt");//This is the file that lists users
     boolean firstTime = true;
     
     
     SysAdmin() {
-        super("a", "b", "SystemAdmin", "d", "d", "f", "g");
+        super("a", "b", "SystemAdmin", "d", "d", "ff", "g");
     }
     
     public Employee findByName(String name){
@@ -59,23 +56,21 @@ class SysAdmin extends Employee {
         
         
         
-        //f = new File(fileName);
+        //userFile = new File(fileName);
         // first time is changed to false but when adding another user is goes back to true 
         //if first time adding user then adds them directly
         if (firstTime == true && users.isEmpty()){
-        
             users.add(em);
             firstTime = false;
-            System.out.println(firstTime + "1");
+            System.out.println(firstTime + "The first time that a user is added to the file in sys admin");
             
         // not first time but has no users in system (aka users are in file)    
-        }else if(firstTime != true && users.isEmpty()){// end of first time if statement
+        }else if(!firstTime && users.isEmpty()){// end of first time if statement
             //checks to see if users is empty, if it is then it will read in users from the file
-            
             Scanner inVF = null;
             //reading in users file
             try {
-                inVF = new Scanner(f);
+                inVF = new Scanner(userFile);
             } catch (FileNotFoundException e) {
                 System.out.println("File Not Found in sysAdmin addUser, Please consult the Author");
             }
@@ -103,7 +98,8 @@ class SysAdmin extends Employee {
         }
         System.out.println(users);
         //after everything is complete it writes the users back into the file
-        try (PrintWriter p = new PrintWriter(f)) {
+        try {
+            PrintWriter p = new PrintWriter(new FileWriter(userFile,true));
             for(Employee usr: users){
                 //p.append(usr.toString());
                 //p.println(usr.toString());
@@ -112,6 +108,9 @@ class SysAdmin extends Employee {
             p.close();
         }catch (FileNotFoundException e){
             System.out.println("File not Found exception in the end of SysAdmin.addUser");
+        }
+        catch(IOException d){
+            d.printStackTrace();
         }
         
     }
@@ -126,13 +125,13 @@ class SysAdmin extends Employee {
         //read from user.txt
         //then compare names and delete the correct one
         Scanner inVF = null;
-        //f = new File(fileName);
+        //userFile = new File(fileName);
         
         
         if (users.isEmpty()) {
             
             try {
-                inVF = new Scanner(f);
+                inVF = new Scanner(userFile);
             } catch (FileNotFoundException e) {
                 System.out.println("File Not Found in sysAdmin addUser, Please consult the Author");
             }
@@ -151,9 +150,9 @@ class SysAdmin extends Employee {
                     users.remove(b);
                 }
             }
-            //File f = new File(fileName);
+            //File userFile = new File(fileName);
             try {
-                PrintWriter p = new PrintWriter(f);
+                PrintWriter p = new PrintWriter(userFile);
                 for (Employee usr : users) {
                     p.println(usr.toString());
                 }
@@ -166,9 +165,9 @@ class SysAdmin extends Employee {
                     users.remove(i);
                 }
             }
-            //File f = new File(fileName);
+            //File userFile = new File(fileName);
             try {
-                PrintWriter p = new PrintWriter(f);//todo make sure that this doesnt need to append
+                PrintWriter p = new PrintWriter(userFile);//todo make sure that this doesnt need to append
                 for (Employee usr : users) {
                     p.println(usr.toString());
                 }
@@ -199,8 +198,8 @@ class SysAdmin extends Employee {
             }
         }
 
-        //File f = new File(fileName);
-        try (PrintWriter p = new PrintWriter(f)) {
+        //File userFile = new File(fileName);
+        try (PrintWriter p = new PrintWriter(userFile)) {
             for (Employee usr : users) {
                 p.println(usr.toString());
             }

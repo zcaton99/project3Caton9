@@ -40,13 +40,16 @@ public class Main extends Application {
         empList.add(bob);
         try {
             Scanner in = new Scanner(new File("users.txt"));
+            if(in.hasNext())
             while (in.hasNext()) {
-                String a = in.next();
+                String a = in.nextLine();
                 String[] broken = a.split(",");
-                String[] utype = broken[2].split(broken[0]);
-                System.out.println(utype[0]);
-                Employee ba = new Employee(broken[0], broken[1], broken[2],utype[0], broken[4], broken[5], broken[6]);
+                for (int i = 0; i < broken.length; i++) {
+                    System.out.println(broken[i]+" this is the broken array in genlist");
+                }
+                Employee ba = new Employee(broken[0], broken[1], broken[2],broken[3], broken[4], broken[5],broken[6]);//fname lname utype uname pword email pnumber
                 empList.add(ba);
+                System.out.println(empList.get(0).getUsername());
             }
         }catch(Exception e){
             e.printStackTrace();
