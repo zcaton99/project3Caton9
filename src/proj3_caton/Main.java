@@ -47,6 +47,7 @@ public class Main extends Application {
             if (in.hasNext())
                 while (in.hasNext()) {
                     String a = in.nextLine();
+
                     String[] broken = a.split(",");
 //                for (int i = 0; i < broken.length; i++) {
 //                    System.out.println(broken[i]+" this is the broken array in genlist");
@@ -55,6 +56,10 @@ public class Main extends Application {
                     empList.add(ba);
                     System.out.println(empList.get(0).getUsername());
                 }
+            for (Employee e:empList) {
+                System.out.println(e.toString()+"this is in genlist");
+
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

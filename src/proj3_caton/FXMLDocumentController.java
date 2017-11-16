@@ -174,6 +174,9 @@ public class FXMLDocumentController implements Initializable {
         String username = Username.getText();
         String password = Password.getText();
         for (Employee e : Main.empList) {
+            System.out.println("i entered the foreach loop "+e.toString());
+            System.out.println("this is username,pwd "+username+", "+password);
+            System.out.println("This is what e has"+e.getUsername()+", "+e.getPassword(true));
             if (e.getUsername().equalsIgnoreCase(username) && e.getPassword(true).equalsIgnoreCase(password)) {
                 System.out.println(e.getUserType() + " this is a printline test statement");
                 if (e.getUserType().equalsIgnoreCase("systemAdmin")) {
@@ -190,13 +193,13 @@ public class FXMLDocumentController implements Initializable {
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("SalesAssociate.fxml"));
+                    System.out.println(root.getId()+" the sales assc root id");
                 }
                 if (e.getUserType().equalsIgnoreCase("WarehouseManager")) {
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("WarehouseManager.fxml"));
                 }
-
             }
         }
             try {
@@ -204,7 +207,7 @@ public class FXMLDocumentController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (NullPointerException excep) {
-                excep.printStackTrace();
+               // excep.printStackTrace();
                 System.out.println("no user by that name found");
             }
         }

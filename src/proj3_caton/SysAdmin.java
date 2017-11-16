@@ -14,7 +14,7 @@ class SysAdmin extends Employee {
     //This must already exist or it creates null pointer exceptions
     private File userFile = new File("users.txt");//This is the file that lists users
     boolean firstTime = true;
-    
+    //todo make it so that first time isnt always false?
     
     SysAdmin() {
         super("a", "b", "SystemAdmin", "d", "d", "ff", "g");
@@ -31,7 +31,7 @@ class SysAdmin extends Employee {
     
     /**
      * Adds user to user database (text file)
-     *
+     * Edited by joseph bermingham
      * @param fName       First name for the user
      * @param lName       Last name for the user
      * @param userType    The type of user
@@ -52,15 +52,16 @@ class SysAdmin extends Employee {
         user[4] = password;
         user[5] = email;
         user[6] = pNumber;
-        Employee em = new Employee(user[0], user[1], user[2], user[3], user[4], user[5], user[6]);
+        Employee em = new Employee(user[0], user[1], userType, user[3], user[4], user[5], user[6]);
+        System.out.println(em.getUserType()+" this is em's user type");
         
         
         
         //userFile = new File(fileName);
         // first time is changed to false but when adding another user is goes back to true 
         //if first time adding user then adds them directly
-        if (firstTime == true && users.isEmpty()){
-            users.add(em);
+        if (firstTime && users.isEmpty()){
+            users.add(em); System.out.println("user was added on the 64th line");
             firstTime = false;
             System.out.println(firstTime + "The first time that a user is added to the file in sys admin");
             
@@ -85,8 +86,8 @@ class SysAdmin extends Employee {
                 }
             }
             
-        }else if (firstTime == false && users.isEmpty() == false){//end of else if for first time
-            System.out.println(firstTime + "This is the first name in of the thing being added in sysadmin");
+        }else if (!firstTime && users.isEmpty() == false){//end of else if for first time
+            System.out.println(firstTime + " This is the first time, and is always false at this point");
             Employee ep = findByName(user[0]);
         
             if (ep == null){
@@ -96,7 +97,7 @@ class SysAdmin extends Employee {
                 System.out.println("already exists");
             }
         }
-        System.out.println(users);
+        System.out.println(users+" this is users");
         //after everything is complete it writes the users back into the file
         try {
             PrintWriter p = new PrintWriter(new FileWriter(userFile,true));
