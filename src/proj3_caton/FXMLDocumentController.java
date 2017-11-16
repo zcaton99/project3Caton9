@@ -191,13 +191,14 @@ public class FXMLDocumentController implements Initializable {
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("SalesAssociate.fxml"));
                 }
-                if (e.getUserType().equalsIgnoreCase("warehousemanager")) {
+                if (e.getUserType().equalsIgnoreCase("WarehouseManager")) {
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("WarehouseManager.fxml"));
                 }
 
             }
+        }
             try {
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
@@ -207,7 +208,7 @@ public class FXMLDocumentController implements Initializable {
                 System.out.println("no user by that name found");
             }
         }
-    }
+
 
     private final SysAdmin sysAdmin = new SysAdmin();
 
@@ -270,6 +271,11 @@ public class FXMLDocumentController implements Initializable {
             if (b.getName().equals(name))
                 return b;
         return null;
+    }
+
+    @FXML
+    private void LoadToMain(){
+        //todo make this load a file by the entered name in
     }
 
     /**
