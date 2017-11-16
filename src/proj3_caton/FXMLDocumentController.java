@@ -10,12 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import javafx.scene.control.CheckBox;
 
 /**
  * @author Josh
@@ -50,7 +50,6 @@ public class FXMLDocumentController implements Initializable {
     private TextField Quantity;
     @FXML
     private Button logOut;
-
     @FXML
     private Button createAccountButton;
     @FXML
@@ -71,6 +70,13 @@ public class FXMLDocumentController implements Initializable {
     private TextField resetUserTextField;
     @FXML
     private TextField resetPasswordTextField;
+    @FXML
+    CheckBox nam;
+    @FXML
+    private CheckBox num;
+    @FXML
+    private CheckBox quant;
+    
     //todo move methods to their respective classes. so that the controller isnt a giant monster of a class
     //This Employee is used to store the currently logged in employee
     private Employee usersName;//todo implement this so that we can reference individual employees from a list
@@ -172,6 +178,12 @@ public class FXMLDocumentController implements Initializable {
                 String lastname = e.getLastName();
                 String[] type = e.getUsername().split(lastname);
                 System.out.println(type[1]+" This is the type that the program ");
+            }
+            if (event.getSource() == Login && Username.getText().equals("officeman") && Password.getText().equals("pass")) {
+            //get reference to the button's stage
+            stage = (Stage) Login.getScene().getWindow();
+            //load up OTHER FXML document
+            root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml"));
             }
         }
 
@@ -304,21 +316,19 @@ public class FXMLDocumentController implements Initializable {
 
 
     /**
-     * @param event on button press
      * @author Josh Butler
      * Displays a specific BikePart by comparing user input to BikePart names.
+     * @param event on button press
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) {
-        String s = partInfo.getText();
-
-        for (BikePart bp : bpDS)
-            if (bp.getName().equals(s)) {
-                if (bp.getonSale())
-                    display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
-                else
-                    display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getPrice() + "," + " Quantity: " + bp.getQuantity() + "\n");
-            }
+        officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
+        if(num.isSelected())
+            display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), bpDS)));
+        else if(quant.isSelected())
+            display.appendText((om.examineButtonMethodQuant(Integer.parseInt((partInfo.getText())), bpDS)));
+        else
+            display.appendText((om.examineButtonMethodname(partInfo.getText(), bpDS)));
     }
 
     /**
