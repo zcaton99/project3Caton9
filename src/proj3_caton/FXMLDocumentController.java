@@ -53,6 +53,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Button createAccountButton;
     @FXML
+    private TextField DFile;
+    @FXML
     private TextField TypeTextField;
     @FXML
     private TextField lastNameTextField;
@@ -107,29 +109,26 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * This is the handler for the sales associate adding something to their van
-     *
+     * @author Joseph Bermingham
      * @param event the button being clicked
      */
     @FXML
     void LoadFIle(ActionEvent event) {
 
         //todo create a salse associate such that i can access the correct one in this method
-        SalesAssociate hardcoded = new SalesAssociate("default", "error", "error", "error", "ShouldntBeUsingThis", "really now. please stop", "sopme phone number");
+
     }
 
     /**
      * This is the handler for the print invoice command. it only needs to call invoice.close on the Sales associate you want an invoice from
      *
      * @param event on button press
-     * @author joseph Bermingham
      */
 
     @FXML
     void PrintInvoice(ActionEvent event) {
         //todo this
     }
-
-
     /**
      * @author Josh Butler
      * This is how the fxml changes scenes from any user with a return button back to the login screen
@@ -218,6 +217,7 @@ public class FXMLDocumentController implements Initializable {
     /**
      * @param event the button is clicked
      * @author Zach Canton
+     * edited by joseph bermingham
      */
     @FXML
     void createAccountButton(ActionEvent event) {
@@ -278,7 +278,8 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void LoadToMain(){
-        //todo make this load a file by the entered name in
+       WarehouseManager a = new WarehouseManager();
+        a.addfile(DFile.getText());
     }
 
     /**
@@ -361,9 +362,9 @@ public class FXMLDocumentController implements Initializable {
         System.exit(1);
     }
 
-    //todo not sure what this does
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO i don't know what this needs to do
+
     }
 }

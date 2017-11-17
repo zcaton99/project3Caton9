@@ -20,6 +20,14 @@ public class WarehouseManager extends Employee {
             System.out.println("IOException on line 18 of warehouse manager\n warehouseDB not found");
         }
     }
+    public WarehouseManager() {
+        super("cooper","cooper", "WarehouseManager", "cooper", "c", "cooper", "123");
+        try {
+            writer = new PrintWriter(new FileWriter(warehousedb, true));//Might need to be false
+        } catch (java.io.IOException g) {
+            System.out.println("IOException on line 28 of warehouse manager\n warehouseDB not found");
+        }
+    }
 
     /**
      * @param fileName The name of the file you want added to warehousedb.txt. MUST HAVE .TXT on the end
