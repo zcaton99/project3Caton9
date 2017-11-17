@@ -86,7 +86,6 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * This is the handler for the sales associate sell function
-     *
      * @param event the button click
      * @throws Exception any number of exceptions could be thrown here
      * @author Joseph Bermingham

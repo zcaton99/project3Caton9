@@ -49,12 +49,21 @@ public class Main extends Application {
                     String a = in.nextLine();
 
                     String[] broken = a.split(",");
-//                for (int i = 0; i < broken.length; i++) {
-//                    System.out.println(broken[i]+" this is the broken array in genlist");
-//                }
-                    Employee ba = new Employee(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]);//fname lname utype uname pword email pnumber
-                    empList.add(ba);
-                    System.out.println(empList.get(0).getUsername());
+                    if(broken[3].equalsIgnoreCase("salesassociate")){
+                        empList.add(new SalesAssociate(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
+                    }
+                    else if(broken[3].equalsIgnoreCase("warehouseManager")){
+                        empList.add(new WarehouseManager(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
+                    }
+                    else if(broken[3].equalsIgnoreCase("officemanager")){
+                        empList.add(new officeManager(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
+                    }
+                    else {
+                        System.out.println("massive error in main, in.hasNext is true, but it was not cast as a specific employee");
+                    }
+                   //fname lname utype uname pword email pnumber
+
+
                 }
             for (Employee e:empList) {
                 System.out.println(e.toString()+"this is in genlist");
