@@ -73,6 +73,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField resetPasswordTextField;
     @FXML
+    private TextField ordername;
+    @FXML
+    private TextField ordercount;
+    @FXML
+    private Button orderbutton;
+    @FXML
     CheckBox nam;
     @FXML
     private CheckBox num;
@@ -171,6 +177,11 @@ public class FXMLDocumentController implements Initializable {
         //
         String username = Username.getText();
         String password = Password.getText();
+        
+        if (username.equals("om")) {
+                    stage = (Stage) Login.getScene().getWindow();       //will be deleting this if statement
+                    root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml")); //only here so i can test officemanager while i figure out how to create user
+                }                                                                           
         for (Employee e : Main.empList) {
             System.out.println("i entered the foreach loop "+e.toString());
             System.out.println("this is username,pwd "+username+", "+password);
@@ -349,6 +360,22 @@ public class FXMLDocumentController implements Initializable {
             } else if (bp.getQuantity() <= 5) {
                 display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " order at least 20 now." + "\n");
             }
+    }
+    
+    /**
+     * @param event on button press
+     * @author Josh Butler
+     * increments quantity of ordered part
+     */
+    @FXML
+    public void order(ActionEvent event){
+        officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
+        for(BikePart bp: bpDS){
+            if(bp.getNumber()==Integer.parseInt(ordername.getText())){
+                display.appendText("Bought " + ordercount.getText() + " " + bp.getName()+"\n");
+                om.orderParts(bp, Integer.parseInt(ordercount.getText()));
+            }
+        }   
     }
 
     /**

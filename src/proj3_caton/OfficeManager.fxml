@@ -9,22 +9,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj3_caton.FXMLDocumentController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="proj3_caton.FXMLDocumentController">
    <children>
-      <Button fx:id="OMDisplay" layoutX="43.0" layoutY="115.0" mnemonicParsing="false" onAction="#examineButtonMethod" text="Display" />
-      <TextField fx:id="partInfo" layoutX="14.0" layoutY="52.0" promptText="Display Info" />
-      <Button fx:id="GenComm" layoutX="17.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Generate Commission" />
+      <Button fx:id="OMDisplay" layoutX="174.0" layoutY="52.0" mnemonicParsing="false" onAction="#examineButtonMethod" text="Examine" />
+      <TextField fx:id="partInfo" layoutX="18.0" layoutY="52.0" promptText="Examine Info" />
+      <Button fx:id="GenComm" layoutX="18.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="144.0" text="Generate Commission" />
       <TextField layoutX="165.0" layoutY="288.0" prefHeight="25.0" prefWidth="98.0" promptText="SalesVan Name" />
       <TextArea fx:id="OMOut" layoutX="274.0" prefHeight="400.0" prefWidth="326.0" />
-      <Button layoutX="21.0" layoutY="361.0" mnemonicParsing="false" onAction="#Quit" text="Quit" />
+      <Button layoutX="18.0" layoutY="361.0" mnemonicParsing="false" onAction="#Quit" text="Quit" />
       <Button fx:id="Return" layoutX="111.0" layoutY="361.0" mnemonicParsing="false" onAction="#changeScene" text="Return" />
       <TextArea fx:id="display" layoutX="281.0" layoutY="19.0" prefHeight="200.0" prefWidth="308.0" />
-      <TextField fx:id="testbpDS" layoutX="14.0" layoutY="19.0" promptText="test bpDS" />
-      <Button fx:id="OMDisplay1" layoutX="165.0" layoutY="19.0" mnemonicParsing="false" onAction="#testBPDS" text="bpDS" />
-      <Button fx:id="check" layoutX="18.0" layoutY="188.0" mnemonicParsing="false" onAction="#checkQuant" text="Check Quantities" />
-      <CheckBox fx:id="num" layoutX="124.0" layoutY="90.0" mnemonicParsing="false" text="Display by Number" />
-      <CheckBox fx:id="nam" layoutX="124.0" layoutY="119.0" mnemonicParsing="false" text="Display by Name" />
-      <CheckBox fx:id="quant" layoutX="124.0" layoutY="146.0" mnemonicParsing="false" text="Display by Quantity" />
+      <TextField fx:id="testbpDS" layoutX="18.0" layoutY="19.0" promptText="Load WH file" />
+      <Button fx:id="OMDisplay1" layoutX="174.0" layoutY="19.0" mnemonicParsing="false" onAction="#testBPDS" text="Load" />
+      <Button fx:id="check" layoutX="18.0" layoutY="158.0" mnemonicParsing="false" onAction="#checkQuant" text="Check Quantities" />
+      <CheckBox fx:id="num" layoutX="18.0" layoutY="80.0" mnemonicParsing="false" text="Examine by Number" />
+      <CheckBox fx:id="nam" layoutX="18.0" layoutY="98.0" mnemonicParsing="false" text="Examine by Name" />
+      <CheckBox fx:id="quant" layoutX="18.0" layoutY="116.0" mnemonicParsing="false" text="Examine by Quantity" />
+      <TextField fx:id="ordername" layoutX="18.0" layoutY="194.0" prefHeight="25.0" prefWidth="117.0" promptText="Part Number" />
+      <Button fx:id="orderbutton" layoutX="173.0" layoutY="194.0" mnemonicParsing="false" onAction="#order" text="Order" />
+      <TextField fx:id="ordercount" layoutX="139.0" layoutY="194.0" prefHeight="25.0" prefWidth="30.0" promptText="#" />
    </children>
 </AnchorPane>
-
