@@ -8,6 +8,7 @@ public class TestCases {
 
     public static void main(String[] args) {
         expected(userAddTest());
+        expected(TestWarehouseMFromlist());
     }
 
     /**
@@ -38,6 +39,7 @@ public class TestCases {
      */
     private static int TestWarehouseMFromlist() {
         WarehouseManager testBro = new WarehouseManager(Main.empList.get(3).toString());
+        testBro.addfile("initialInv.txt");
         return 1;
     }
 
@@ -67,6 +69,7 @@ public class TestCases {
             }
         } else if (whichOutPut == 1) {
             //for a different type of actual vs expected
+            System.out.println("The expected value is all of initalinv.txt, should be checked manually");
         }
     }
 }

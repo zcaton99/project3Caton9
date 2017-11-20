@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author Joseph Bermingham
+ */
 public class WarehouseManager extends Employee {
     private File warehousedb = new File("Warehousedb.txt");
     private PrintWriter writer;
@@ -44,6 +47,7 @@ public class WarehouseManager extends Employee {
     }
 
     /**
+     * @author Joseph Bermingham
      * @param fileName The name of the file you want added to warehousedb.txt. MUST HAVE .TXT on the end
      *                 State: untested, pulls file that you want to addInv, but DOES NOT addInv that to the warehouse
      */
@@ -93,6 +97,7 @@ public class WarehouseManager extends Employee {
             }
             for (BikePart i : warehouse) {//This is were everything is added back into the print writer. it might have to not append here.
                 writer.println(i);
+                System.out.println("i am adding things");
             }
             System.out.println("if you are getting copies of the warehouse look at setting the writer \n in warehouse manager to append = false");
             writer.close();
@@ -146,7 +151,7 @@ public class WarehouseManager extends Employee {
         try {
             whlooker = new Scanner(new File("Warehousedb.txt"));
         } catch (java.io.IOException g) {
-            System.out.println("java.io.IOException in line 84 of the Warehouse Manager.\n Warehousedb.txt not found");
+            System.out.println("java.io.IOException in move to list in Warehouse Manager.\n Warehousedb.txt not found");
         }
         try {
             while (whlooker.hasNext()) {

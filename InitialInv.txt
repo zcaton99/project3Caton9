@@ -20,4 +20,4 @@ carbonWheelSet,1234567905,542.31,480.00,false,4
 mountainFork29,1234567912,223.00,195.00,false,4
 lynskeyTitaniumFrame265Med,1234567906,2542.99,1880.00,false,2
 grr,1234567907,4567.89,3456.78,false,2
-zarminComputer,1234567908,543.21,48
+zarminComputer,1234567908,543.21,2.00,false,48
