@@ -38,6 +38,12 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * @author Joseph Berminghame
+     * this function takes the file of users and adds them to an arraylist of users that is used to log in.
+     * It manually adds the system admin every time
+     * todo make sure that the gererated list actually works
+     */
     static void genList() {
         empList.clear();
         SysAdmin bob = new SysAdmin();
@@ -47,9 +53,9 @@ public class Main extends Application {
             if (in.hasNext())
                 while (in.hasNext()) {
                     String a = in.nextLine();
-                    System.out.println("This is a in genList: " +a);
+                //    System.out.println("This is a in genList: " +a);
                     String[] broken = a.split(",");
-                    System.out.println("This is broken[2]: "+broken[2]);
+                 //   System.out.println("This is broken[2]: "+broken[2]);
                     if(broken[2].equalsIgnoreCase("salesassociate")){
                         empList.add(new SalesAssociate(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
                     }

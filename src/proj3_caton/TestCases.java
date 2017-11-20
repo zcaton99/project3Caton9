@@ -1,39 +1,55 @@
 package proj3_caton;
 
-import java.io.FileWriter;
-import java.io.PrintWriter;
-
 /**
  * This is a set of test cases to test reading in users as their actual type
  */
 public class TestCases {
+    private static SysAdmin bob = new SysAdmin();
+
     public static void main(String[] args) {
+        userAddTest();
+        addanotherUserTest();
+        expected();
+    }
+
+    /**
+     * This is used to test genlist and the sysadmin ability to add users and recall them
+     *
+     * @author Joseph Bermingham
+     */
+    private static void userAddTest() {
         System.out.println("starting a set of test cases");
-        PrintWriter writer = null;
-        SysAdmin bob = new SysAdmin();
-        bob.addUser("angel","a","SalesAssociate","a","a","a","a");
-        bob.addUser("AnotherOne","AnotherTwo","OfficeManager","g","g","g","g");
-        bob.addUser("i","Think","WarehoueManager","its","repeating","dd","d");
 
-        try {
-            writer = new PrintWriter(new FileWriter("users.txt", true));
-        } catch (Exception e) {
-            System.out.println("Exception in the tester");
-            e.printStackTrace();
-        }
-//        writer.println("a,a,SalesAssociate,a,a,a,a");
-//        writer.println("b,b,OfficeManager,b,b,b,b");
-//        writer.println("c,c,WarehouseManager,c,c,c,c");
-//        writer.close();
+        bob.addUser("angel", "a", "SalesAssociate", "a", "a", "a", "a");
+        bob.addUser("AnotherOne", "AnotherTwo", "OfficeManager", "g", "g", "g", "g");
+        bob.addUser("i", "Think", "WarehoueManager", "its", "repeating", "dd", "d");
+        bob.addUser("julio", "a", "SalesAssociate", "a", "a", "a", "3");
 
+
+//        (SalesAssociate)Main.empList.get(1).Sell();
+    }
+
+    /**
+     * @author Joseph Bermingham
+     * This is testing to make sure that we can come back and add a user later and not have issues
+     */
+    private static void addanotherUserTest() {
+        bob.addUser("SecondAdd", "SecondAddln", "OfficeManager", "bbbb", "dd", "ss", "sss");
+    }
+
+    /**
+     * @author Joseph Bermingham
+     * This is the output of the expected values vs the actual values
+     */
+    private static void expected() {
         Main.genList();
-        System.out.println("expected:\na,a,SalesAssociate,a,a,a,a\nb,b,OfficeManager,b,b,b,b\nc,c,WarehouseManager,c,c,c,c");
+        System.out.println("expected:\nangel,a,SalesAssociate,a,a,a,a\nAnotherOne,anothertwo,OfficeManager,b,b,b,b\n" +
+                "i,Think,WarehouseManager,c,c,c,c\njulio,a,SalesAssociate\n SecondAdd,SecondaddLN,OfficeManager");
         System.out.println("Actual");
 
 
         for (int i = 0; i < Main.empList.size(); i++) {
-            System.out.println(Main.empList.get(i).toStringTest());
+            System.out.println(Main.empList.get(i).toString());
         }
-//        (SalesAssociate)Main.empList.get(1).Sell();
     }
 }
