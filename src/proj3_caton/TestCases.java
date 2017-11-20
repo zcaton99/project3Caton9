@@ -7,7 +7,7 @@ public class TestCases {
     private static SysAdmin bob = new SysAdmin();
 
     public static void main(String[] args) {
-        expected(userAddTest());
+        //expected(userAddTest());
         expected(TestWarehouseMFromlist());
     }
 
@@ -38,8 +38,9 @@ public class TestCases {
      * This is going to be used to test warehoue Managers from the gernerated list
      */
     private static int TestWarehouseMFromlist() {
+        Main.genList();
         WarehouseManager testBro = new WarehouseManager(Main.empList.get(3).toString());
-        testBro.addfile("initialInv.txt");
+        testBro.addfile("InitialInv.txt");
         return 1;
     }
 

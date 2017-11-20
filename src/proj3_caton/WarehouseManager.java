@@ -14,70 +14,60 @@ public class WarehouseManager extends Employee {
     private File warehousedb = new File("Warehousedb.txt");
     private PrintWriter writer;
     private Scanner in = null;
+    private ArrayList<BikePart> warehouse=new ArrayList<>();
 
     public WarehouseManager(String aa, String a, String b, String c, String d, String e, String f) {
-        super(aa,a, b, c, d, e, f);
-        try {
-            writer = new PrintWriter(new FileWriter(warehousedb, true));//Might need to be false
-        } catch (java.io.IOException g) {
-            System.out.println("IOException on line 18 of warehouse manager\n warehouseDB not found");
-        }
+        super(aa, a, b, c, d, e, f);
+
     }
 
     /**
      * using this for testing, allows you to construct a warehouse manager from a toString
+     *
      * @param lengthy the toString of an employee
      */
-    WarehouseManager(String lengthy){
+    WarehouseManager(String lengthy) {
         super(lengthy);
-        try {
-            writer = new PrintWriter(new FileWriter(warehousedb, true));//Might need to be false
-        } catch (java.io.IOException g) {
-            System.out.println("IOException on line 33 of warehouse manager\n warehouseDB not found");
-        }
 
     }
+
     public WarehouseManager() {
-        super("cooper","cooper", "WarehouseManager", "cooper", "c", "cooper", "123");
-        try {
-            writer = new PrintWriter(new FileWriter(warehousedb, true));//Might need to be false
-        } catch (java.io.IOException g) {
-            System.out.println("IOException on line 28 of warehouse manager\n warehouseDB not found");
-        }
+        super("cooper", "cooper", "WarehouseManager", "cooper", "c", "cooper", "123");
+
     }
 
     /**
-     * @author Joseph Bermingham
      * @param fileName The name of the file you want added to warehousedb.txt. MUST HAVE .TXT on the end
      *                 State: untested, pulls file that you want to addInv, but DOES NOT addInv that to the warehouse
+     * @author Joseph Bermingham
      */
     public void addfile(String fileName) {
         try {
             in = new Scanner(new File(fileName));
         } catch (FileNotFoundException e) {
-            System.out.println("File Not Found Exception on line 30 of Warehouse Manager \n the file you are trying to addInv does not exist or can not be found make sure you addInv .txt at the end");
+            System.out.println("File Not Found Exception in addFile \n the file you are trying to addInv does not exist or can not be found make sure you addInv .txt at the end");
         }
 
-            ArrayList<BikePart> addList = new ArrayList<>();
-            while (in.hasNext()) {
-                String partString = in.nextLine();
-                String[] broken = partString.split(",");
-                //adds a bike part to the addList
-                addList.add((new BikePart(broken[0],
-                        Integer.parseInt(broken[1]),
-                        Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
-                        Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]))));
-                System.out.println(partString + "This is tester output in Warehouse Manager LoadFile Method");
-            }
+        ArrayList<BikePart> addList = new ArrayList<>();
+        while (in.hasNext()) {
+            String partString = in.nextLine();
+            String[] broken = partString.split(",");
+            //adds a bike part to the addList
+            addList.add((new BikePart(broken[0],
+                    Integer.parseInt(broken[1]),
+                    Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
+                    Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]))));
+            //  System.out.println(partString + "This is tester output in Warehouse Manager addFile Method");
+        }
             /*
              * The idea here is to take in the array list of parts to be added, addInv them to the arraylist of things already there combining the ones that are the same and adding the new ones,
              * and updating the information as needed
              */
-            ArrayList<BikePart> warehouse = this.moveToList();
-            BikePart addpart = null;
-            /*
-             * outer loop is what is in the warehouse, inner loop is what is being added
-             */
+        moveToList();
+        BikePart addpart = null;
+        //outer loop is what is in the warehouse, inner loop is what is being added
+       // System.out.println(warehouse.isEmpty() + "This is warehosue.isempty");
+        if (!warehouse.isEmpty()) {
             for (BikePart wh : warehouse) {
                 boolean wasAdded = false;
                 for (BikePart ad : addList) {
@@ -88,21 +78,32 @@ public class WarehouseManager extends Employee {
                         wh.setonSale(ad.getonSale());
                         wh.setSalesPrice(ad.getSale());
                         wasAdded = true;
+                     //   System.out.println(wasAdded + " this is wasAdded");
                     }
-                addpart = ad;
+                    addpart = ad;
                 }
-                if(!wasAdded){
+                if (!wasAdded) {
                     warehouse.add(addpart);//could theoretically be null
+                  //  System.out.println("this is adding things to the warehouse");
                 }
             }
-            for (BikePart i : warehouse) {//This is were everything is added back into the print writer. it might have to not append here.
-                writer.println(i);
-                System.out.println("i am adding things");
+        } else {
+            for (BikePart ad : addList) {
+                warehouse.add(ad);
             }
-            System.out.println("if you are getting copies of the warehouse look at setting the writer \n in warehouse manager to append = false");
-            writer.close();
         }
-
+        try {
+            writer = new PrintWriter(new FileWriter(warehousedb, false));//Might need to be false
+        } catch (java.io.IOException g) {
+            System.out.println("IOException on line 28 of warehouse manager\n warehouseDB not found");
+        }
+        for (BikePart i : warehouse) {//This is were everything is added back into the print writer. it might have to not append here.
+            writer.println(i);
+            //System.out.println(i.toString() + "This is the part i am adding");
+        }
+      //  System.out.println("if you are getting copies of the warehouse look at setting the writer \n in warehouse manager to append = false");
+        writer.close();
+    }
 
 
     /**
@@ -111,7 +112,7 @@ public class WarehouseManager extends Employee {
      * @param name The name of the part you are looking for
      */
     public String findName(String name) {
-        ArrayList<BikePart> warehouse = this.moveToList();
+        moveToList();
         String part = "Part " + name + " not Found";
         for (BikePart b : warehouse) {
             if (b.getName().equalsIgnoreCase(name)) {
@@ -128,7 +129,7 @@ public class WarehouseManager extends Employee {
      * @param number the id of the part you are looking for
      */
     public String findNumber(int number) {
-        ArrayList<BikePart> warehouse = this.moveToList();
+        moveToList();
         String part = "Part with id " + number + " was not Found";
         for (BikePart b : warehouse) {
             if (b.getNumber() == number) {
@@ -140,13 +141,14 @@ public class WarehouseManager extends Employee {
     }
 
     /**
+     * changes field that is An array list containing all of the parts in the warehouse
+     *
      * @author Joseph Bermingham
      * moveToList is a private utility method that adds all of the parts in the warehouse to an arraylist and returns it
-     * @return An array list containing all of the parts in the warehouse
      */
-    private ArrayList<BikePart> moveToList() {
+    private void moveToList() {
         ArrayList<BikePart> retList = new ArrayList<>();
-
+        warehouse.clear();
         Scanner whlooker = null;
         try {
             whlooker = new Scanner(new File("Warehousedb.txt"));
@@ -160,13 +162,12 @@ public class WarehouseManager extends Employee {
                 // System.out.println(t + "       t");
                 String[] broken = partString.split(",");
                 //adds a bike part to the addList
-                retList.add(new BikePart(broken[0], Integer.parseInt(broken[1]), Double.parseDouble(broken[2]), Double.parseDouble(broken[3]), Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5])));
-                System.out.println(partString + "This is tester in Warehouse Manager LoadFile Method");
+                warehouse.add(new BikePart(broken[0], Integer.parseInt(broken[1]), Double.parseDouble(broken[2]), Double.parseDouble(broken[3]), Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5])));
+             //   System.out.println(partString + "This is tester in Warehouse Manager LoadFile Method");
             }
         } catch (NullPointerException e) {
             System.out.println("null pointer exception in WarehouseManager line 114 \n Warehousedb.txt not found, whlooker Uninitialised");
         }
-        return retList;
 
     }
 }
