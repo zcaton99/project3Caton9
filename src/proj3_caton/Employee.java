@@ -54,6 +54,17 @@ public class Employee {
         this.email = Email;
         this.phoneNumber = pNumber;
     }
+    public Employee(String lengthy){
+        String[] user = lengthy.split(",");
+        this.firstName = user[0];
+        this.lastName = user[1];
+        this.userType = user[2];
+        this.username = user[3];
+        this.password = user[4];
+        this.email = user[5];
+        this.phoneNumber = user[6];
+
+    }
 
     public Employee() {
         this.firstName = "John";

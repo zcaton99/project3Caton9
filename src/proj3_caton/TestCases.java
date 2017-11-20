@@ -7,9 +7,7 @@ public class TestCases {
     private static SysAdmin bob = new SysAdmin();
 
     public static void main(String[] args) {
-        userAddTest();
-        addanotherUserTest();
-        expected();
+        expected(userAddTest());
     }
 
     /**
@@ -17,39 +15,58 @@ public class TestCases {
      *
      * @author Joseph Bermingham
      */
-    private static void userAddTest() {
-        System.out.println("starting a set of test cases");
-
+    private static int userAddTest() {
         bob.addUser("angel", "a", "SalesAssociate", "a", "a", "a", "a");
         bob.addUser("AnotherOne", "AnotherTwo", "OfficeManager", "g", "g", "g", "g");
         bob.addUser("i", "Think", "WarehoueManager", "its", "repeating", "dd", "d");
         bob.addUser("julio", "a", "SalesAssociate", "a", "a", "a", "3");
-
-
-//        (SalesAssociate)Main.empList.get(1).Sell();
+        return 0;
     }
+
+    /*
+     * @author Joseph Bermingham
+     * This is testing to make sure that we can come back and add a user later and not have issues
+     * it doesnt, this test is no longer used
+     */
+//    private static void addanotherUserTest() {
+//        bob.addUser("SecondAdd", "SecondAddln", "OfficeManager", "bbbb", "dd", "ss", "sss");
+//    }
 
     /**
      * @author Joseph Bermingham
-     * This is testing to make sure that we can come back and add a user later and not have issues
+     * This is going to be used to test warehoue Managers from the gernerated list
      */
-    private static void addanotherUserTest() {
-        bob.addUser("SecondAdd", "SecondAddln", "OfficeManager", "bbbb", "dd", "ss", "sss");
+    private static int TestWarehouseMFromlist() {
+        WarehouseManager testBro = new WarehouseManager(Main.empList.get(3).toString());
+        return 1;
+    }
+
+    /**
+     * Tests Sales Associates
+     */
+    private static int testSA() {
+
+
+        return 2;
     }
 
     /**
      * @author Joseph Bermingham
      * This is the output of the expected values vs the actual values
      */
-    private static void expected() {
-        Main.genList();
-        System.out.println("expected:\nangel,a,SalesAssociate,a,a,a,a\nAnotherOne,anothertwo,OfficeManager,b,b,b,b\n" +
-                "i,Think,WarehouseManager,c,c,c,c\njulio,a,SalesAssociate\n SecondAdd,SecondaddLN,OfficeManager");
-        System.out.println("Actual");
+    private static void expected(int whichOutPut) {
+        if (whichOutPut == 0) {
+            Main.genList();
+            System.out.println("expected:\nangel,a,SalesAssociate,a,a,a,a\nAnotherOne,anothertwo,OfficeManager,b,b,b,b\n" +
+                    "i,Think,WarehouseManager,c,c,c,c\njulio,a,SalesAssociate\n SecondAdd,SecondaddLN,OfficeManager");
+            System.out.println("Actual");
 
 
-        for (int i = 0; i < Main.empList.size(); i++) {
-            System.out.println(Main.empList.get(i).toString());
+            for (int i = 0; i < Main.empList.size(); i++) {
+                System.out.println(Main.empList.get(i).toString());
+            }
+        } else if (whichOutPut == 1) {
+            //for a different type of actual vs expected
         }
     }
 }

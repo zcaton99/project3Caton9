@@ -20,6 +20,20 @@ public class WarehouseManager extends Employee {
             System.out.println("IOException on line 18 of warehouse manager\n warehouseDB not found");
         }
     }
+
+    /**
+     * using this for testing, allows you to construct a warehouse manager from a toString
+     * @param lengthy the toString of an employee
+     */
+    WarehouseManager(String lengthy){
+        super(lengthy);
+        try {
+            writer = new PrintWriter(new FileWriter(warehousedb, true));//Might need to be false
+        } catch (java.io.IOException g) {
+            System.out.println("IOException on line 33 of warehouse manager\n warehouseDB not found");
+        }
+
+    }
     public WarehouseManager() {
         super("cooper","cooper", "WarehouseManager", "cooper", "c", "cooper", "123");
         try {
