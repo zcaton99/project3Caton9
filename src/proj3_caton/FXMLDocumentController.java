@@ -176,7 +176,6 @@ public class FXMLDocumentController implements Initializable {
         Stage stage = null;
         Parent root = null;
         //todo have these actually create a user and set the employee field to their actual job so we can access it
-        // todo stop the duplication
         String username = Username.getText();
         String password = Password.getText();
         

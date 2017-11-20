@@ -36,11 +36,14 @@ public class TestCases {
     /**
      * @author Joseph Bermingham
      * This is going to be used to test warehoue Managers from the gernerated list
+     * currently can add parts correctly
+     * have not tested searching for parts
      */
     private static int TestWarehouseMFromlist() {
         Main.genList();
         WarehouseManager testBro = new WarehouseManager(Main.empList.get(3).toString());
         testBro.addfile("InitialInv.txt");
+        //todo test for part searching
         return 1;
     }
 
@@ -48,7 +51,7 @@ public class TestCases {
      * Tests Sales Associates
      */
     private static int testSA() {
-
+//todo test all of sales associate
 
         return 2;
     }

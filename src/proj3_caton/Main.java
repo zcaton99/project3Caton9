@@ -42,7 +42,7 @@ public class Main extends Application {
      * @author Joseph Berminghame
      * this function takes the file of users and adds them to an arraylist of users that is used to log in.
      * It manually adds the system admin every time
-     * todo make sure that the gererated list actually works
+     *
      */
     static void genList() {
         empList.clear();
