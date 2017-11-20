@@ -1,6 +1,5 @@
 package proj3_caton;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,14 +11,13 @@ import java.util.Date;
 public class Invoice {
     private PrintWriter invoice;
     private ArrayList<BikePart> invoiceList = new ArrayList<>();
-    private File invFile;
     private boolean created = false;
     private double cost = 0.0;
 
     public double getCost() {
         return cost;
     }
-
+//todo add date functionality
     /**
      * @param asscName Name of the associate creating the invoice
      *                 This class manages the formatting and output of arrays.
@@ -43,26 +41,26 @@ public class Invoice {
      * @param Part The part that you want to addInv to your invoice
      * @author Joseph Bermingham
      */
-     void addInv(BikePart Part) {
-       // System.out.println(Part.getQuantity() + " the incoming parts quantity");
+    void addInv(BikePart Part) {
+        // System.out.println(Part.getQuantity() + " the incoming parts quantity");
         if (created) {
             boolean found = false;
             boolean noRep = true;
             for (int i = 0; i < invoiceList.size(); i++) {
-                if (invoiceList.get(i).getNumber() == Part.getNumber()&&noRep) {
+                if (invoiceList.get(i).getNumber() == Part.getNumber() && noRep) {
                     BikePart a = invoiceList.get(i);
                     a.setQuantity(invoiceList.get(i).getQuantity() + Part.getQuantity());
 
                     found = true;
-                    noRep=false;
-                   // System.out.println("the part was added to the quantity of another");
+                    noRep = false;
+                    // System.out.println("the part was added to the quantity of another");
                 }
             }
             if (!found) {
                 invoiceList.add(Part);
 
             }
-          //  System.out.println(invoiceList.get(0).toString() + " This is the invoice array sub zero toString after the addInv method");
+            //  System.out.println(invoiceList.get(0).toString() + " This is the invoice array sub zero toString after the addInv method");
 
         } else {
             System.out.println("No invoice has been started for this user. Please Contact the Coders who messed this up");
@@ -70,7 +68,10 @@ public class Invoice {
 
     }
 
-
+    /**
+     * adds the cost of the sold part to cost
+     * @param add the cost of the part you are selling.
+     */
     public void addCost(double add) {
         cost += add;
     }
@@ -82,13 +83,11 @@ public class Invoice {
      * @author Joseph Bermingham
      */
     public void close(String name) {
-       for(BikePart h: invoiceList) {
-           invoice.println(h.toString());
-       }
+        for (BikePart h : invoiceList) {
+            invoice.println(h.toString());
+        }
         invoice.println("Parts Purchased by " + name + " for $" + cost + "\n");
         invoice.close();
-        ArrayList<Object> retList = new ArrayList<>();
-
     }
 }
 

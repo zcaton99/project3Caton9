@@ -85,13 +85,14 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private CheckBox quant;
 
-    //todo move methods to their respective classes. so that the controller isnt a giant monster of a class
+    //todo attempt further compression
     //This Employee is used to store the currently logged in employee
-    private Employee usersName;//todo implement this so that we can reference individual employees from a list
+    private Employee usersName;//todo decide how we want to use the list of users that we have to create specific employees
     private ArrayList<BikePart> bpDS = new ArrayList<>();
 
     /**
      * This is the handler for the sales associate sell function
+     *
      * @param event the button click
      * @throws Exception any number of exceptions could be thrown here
      * @author Joseph Bermingham
@@ -114,8 +115,9 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * This is the handler for the sales associate adding something to their van
-     * @author Joseph Bermingham
+     *
      * @param event the button being clicked
+     * @author Joseph Bermingham
      */
     @FXML
     void LoadFIle(ActionEvent event) {
@@ -134,6 +136,7 @@ public class FXMLDocumentController implements Initializable {
     void PrintInvoice(ActionEvent event) {
         //todo this
     }
+
     /**
      * @author Josh Butler
      * This is how the fxml changes scenes from any user with a return button back to the login screen
@@ -172,9 +175,8 @@ public class FXMLDocumentController implements Initializable {
     private void loginButton(ActionEvent event) throws IOException {
         Stage stage = null;
         Parent root = null;
-        //todo make this actually look through a list of users. needs to be System admin compliant
-        //todo have these actually create a user and set the employee field to themselves so we can access it
-        //
+        //todo have these actually create a user and set the employee field to their actual job so we can access it
+        // todo stop the duplication
         String username = Username.getText();
         String password = Password.getText();
         
@@ -183,9 +185,9 @@ public class FXMLDocumentController implements Initializable {
                     root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml")); //only here so i can test officemanager while i figure out how to create user
                 }                                                                           
         for (Employee e : Main.empList) {
-            System.out.println("i entered the foreach loop "+e.toString());
-            System.out.println("this is username,pwd "+username+", "+password);
-            System.out.println("This is what e has"+e.getUsername()+", "+e.getPassword(true));
+            System.out.println("i entered the foreach loop " + e.toString());
+            System.out.println("this is username,pwd " + username + ", " + password);
+            System.out.println("This is what e has" + e.getUsername() + ", " + e.getPassword(true));
             if (e.getUsername().equalsIgnoreCase(username) && e.getPassword(true).equalsIgnoreCase(password)) {
                 System.out.println(e.getUserType() + " this is a printline test statement");
                 if (e.getUserType().equalsIgnoreCase("systemAdmin")) {
@@ -202,7 +204,7 @@ public class FXMLDocumentController implements Initializable {
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("SalesAssociate.fxml"));
-                    System.out.println(root.getId()+" the sales assc root id");
+                    System.out.println(root.getId() + " the sales assc root id");
                 }
                 if (e.getUserType().equalsIgnoreCase("WarehouseManager")) {
                     stage = (Stage) Login.getScene().getWindow();
@@ -211,15 +213,15 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         }
-            try {
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            } catch (NullPointerException excep) {
-               // excep.printStackTrace();
-                System.out.println("no user by that name found");
-            }
+        try {
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (NullPointerException excep) {
+            // excep.printStackTrace();
+            System.out.println("no user by that name found");
         }
+    }
 
 
     private final SysAdmin sysAdmin = new SysAdmin();
@@ -287,8 +289,8 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void LoadToMain(){
-       WarehouseManager a = new WarehouseManager();
+    private void LoadToMain() {
+        WarehouseManager a = new WarehouseManager();
         a.addfile(DFile.getText());
     }
 

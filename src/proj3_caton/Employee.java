@@ -65,9 +65,14 @@ public class Employee {
         this.phoneNumber = "867-867-5309";
     }
     
+
+    public String toStringTest(){
+        return "First Name: " +firstName + ", Last Name: " + lastName + " User Type:"+userType+", Username:" +
+                username+ ", Password:" + password + ", Email:" + email + ", Phone Number:" + phoneNumber;
+    }
     @Override
     public String toString(){
-        return firstName + "," + lastName + ","+userType+"," + username+ "," + password + "," + email + "," + phoneNumber;
+        return firstName+","+lastName+","+userType+","+username+","+password+","+email+","+phoneNumber;
     }
     
 }

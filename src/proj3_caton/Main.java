@@ -38,7 +38,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static void genList() {
+    static void genList() {
         empList.clear();
         SysAdmin bob = new SysAdmin();
         empList.add(bob);
@@ -47,31 +47,30 @@ public class Main extends Application {
             if (in.hasNext())
                 while (in.hasNext()) {
                     String a = in.nextLine();
-
+                    System.out.println("This is a in genList: " +a);
                     String[] broken = a.split(",");
-                    if(broken[3].equalsIgnoreCase("salesassociate")){
+                    System.out.println("This is broken[2]: "+broken[2]);
+                    if(broken[2].equalsIgnoreCase("salesassociate")){
                         empList.add(new SalesAssociate(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
                     }
-                    else if(broken[3].equalsIgnoreCase("warehouseManager")){
+                    else if(broken[2].equalsIgnoreCase("warehouseManager")){
                         empList.add(new WarehouseManager(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
                     }
-                    else if(broken[3].equalsIgnoreCase("officemanager")){
+                    else if(broken[2].equalsIgnoreCase("officemanager")){
                         empList.add(new officeManager(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
                     }
                     else {
                         System.out.println("massive error in main, in.hasNext is true, but it was not cast as a specific employee");
                     }
                    //fname lname utype uname pword email pnumber
-
-
                 }
-            for (Employee e:empList) {
-                System.out.println(e.toString()+"this is in genlist");
-
-            }
+//            for (Employee e:empList) {
+//                System.out.println(e.toString()+"this is in genlist");
+//
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //comment 
+
     }
 }

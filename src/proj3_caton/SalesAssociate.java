@@ -14,7 +14,7 @@ public class SalesAssociate extends Employee {
      * Should update the van, and addInv to a file that is already created with todays date
      */
     //todo make Sell work with files?
-   public void Sell(String partName, int partNumber, int quantity) throws IOException {
+   void Sell(String partName, int partNumber, int quantity) throws IOException {
         double cost = 0.0;
         this.moveToList();
             /*
