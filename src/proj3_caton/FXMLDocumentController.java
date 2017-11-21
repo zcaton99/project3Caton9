@@ -334,17 +334,43 @@ public class FXMLDocumentController implements Initializable {
     /**
      * @param event on button press
      * @author Josh Butler
-     * Displays a specific BikePart by comparing user input to BikePart names.
+     * Displays a specific BikePart by comparing user input to BikePart name, number or a quantity parameter (e.g. >3 or <15).
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) {
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
         if (num.isSelected())
-            display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), bpDS)));
-        else if (quant.isSelected())
-            display.appendText((om.examineButtonMethodQuant(Integer.parseInt((partInfo.getText())), bpDS)));
+            display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), bpDS))); // if user opts to sort by number
+        else if (quant.isSelected()){  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
+            String text = partInfo.getText();
+            String text2 = partInfo.getText();
+            text = text.replaceAll("[<]", ""); // after we have determined if the user has typed a less than or greater than symbol, we ignore the symbols for use.
+            text2 = text.replaceAll("[>]", "");
+            if((partInfo.getText().contains(">"))){
+                for (BikePart bp : bpDS){
+                    if (bp.getQuantity()>Integer.parseInt(text2)) {
+                        if (bp.getonSale())  
+                            display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
+                        else                   
+                            display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getPrice() + "," + " Quantity: " + bp.getQuantity() + "\n");
+                    }
+                }
+            }
+            else if((partInfo.getText().contains("<"))){
+                for (BikePart bp : bpDS){
+                    if (bp.getQuantity()<Integer.parseInt(text)) {
+                        if (bp.getonSale())  
+                            display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
+                        else                   
+                            display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getPrice() + "," + " Quantity: " + bp.getQuantity() + "\n");
+                    }
+                }
+            }
+            else
+            display.appendText((om.examineButtonMethodQuant(Integer.parseInt((text)), bpDS)));
+        }
         else
-            display.appendText((om.examineButtonMethodname(partInfo.getText(), bpDS)));
+            display.appendText((om.examineButtonMethodname(partInfo.getText(), bpDS))); //if user does not choose to sort by quantity or number, this is the default [name]
     }
 
     /**
@@ -357,9 +383,9 @@ public class FXMLDocumentController implements Initializable {
 
         for (BikePart bp : bpDS)
             if (bp.getQuantity() <= 10 && bp.getQuantity() > 5) {
-                display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " order more." + "\n");
+                display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " it is recommended to order more." + "\n");
             } else if (bp.getQuantity() <= 5) {
-                display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " order at least 20 now." + "\n");
+                display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " order more." + "\n");
             }
     }
     

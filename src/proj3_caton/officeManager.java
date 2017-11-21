@@ -6,10 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +41,16 @@ public class officeManager extends Employee {
         }
         return bpDS2.toString();
     }
-    // todo add methods for by partname and quantity
+    
+    public ArrayList<BikePart> returnArrayOfLow(ArrayList<BikePart> bpDS){
+        for (BikePart bp : bpDS){
+            if (bp.getQuantity() <= 10) {
+                bpDS.add(bp);
+            }
+        }
+        return bpDS;
+    }
+    
     public String examineButtonMethodname(String partname, ArrayList<BikePart> bpDS) {
         for (BikePart bp : bpDS)
             if (bp.getName().equals(partname)) {
@@ -69,7 +75,7 @@ public class officeManager extends Employee {
             }
         return("");
     }
-    public String examineButtonMethodQuant(int quant, ArrayList<BikePart> bpDS) { //TODO: add functionality so that greater than, less than or equal to quantity is optional
+    public String examineButtonMethodQuant(int quant, ArrayList<BikePart> bpDS) { 
         for (BikePart bp : bpDS)
             if (bp.getQuantity()==quant) {
                 if (bp.getonSale())
@@ -81,7 +87,7 @@ public class officeManager extends Employee {
             }
         return("");
     }
-    
+   
     public void orderParts(BikePart bp, int count){
         File f = new File("warehousedb.txt");
         int orderpart = bp.getNumber();
