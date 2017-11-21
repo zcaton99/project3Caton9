@@ -157,7 +157,7 @@ public class WarehouseManager extends Employee {
         }
         try {
             while (whlooker.hasNext()) {
-                String partString = whlooker.nextLine();//todo check to make sure that this doesnt need to be in.nextline();
+                String partString = whlooker.nextLine();
 
                 // System.out.println(t + "       t");
                 String[] broken = partString.split(",");

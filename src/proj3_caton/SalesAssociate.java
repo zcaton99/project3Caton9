@@ -13,7 +13,7 @@ public class SalesAssociate extends Employee {
      * This Should Sell your part by name or number
      * Should update the van, and addInv to a file that is already created with todays date
      */
-    //todo make Sell work with files?
+    //make Sell work with files?
    void Sell(String partName, int partNumber, int quantity) throws IOException {
         double cost = 0.0;
         this.moveToList();
