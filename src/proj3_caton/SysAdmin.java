@@ -31,7 +31,6 @@ class SysAdmin extends Employee {
     
     /**
      * Adds user to user database (text file)
-     * Edited by joseph bermingham
      * @param fName       First name for the user
      * @param lName       Last name for the user
      * @param userType    The type of user
@@ -185,7 +184,6 @@ class SysAdmin extends Employee {
 
     /**
      * Resets password by user name
-     *
      * @param name    username of the user whose password you are changing
      * @param newPass the new password that you want to add
      * @throws FileNotFoundException Throws when the file of users is not found
