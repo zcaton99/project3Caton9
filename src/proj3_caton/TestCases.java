@@ -3,6 +3,7 @@ package proj3_caton;
 /**
  * This is a set of test cases to test reading in users as their actual type
  */
+//todo add test cases for your stuff either in this class or in a different one
 public class TestCases {
     private static SysAdmin bob = new SysAdmin();
 
