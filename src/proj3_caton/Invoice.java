@@ -1,5 +1,6 @@
 package proj3_caton;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,11 +9,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * @author Joseph Bermingham
+ */
 public class Invoice {
-    private PrintWriter invoice;
+    private static PrintWriter invoice;
     private ArrayList<BikePart> invoiceList = new ArrayList<>();
     private boolean created = false;
     private double cost = 0.0;
+    private String owner;
     Date date = new Date();
 
     //todo add a date field, add a list of invoices ability
@@ -20,7 +25,7 @@ public class Invoice {
     public double getCost() {
         return cost;
     }
-//todo add date functionality
+
     /**
      * @param asscName Name of the associate creating the invoice
      *                 This class manages the formatting and output of arrays.
@@ -28,14 +33,21 @@ public class Invoice {
      * @author Joseph Bermingham
      */
     public Invoice(String asscName) {
-        try {
-            invoice = new PrintWriter(new FileWriter(asscName + "invoice.txt", true));//Should the append be true? that is a question i will answer later
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            invoice.println("Sales Invoice for " + asscName + "'s Van Sales, " + dateFormat.format(date));
-            invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+        File check;
+        owner = asscName;
+        check = new File(asscName + "invoice.txt");
+        if (!check.exists()) {
+            try {
+                invoice = new PrintWriter(new FileWriter(asscName + "invoice.txt", true));//Should the append be true? that is a question i will answer later
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                invoice.println("Sales Invoice for " + asscName + "'s Van Sales, " + dateFormat.format(date));
+                invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+                created = true;
+            } catch (IOException e) {
+                System.out.println("IOException in InvoiceCreation");
+            }
+        }else{
             created = true;
-        } catch (IOException e) {
-            System.out.println("IOException in InvoiceCreation");
         }
     }
 
@@ -72,6 +84,7 @@ public class Invoice {
 
     /**
      * adds the cost of the sold part to cost
+     *
      * @param add the cost of the part you are selling.
      */
     public void addCost(double add) {
@@ -87,9 +100,14 @@ public class Invoice {
     public void close(String name) {
         for (BikePart h : invoiceList) {
             invoice.println(h.toString());
+            System.out.println("The part being added to the invoice: "+h.toString());
         }
         invoice.println("Parts Purchased by " + name + " for $" + cost + "\n");
         invoice.close();
+    }
+
+    public String getOwner() {
+        return owner;
     }
 }
 

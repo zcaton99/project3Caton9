@@ -50,7 +50,7 @@ public class officeManager extends Employee {
 
     /**
      * findByName compares all BikeParts in the warehouse data set and returns a BikePart if its name is equal to the name given.
-     * @param name
+     * @param name name of the part you are finding
      * @return returns BikePart b
      */
     private static BikePart findByName(String name){
