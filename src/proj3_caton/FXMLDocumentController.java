@@ -149,8 +149,13 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     void PrintInvoice(ActionEvent event) {
         System.out.println("This is PrintInvoice");
-        SalesAssc.closeinvoice("Clients Name");
-    }
+        try {
+            SalesAssc.closeinvoice("Clients Name");
+        }catch(IOException e){
+            e.printStackTrace();
+            SAOut.appendText("IOError in invoice.close");
+        }
+        }
 
     /**
      * @author Josh Butler

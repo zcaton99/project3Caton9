@@ -1,13 +1,12 @@
 package proj3_caton;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  * @author Joseph Bermingham
@@ -46,12 +45,36 @@ public class Invoice {
             } catch (IOException e) {
                 System.out.println("IOException in InvoiceCreation");
             }
-        }else{
+        } else {
             created = true;
         }
     }
 
     /**
+     * @author Joseph Bermingham
+     * is used in the close method to do the adding properly
+     */
+    private void begin() throws IOException{
+        try {
+
+            Scanner parse = new Scanner(new File(owner + "invoice.txt"));
+           if(parse.hasNext()) {
+               System.out.println("This is owner in Invoice: " + owner);
+               System.out.println(parse.nextLine());
+               System.out.println(parse.nextLine());
+               invoiceList.add(new BikePart(parse.nextLine()));
+           }
+            invoice = new PrintWriter(new FileWriter(owner + "invoice.txt"));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            invoice.println("Sales Invoice for " + owner + "'s Van Sales, " + dateFormat.format(date));
+            invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * operation that happens after when you sell things to add their cost and information to the array
      * @param Part The part that you want to addInv to your invoice
      * @author Joseph Bermingham
      */
@@ -97,10 +120,13 @@ public class Invoice {
      * im not sure if the For Each loop works yet.
      * @author Joseph Bermingham
      */
-    public void close(String name) {
+    public void close(String name) throws IOException {
+        begin();
+
+
         for (BikePart h : invoiceList) {
             invoice.println(h.toString());
-            System.out.println("The part being added to the invoice: "+h.toString());
+            System.out.println("The part being added to the invoice: " + h.toString());
         }
         invoice.println("Parts Purchased by " + name + " for $" + cost + "\n");
         invoice.close();

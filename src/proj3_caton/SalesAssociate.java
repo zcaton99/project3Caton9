@@ -146,9 +146,9 @@ public class SalesAssociate extends Employee {
     }
 
     /**
+     * @param db The arraylist of bikeparts you want to addInv to the van
      * @author Joseph Bermingham
      * a utility class that adds an arraylist to the users file
-     * @param db The arraylist of bikeparts you want to addInv to the van
      */
     private void writeToFile(ArrayList<BikePart> db) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(super.getFirstName() + ".txt"));
@@ -161,8 +161,8 @@ public class SalesAssociate extends Employee {
     /*
      * this is a tester method for invoice
      */
-    public Invoice closeinvoice(String name) {
-        thisInvoice.close(name);
+    public Invoice closeinvoice(String name) throws IOException{
+            thisInvoice.close(name);
         return thisInvoice;
     }
 
