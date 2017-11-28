@@ -63,6 +63,7 @@ public class officeManager extends Employee {
      * this method goes through the bike part warehouse and looks for parts with less than a hardcoded quantity (10)
      * @param bpDS
      * //todo addInv the ability to create a file of the needed parts
+     * @return string of bikeparts that have a quantity below 10
      */
     public String checkQuant(ArrayList<BikePart> bpDS) {
         for (BikePart bp : bpDS){

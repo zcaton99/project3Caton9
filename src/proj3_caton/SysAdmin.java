@@ -59,12 +59,47 @@ class SysAdmin extends Employee {
         //userFile = new File(fileName);
         // first time is changed to false but when adding another user is goes back to true 
         //if first time adding user then adds them directly
-        if (firstTime && users.isEmpty()){
-            users.add(em);// System.out.println("user was added on the 64th line");
-            firstTime = false;
-            System.out.println(firstTime + "The first time that a user is added to the file in sys admin");
+        //however if the program is closed and reopened then this will run again and override the file information
+                
+        
+        
+//        if (firstTime && users.isEmpty()){
+//            users.add(em);// System.out.println("user was added on the 64th line");
+//            firstTime = false;
+//            System.out.println(firstTime + "The first time that a user is added to the file in sys admin 99");
+//            
+//        // not first time but has no users in system (aka users are in file)    
+//        }
+        if(firstTime && users.isEmpty()){
             
-        // not first time but has no users in system (aka users are in file)    
+            Scanner in = null;
+            try {
+                    in = new Scanner(userFile);
+            } catch (FileNotFoundException e) {
+                 System.out.println("File Not Found in sysAdmin addUser, Please consult the Author");
+            }
+                //tests to see if user file has any users in it
+            if(in.hasNext()) {
+                    //adds users back into program
+                while (in.hasNext()) {
+                    String line = in.nextLine();
+                    String[] pA = line.split(",");
+                    Employee ba = new Employee(pA[0], pA[1], pA[2], pA[3], pA[4], pA[5], pA[6]);
+                    users.add(ba);
+                    firstTime = false;
+                    System.out.println(firstTime + "1");
+                    System.out.println(users.toString());
+                }
+                users.add(em);
+                
+            }else{
+                users.add(em);
+                firstTime = false;
+                System.out.println(firstTime + "2");
+                System.out.println(users.toString());
+            }
+            
+            
         }else if(!firstTime && users.isEmpty()){// end of first time if statement
             //checks to see if users is empty, if it is then it will read in users from the file
             Scanner inVF = null;
