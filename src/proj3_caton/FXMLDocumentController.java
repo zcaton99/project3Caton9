@@ -91,7 +91,7 @@ public class FXMLDocumentController implements Initializable {
     private CheckBox quant;
     @FXML
     private TextArea SAOut;
-    private static SalesAssociate SalesAssc;
+
     //todo attempt further compression
     //This Employee is used to store the currently logged in employee
     private Employee usersName;//todo decide how we want to use the list of users that we have to create specific employees
@@ -187,6 +187,8 @@ public class FXMLDocumentController implements Initializable {
      * @author Josh Butler,Joseph Bermingham
      */
 
+    private static SalesAssociate SalesAssc;
+    private static officeManager OfficeMan;
     @FXML
     private void loginButton(ActionEvent event) throws IOException {
         Stage stage = null;
@@ -211,6 +213,7 @@ public class FXMLDocumentController implements Initializable {
                 }
                 if (e.getUserType().equalsIgnoreCase("officeManager")) {
                     //get reference to the button's stage
+                    OfficeMan = new officeManager(e.toString());
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml"));
