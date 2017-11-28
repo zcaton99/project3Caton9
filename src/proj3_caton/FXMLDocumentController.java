@@ -91,7 +91,7 @@ public class FXMLDocumentController implements Initializable {
     private CheckBox quant;
     @FXML
     private TextArea SAOut;
-    private SalesAssociate SalesAssc;
+    private static SalesAssociate SalesAssc;
     //todo attempt further compression
     //This Employee is used to store the currently logged in employee
     private Employee usersName;//todo decide how we want to use the list of users that we have to create specific employees
