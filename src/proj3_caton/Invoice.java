@@ -13,6 +13,8 @@ public class Invoice {
     private ArrayList<BikePart> invoiceList = new ArrayList<>();
     private boolean created = false;
     private double cost = 0.0;
+    Date date = new Date();
+
     //todo add a date field, add a list of invoices ability
 
     public double getCost() {
@@ -29,12 +31,11 @@ public class Invoice {
         try {
             invoice = new PrintWriter(new FileWriter(asscName + "invoice.txt", true));//Should the append be true? that is a question i will answer later
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            Date date = new Date();
             invoice.println("Sales Invoice for " + asscName + "'s Van Sales, " + dateFormat.format(date));
             invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
             created = true;
         } catch (IOException e) {
-            System.out.println("IOException in line 30 of Invoice");
+            System.out.println("IOException in InvoiceCreation");
         }
     }
 
