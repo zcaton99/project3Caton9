@@ -11,10 +11,38 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class officeManager extends Employee {
-    private static ArrayList<BikePart> bpDS = new ArrayList<>();
+    static ArrayList<BikePart> bpDS = new ArrayList<>();
     static ArrayList<BikePart> bpDS2 = new ArrayList<>();
     public officeManager(String a, String b, String bb, String c, String d, String e, String f) {
         super(a, b, bb, c, d, e, f);
+    }
+    
+    public void updateBPDS(File f) throws FileNotFoundException, IOException{  
+        try (BufferedReader reader = new BufferedReader(new FileReader(f))) { //reads the file given 
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] pa = line.split(",");
+                int result = Integer.parseInt(pa[1]);
+                double result2 = Double.parseDouble(pa[2]);
+                double result3 = Double.parseDouble(pa[3]);
+                Boolean result4 = Boolean.valueOf(pa[4]);
+                int result5 = Integer.parseInt(pa[5]);
+                BikePart b = new BikePart(pa[0], result, result2, result3, result4, result5);
+                BikePart found = findByName(pa[0]);
+                
+                if (findByName(pa[0]) == null) {         //ensures that bikeparts with unique names are added to array
+                    bpDS.add(b);
+                } else {                              //doesn't actually affect file, as no prints are made, only displays and initializes BPDS.
+                    found.setPrice(b.getPrice());
+                    found.setSalesPrice(b.getSale());
+                    found.setonSale(b.getonSale());
+                    found.setQuantity(b.getQuantity());
+                }
+            }
+        }
+        catch(FileNotFoundException fnfe){
+                    System.out.println(fnfe.getMessage());
+        }
     }
 
     /**
@@ -88,8 +116,8 @@ public class officeManager extends Employee {
         return("");
     }
    
-    public void orderParts(BikePart bp, int count){
-        File f = new File("warehousedb.txt");
+    public void orderParts(BikePart bp, int count){ //TODO edit the regular order command so that BPDS will show updated changes without having to reaload file.
+        File f = new File("initialinv.txt");
         int orderpart = bp.getNumber();
                     try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
                         ArrayList<BikePart> bpArray2 = new ArrayList<>();

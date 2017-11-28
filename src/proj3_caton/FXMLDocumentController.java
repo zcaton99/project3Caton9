@@ -15,7 +15,10 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Josh
@@ -78,6 +81,8 @@ public class FXMLDocumentController implements Initializable {
     private TextField ordercount;
     @FXML
     private Button orderbutton;
+    @FXML
+    private TextField orderlowset;
     @FXML
     CheckBox nam;
     @FXML
@@ -328,6 +333,9 @@ public class FXMLDocumentController implements Initializable {
                 display.appendText("Part Name: " + pa[0] + "," + " Part Number: " + result + "," + " Price: $" + result2 + "," + " Sales Price: $" + result3 + "," + " On Sale: " + result4 + "," + " Quantity: " + result5 + "\n");
             }
         }
+        catch(FileNotFoundException fnfe){
+                    display.appendText(fnfe.getMessage());
+        }
     }
 
 
@@ -337,17 +345,21 @@ public class FXMLDocumentController implements Initializable {
      * Displays a specific BikePart by comparing user input to BikePart name, number or a quantity parameter (e.g. >3 or <15).
      */
     @FXML
-    public void examineButtonMethod(ActionEvent event) {
+    public void examineButtonMethod(ActionEvent event) throws IOException {
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
+        File f = new File(testbpDS.getText());
+        officeManager.bpDS.clear();
+        om.updateBPDS(f);
+        display.appendText("\n");
         if (num.isSelected())
-            display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), bpDS))); // if user opts to sort by number
+            display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), officeManager.bpDS))); // if user opts to sort by number
         else if (quant.isSelected()){  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
             String text = partInfo.getText();
             String text2 = partInfo.getText();
             text = text.replaceAll("[<]", ""); // after we have determined if the user has typed a less than or greater than symbol, we ignore the symbols for use.
             text2 = text.replaceAll("[>]", "");
             if((partInfo.getText().contains(">"))){
-                for (BikePart bp : bpDS){
+                for (BikePart bp : officeManager.bpDS){
                     if (bp.getQuantity()>Integer.parseInt(text2)) {
                         if (bp.getonSale())  
                             display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
@@ -357,7 +369,7 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             else if((partInfo.getText().contains("<"))){
-                for (BikePart bp : bpDS){
+                for (BikePart bp : officeManager.bpDS){
                     if (bp.getQuantity()<Integer.parseInt(text)) {
                         if (bp.getonSale())  
                             display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
@@ -367,27 +379,51 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
             else
-            display.appendText((om.examineButtonMethodQuant(Integer.parseInt((text)), bpDS)));
+            display.appendText((om.examineButtonMethodQuant(Integer.parseInt((text)), officeManager.bpDS)));
         }
         else
-            display.appendText((om.examineButtonMethodname(partInfo.getText(), bpDS))); //if user does not choose to sort by quantity or number, this is the default [name]
+            display.appendText((om.examineButtonMethodname(partInfo.getText(), officeManager.bpDS))); //if user does not choose to sort by quantity or number, this is the default [name]
     }
 
     /**
      * @param event //todo addInv the ability to create a file of the needed parts
      * @author Josh Butler
      * this method goes through the bike part warehouse and looks for parts with less than a hardcoded quantity (10)
+     * @throws java.lang.InterruptedException
+     * @throws java.io.IOException
      */
-    @FXML
-    public void checkQuant(ActionEvent event) {
-
-        for (BikePart bp : bpDS)
-            if (bp.getQuantity() <= 10 && bp.getQuantity() > 5) {
-                display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " it is recommended to order more." + "\n");
-            } else if (bp.getQuantity() <= 5) {
-                display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " order more." + "\n");
+@FXML
+    public void checkQuant(ActionEvent event) throws InterruptedException, IOException { 
+        officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
+        File f = new File(testbpDS.getText());
+        officeManager.bpDS2.clear();
+        officeManager.bpDS.clear();
+        om.updateBPDS(f);
+        display.appendText("\n");
+        
+        for (BikePart bp : officeManager.bpDS){
+            if (bp.getQuantity() <= 10 && !Arrays.asList(officeManager.bpDS2).contains(bp)) { //checks to see if the value already exists in the array, if not it can be added. (prevents duplicates)
+                officeManager.bpDS2.add(bp); 
+                if (orderlowset.getText().equals("")){
+                    display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " it is recommended to order more." + "\n");
+                }
             }
-    }
+        }
+        if (officeManager.bpDS2.isEmpty()){
+            display.appendText("\n"+"No parts are below 10, you can check for other values by using the examine function and using the < symbol.");
+        } 
+        if (!officeManager.bpDS2.isEmpty()&& (orderlowset.getText().equals(""))){
+            display.appendText("\n"+"1. You may order a set number of all low parts by entering"+"\n"+"the amount in the \"Order Low\" field and selecting \"Check Qauntities\" again."+"\n"+"2. Alternatively, you may order individually to set different amounts per item."+"\n");
+        }
+        if (!officeManager.bpDS2.isEmpty()&& (!orderlowset.getText().equals(""))){ 
+            display.appendText("Bought " + orderlowset.getText() + " of each part below 10."+"\n");
+        }   
+        if(!orderlowset.getText().isEmpty()){
+            for(BikePart bp : officeManager.bpDS2){
+                om.orderParts(bp, Integer.parseInt(orderlowset.getText()));
+            }
+        }
+    } 
     
     /**
      * @param event on button press
@@ -395,11 +431,14 @@ public class FXMLDocumentController implements Initializable {
      * increments quantity of ordered part
      */
     @FXML
-    public void order(ActionEvent event){
+    public void order(ActionEvent event) throws IOException{ //TODO: edit so that bpDS is updated without having to reload file, (clear bpds, insert code from testbpds, exlude prints.)
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
-        for(BikePart bp: bpDS){
+        File f = new File(testbpDS.getText());
+        officeManager.bpDS.clear();    
+        om.updateBPDS(f);       
+        for(BikePart bp: officeManager.bpDS){
             if(bp.getNumber()==Integer.parseInt(ordername.getText())){
-                display.appendText("Bought " + ordercount.getText() + " " + bp.getName()+"\n");
+                display.appendText("\n"+"Bought " + ordercount.getText() + " " + bp.getName()+"\n");
                 om.orderParts(bp, Integer.parseInt(ordercount.getText()));
             }
         }   
