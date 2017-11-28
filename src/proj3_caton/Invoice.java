@@ -13,6 +13,7 @@ public class Invoice {
     private ArrayList<BikePart> invoiceList = new ArrayList<>();
     private boolean created = false;
     private double cost = 0.0;
+    //todo add a date field, add a list of invoices ability
 
     public double getCost() {
         return cost;

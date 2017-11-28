@@ -89,7 +89,9 @@ public class FXMLDocumentController implements Initializable {
     private CheckBox num;
     @FXML
     private CheckBox quant;
-
+    @FXML
+    private TextArea SAOut;
+    private SalesAssociate SalesAssc;
     //todo attempt further compression
     //This Employee is used to store the currently logged in employee
     private Employee usersName;//todo decide how we want to use the list of users that we have to create specific employees
@@ -104,17 +106,20 @@ public class FXMLDocumentController implements Initializable {
      */
     @FXML
     void Sell(ActionEvent event) throws Exception {
-        steve = new SalesAssociate("aa", "a", "b", "c", "d", "email", "phoneNumber");
-        //steve.Sell();
-        System.out.println(steve.getFirstName());
-        if ((PartName.getText().isEmpty())) {
-            steve.Sell("", Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText()));
-        } else if ((PartNumber.getText().isEmpty())) {
-            steve.Sell(PartName.getText(), -1, Integer.parseInt(Quantity.getText()));
-        } else if (!(PartNumber.getText().isEmpty() && PartName.getText().isEmpty())) {
-            steve.Sell(PartName.getText(), Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText()));
-        } else {
-            display.appendText("Please put in either a name or a number");
+        try {
+            //steve.Sell();
+            System.out.println(steve.getFirstName());
+            if ((PartName.getText().isEmpty())) {
+                SalesAssc.Sell("", Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText()));
+            } else if ((PartNumber.getText().isEmpty())) {
+                SalesAssc.Sell(PartName.getText(), -1, Integer.parseInt(Quantity.getText()));
+            } else if (!(PartNumber.getText().isEmpty() && PartName.getText().isEmpty())) {
+                SalesAssc.Sell(PartName.getText(), Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText()));
+            } else {
+                SAOut.appendText("Please put in either a name or a number");
+            }
+        }catch(NullPointerException e){
+            e.printStackTrace();
         }
     }
 
@@ -126,8 +131,13 @@ public class FXMLDocumentController implements Initializable {
      */
     @FXML
     void LoadFIle(ActionEvent event) {
-
-        //todo create a salse associate such that i can access the correct one in this method
+        System.out.println(SalesAssc.toString());
+        try {
+            SalesAssc.LoadFile(LoadFileName.getText());
+        }catch(java.io.IOException e){
+            //e.printStackTrace();
+            System.out.println("File Not Found");
+        }
 
     }
 
@@ -176,6 +186,7 @@ public class FXMLDocumentController implements Initializable {
      * @throws IOException When there is an io exception
      * @author Josh Butler,Joseph Bermingham
      */
+
     @FXML
     private void loginButton(ActionEvent event) throws IOException {
         Stage stage = null;
@@ -207,8 +218,10 @@ public class FXMLDocumentController implements Initializable {
                 if (e.getUserType().equalsIgnoreCase("salesAssociate")) {
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
+                    SalesAssc = new SalesAssociate(e.toString());
+                    System.out.println(SalesAssc+" This is sales associate creatin in login");
                     root = FXMLLoader.load(getClass().getResource("SalesAssociate.fxml"));
-                    System.out.println(root.getId() + " the sales assc root id");
+                  //  System.out.println(root.getId() + " the sales assc root id");
                 }
                 if (e.getUserType().equalsIgnoreCase("WarehouseManager")) {
                     stage = (Stage) Login.getScene().getWindow();

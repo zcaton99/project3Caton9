@@ -14,7 +14,7 @@ public class SalesAssociate extends Employee {
      * Should update the van, and addInv to a file that is already created with todays date
      */
     //make Sell work with files?
-   void Sell(String partName, int partNumber, int quantity) throws IOException {
+    void Sell(String partName, int partNumber, int quantity) throws IOException {
         double cost = 0.0;
         this.moveToList();
             /*
@@ -69,7 +69,7 @@ public class SalesAssociate extends Employee {
      * when you enter this method it gets the text from the text field and Adds the contents of a file to addInv to this sales associate van
      */
 
-   public  void LoadFile(String fileName) throws IOException {
+    public void LoadFile(String fileName) throws IOException {
         File loadFile = new File(fileName);
         try {
             //  System.out.println("Try has been entered");
@@ -102,6 +102,7 @@ public class SalesAssociate extends Employee {
                 }
                 if (!wasAdded) van.add(in);
             }
+
             writeToFile(van);
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found. Please make sure you are using the correct file in the correct location");
@@ -117,14 +118,10 @@ public class SalesAssociate extends Employee {
      */
     private void moveToList() {
         van.clear();
-        Scanner whlooker = null;
+        Scanner whlooker;
 
         try {
             whlooker = new Scanner(new File(this.getFirstName() + ".txt"));
-        } catch (java.io.IOException g) {
-            System.out.println("java.io.IOException in line 140 of the Sales Associate class.\n salesAssociatesName.txt not found");
-        }
-        try {
             while (whlooker.hasNext()) {
                 String partString = whlooker.nextLine();
                 String[] broken = partString.split(",");
@@ -136,6 +133,9 @@ public class SalesAssociate extends Employee {
                         Boolean.parseBoolean(broken[4]),
                         Integer.parseInt(broken[5])));
             }
+        } catch (java.io.IOException g) {
+            System.out.println("java.io.IOException in line 140 of the Sales Associate class.\n salesAssociatesName.txt not found");
+
         } catch (NullPointerException e) {
             System.out.println("null pointer exception in WarehouseManager line 114 \n Warehousedb.txt not found, whlooker Uninitialised");
         }
@@ -157,9 +157,9 @@ public class SalesAssociate extends Employee {
     /*
      * this is a tester method for invoice
      */
-     public Invoice closeinvoice(String name) {
-       thisInvoice.close(name);
-         return thisInvoice;
+    public Invoice closeinvoice(String name) {
+        thisInvoice.close(name);
+        return thisInvoice;
     }
 
     /**
@@ -172,9 +172,13 @@ public class SalesAssociate extends Employee {
      * creates a sales associate and their invoice
      * pretty sure that the writer in here needs to not append
      */
-     public SalesAssociate(String fName, String lName, String uType, String uName, String Pword, String Email, String pNumber) {
+    public SalesAssociate(String fName, String lName, String uType, String uName, String Pword, String Email, String pNumber) {
         super(fName, lName, uType, uName, Pword, Email, pNumber);
         Invoice thisInvoice = new Invoice(fName);
+    }
+
+    SalesAssociate(String e) {
+        super(e);
     }
 
     /**

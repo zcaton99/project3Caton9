@@ -11,7 +11,7 @@
         <TextField fx:id="Quantity" layoutX="26.0" layoutY="83.0" promptText="Quantity"/>
         <TextField fx:id="LoadFileName" layoutX="35.0" layoutY="224.0" promptText="File Name"/>
         <Button layoutX="223.0" layoutY="224.0" mnemonicParsing="false" onAction="#LoadFIle" text="Load File"/>
-        <TextArea layoutX="331.0" layoutY="14.0" prefHeight="386.0" prefWidth="255.0"/>
+        <TextArea fx:id = "SAOut" layoutX="331.0" layoutY="14.0" prefHeight="386.0" prefWidth="255.0"/>
         <Button layoutX="60.0" layoutY="274.0" mnemonicParsing="false" onAction="#PrintInvoice" text="Print Invoice"/>
         <Button fx:id="Return" layoutX="111.0" layoutY="361.0" mnemonicParsing="false" onAction="#changeScene"
                 text="Return"/>
