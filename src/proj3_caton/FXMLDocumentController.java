@@ -17,6 +17,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Josh
@@ -77,6 +80,8 @@ public class FXMLDocumentController implements Initializable {
     private TextField ordername;
     @FXML
     private TextField ordercount;
+    @FXML
+    private TextField svname;
     @FXML
     private Button orderbutton;
     @FXML
@@ -462,7 +467,40 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
-
+    
+    
+    /**
+     * @param event on button press
+     * @author Josh Butler
+     * sets a commission for an employee, stored on a file
+     */
+    @FXML
+    public void genComm(ActionEvent event){
+        String saname = svname.getText();
+        File file = new File(saname+"invoice.txt");
+        try {
+            Scanner scan = new Scanner(file);
+            String p1 = scan.next();
+            String p2 = scan.next();
+            String p3 = scan.next();
+            String confirmedname = scan.next();
+            String p4 = scan.nextLine();
+            String p5 = scan.nextLine();
+            String p6 = scan.nextLine();
+            String lastline = scan.nextLine(); 
+            String lastWord = lastline.substring(lastline.lastIndexOf(" ")+1); //isolating last word
+            String lastInt = lastWord.replaceAll("[$]", "");    //removing the $ in the string
+            double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
+            String lastFinal = String.valueOf(last);    //Converting back to String to print
+            System.out.println(confirmedname+"  "+lastWord);
+            display.appendText(confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal);
+        } catch (FileNotFoundException ex) {
+            display.appendText("That file does not exist, try a different employee name.");
+            //Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+            
     /**
      * @param event on button press
      * @author Josh Butler
