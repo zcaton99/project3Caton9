@@ -11,15 +11,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Josh
@@ -370,6 +367,7 @@ public class FXMLDocumentController implements Initializable {
      * @param event on button press
      * @author Josh Butler
      * Displays a specific BikePart by comparing user input to BikePart name, number or a quantity parameter (e.g. >3 or <15).
+     * @throws java.io.IOException
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) throws IOException {
@@ -453,6 +451,7 @@ public class FXMLDocumentController implements Initializable {
      * @param event on button press
      * @author Josh Butler
      * increments quantity of ordered part
+     * @throws java.io.IOException
      */
     @FXML
     public void order(ActionEvent event) throws IOException { //TODO: edit so that bpDS is updated without having to reload file, (clear bpds, insert code from testbpds, exlude prints.)
@@ -475,27 +474,27 @@ public class FXMLDocumentController implements Initializable {
      * sets a commission for an employee, stored on a file
      */
     @FXML
-    public void genComm(ActionEvent event){
+    public void genComm(ActionEvent event){ //TODO: Allow method to print commissions to a file, also will invoices from different days have the same filename?
         String saname = svname.getText();
         File file = new File(saname+"invoice.txt");
         try {
             Scanner scan = new Scanner(file);
-            String p1 = scan.next();
+            String p1 = scan.next(); //words not needed
             String p2 = scan.next();
             String p3 = scan.next();
-            String confirmedname = scan.next();
-            String p4 = scan.nextLine();
+            String confirmedname = scan.next(); //add a check to compare the saname with confirmed?
+            String p4 = scan.nextLine(); //lines not needed
             String p5 = scan.nextLine();
             String p6 = scan.nextLine();
-            String lastline = scan.nextLine(); 
+            String lastline = scan.nextLine(); //isolating last line of text doc
             String lastWord = lastline.substring(lastline.lastIndexOf(" ")+1); //isolating last word
             String lastInt = lastWord.replaceAll("[$]", "");    //removing the $ in the string
             double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
             String lastFinal = String.valueOf(last);    //Converting back to String to print
             System.out.println(confirmedname+"  "+lastWord);
-            display.appendText(confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal);
+            display.appendText("\n"+confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal);
         } catch (FileNotFoundException ex) {
-            display.appendText("That file does not exist, try a different employee name.");
+            display.appendText("That file does not exist, try a different employee name."+"\n");
             //Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
