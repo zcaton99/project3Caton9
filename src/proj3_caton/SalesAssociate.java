@@ -19,9 +19,9 @@ public class SalesAssociate extends Employee {
         this.moveToList();
         BikePart soldPart = null;
 
-            /*
-             * if the part name field is empty use this version of seller to decrement the quantity and get the cost of the sale
-             * */
+        /*
+         * if the part name field is empty use this version of seller to decrement the quantity and get the cost of the sale
+         * */
         if (partName.equals("")) {
             for (int i = 0; i < van.size(); i++) {
                 if (van.get(i).getNumber() == partNumber) {
@@ -40,15 +40,15 @@ public class SalesAssociate extends Employee {
                 }
             }
         }
-            /*
-             * if part number is "empty" (-1), use this one
-             */
+        /*
+         * if part number is "empty" (-1), use this one
+         */
         if (partNumber == -1) {
             for (int i = 0; i < van.size(); i++) {
                 if (van.get(i).getName().equalsIgnoreCase(partName)) {
                     int g = van.get(i).getQuantity();
                     if (g < quantity) {
-                        return ("please put in a more reasonable amount you have " + g + " of the part " + van.get(i).getName() + " can sell by name");
+                        return ("please put in a more reasonable amount you have " + g + " of the part " + van.get(i).getName() + " can sell by name\n");
                     } else {
                         int a = g - quantity;
                         van.get(i).setQuantity(a);
@@ -112,7 +112,7 @@ public class SalesAssociate extends Employee {
             return ("File Not Found. Please make sure you are using the correct file \nin the correct location\n");
         }
 
-        return "File " + fileName + " Was Successfully loaded";
+        return "File " + fileName + " Was Successfully loaded \n";
     }
 
 
@@ -161,8 +161,8 @@ public class SalesAssociate extends Employee {
     /*
      * this is a tester method for invoice
      */
-    public Invoice closeinvoice(String name) throws IOException{
-            thisInvoice.close(name);
+    public Invoice closeinvoice(String name) throws IOException {
+        thisInvoice.close(name);
         return thisInvoice;
     }
 

@@ -249,6 +249,10 @@ public class FXMLDocumentController implements Initializable {
         } catch (NullPointerException excep) {
             // excep.printStackTrace();
             System.out.println("no user by that name found");
+            System.out.println("User List Is:");
+            for (Employee e: Main.empList) {
+                System.out.println(e.toStringTest());
+            }
         }
     }
 
