@@ -53,6 +53,7 @@ public class SalesAssociate extends Employee {
                         int a = g - quantity;
                         van.get(i).setQuantity(a);
                         cost += (van.get(i).getPrice() * quantity);
+                        System.out.println("Cost in SA.sell: "+cost);
                         thisInvoice.addCost(cost);
                         soldPart = new BikePart(van.get(i).getName(), van.get(i).getNumber(), van.get(i).getTruePrice(), van.get(i).getSale(), van.get(i).getonSale(), quantity);
                         thisInvoice.addInv(soldPart);
@@ -178,7 +179,7 @@ public class SalesAssociate extends Employee {
      */
     public SalesAssociate(String fName, String lName, String uType, String uName, String Pword, String Email, String pNumber) {
         super(fName, lName, uType, uName, Pword, Email, pNumber);
-        Invoice thisInvoice = new Invoice(fName);
+        thisInvoice = new Invoice(fName);
     }
 
     SalesAssociate(String e) {

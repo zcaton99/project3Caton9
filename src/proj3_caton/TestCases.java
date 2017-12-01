@@ -1,5 +1,9 @@
 package proj3_caton;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
  * This is a set of test cases to test reading in users as their actual type
  */
@@ -8,10 +12,12 @@ public class TestCases {
     private static SysAdmin bob = new SysAdmin();
 
     public static void main(String[] args) {
-        //expected(userAddTest());
-        // expected(TestWarehouseMFromlist());
-        //userAddTest();
-        testUserCreation();
+//         expected(userAddTest());
+//        expected(TestWarehouseMFromlist());
+//        userAddTest();
+//        testUserCreation();
+        testSA();
+
     }
 
     /**
@@ -55,6 +61,20 @@ public class TestCases {
      */
     private static int testSA() {
 //todo test all of sales associate
+        SalesAssociate assc = new SalesAssociate("julio", "a", "SalesAssociate", "a", "a", "a", "3");
+        try {
+            assc.LoadFile("initialinv.txt");
+            assc.Sell("2womensBibsMedium", -1, 5);
+            assc.Sell("10spRearDerailuer", -1, 3);
+            assc.Sell("a", -1, 5);
+            assc.Sell("c", -1, 5);
+            assc.Sell("b", -1, 5);
+            assc.closeinvoice("Klient");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException d) {
+            d.printStackTrace();
+        }
 
         return 2;
     }
@@ -83,9 +103,6 @@ public class TestCases {
     private static void testUserCreation() {
         SysAdmin a = new SysAdmin();
         a.addUser("a", "a", "SalesAsscociate", "a", "a", "a", "a");
-        a.addUser("a", "a", "SalesAsscociate", "a", "a", "a", "a");
-        a.addUser("a", "a", "SalesAsscociate", "a", "a", "a", "a");
-        a.addUser("b", "b", "OfficeManager", "b", "b", "b", "b");
         a.addUser("b", "b", "OfficeManager", "b", "b", "b", "b");
         a.addUser("julio", "a", "SalesAssociate", "a", "a", "a", "3");
 
