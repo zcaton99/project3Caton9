@@ -30,7 +30,7 @@ public class Main extends Application {
         if (!usersFile.exists()) {
             //if the file does not exsist in project it will then create it
             usersFile.createNewFile();
-            System.out.println("added file");
+            System.out.println("Added File");
         } else {
             genList();
         }

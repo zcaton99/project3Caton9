@@ -14,9 +14,9 @@ public class TestCases {
     public static void main(String[] args) {
 //         expected(userAddTest());
 //        expected(TestWarehouseMFromlist());
-//        userAddTest();
-//        testUserCreation();
-        testSA();
+        userAddTest();
+testUserCreation();
+       // testSA();
 
     }
 
@@ -66,8 +66,9 @@ public class TestCases {
             assc.LoadFile("initialinv.txt");
             assc.Sell("2womensBibsMedium", -1, 5);
             assc.Sell("10spRearDerailuer", -1, 3);
-            assc.Sell("a", -1, 5);
-            assc.Sell("c", -1, 5);
+            assc.Sell("", 1234567901, 5);
+            assc.Sell("26inTube", -1, 5);
+
             assc.Sell("b", -1, 5);
             assc.closeinvoice("Klient");
         } catch (FileNotFoundException e) {
