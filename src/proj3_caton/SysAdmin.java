@@ -56,24 +56,7 @@ class SysAdmin extends Employee {
         user[5] = email;
         user[6] = pNumber;
         Employee em = new Employee(user[0], user[1], userType, user[3], user[4], user[5], user[6]);
-     //   System.out.println(em.getUserType()+" this is em's user type");
-        
-        
-        
-        //userFile = new File(fileName);
-        // first time is changed to false but when adding another user is goes back to true 
-        //if first time adding user then adds them directly
-        //however if the program is closed and reopened then this will run again and override the file information
-                
-        
-        
-//        if (firstTime && users.isEmpty()){
-//            users.add(em);// System.out.println("user was added on the 64th line");
-//            firstTime = false;
-//            System.out.println(firstTime + "The first time that a user is added to the file in sys admin 99");
-//            
-//        // not first time but has no users in system (aka users are in file)    
-//        }
+
         if(firstTime && users.isEmpty()){
             
             Scanner in = null;
@@ -138,10 +121,8 @@ class SysAdmin extends Employee {
       //  System.out.println(users+" this is users");
         //after everything is complete it writes the users back into the file
         try {
-            PrintWriter p = new PrintWriter(new FileWriter(userFile,true));//todo removing the appending from this thing to see if it removes duplication
+            PrintWriter p = new PrintWriter(new FileWriter(userFile));//todo removing the appending from this thing to see if it removes duplication
             for(Employee usr: users){
-                //p.append(usr.toString());
-                //p.println(usr.toString());
                 p.println(usr.toString());
             }
             p.close();

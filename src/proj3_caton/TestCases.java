@@ -9,7 +9,9 @@ public class TestCases {
 
     public static void main(String[] args) {
         //expected(userAddTest());
-        expected(TestWarehouseMFromlist());
+        // expected(TestWarehouseMFromlist());
+        //userAddTest();
+        testUserCreation();
     }
 
     /**
@@ -76,5 +78,16 @@ public class TestCases {
             //for a different type of actual vs expected
             System.out.println("The expected value is all of initalinv.txt, should be checked manually");
         }
+    }
+
+    private static void testUserCreation() {
+        SysAdmin a = new SysAdmin();
+        a.addUser("a", "a", "SalesAsscociate", "a", "a", "a", "a");
+        a.addUser("a", "a", "SalesAsscociate", "a", "a", "a", "a");
+        a.addUser("a", "a", "SalesAsscociate", "a", "a", "a", "a");
+        a.addUser("b", "b", "OfficeManager", "b", "b", "b", "b");
+        a.addUser("b", "b", "OfficeManager", "b", "b", "b", "b");
+        a.addUser("julio", "a", "SalesAssociate", "a", "a", "a", "3");
+
     }
 }
