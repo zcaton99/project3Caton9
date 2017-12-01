@@ -152,7 +152,11 @@ public class FXMLDocumentController implements Initializable {
     void PrintInvoice(ActionEvent event) {
         System.out.println("This is PrintInvoice");
         try {
-            SalesAssc.closeinvoice("Clients Name");
+            Scanner clientIn = new Scanner(System.in);
+            SAOut.appendText("please enter the clients name in the text field below");
+            String a = clientIn.nextLine();
+            System.out.println("This is a in PrintInvoice: "+ a);
+            SalesAssc.closeinvoice(a);
             Scanner in = new Scanner(new File(SalesAssc.getFirstName()+"invoice.txt"));
             while(in.hasNext())
                 SAOut.appendText(in.nextLine()+"\n");

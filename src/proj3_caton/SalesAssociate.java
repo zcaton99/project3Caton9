@@ -162,7 +162,7 @@ public class SalesAssociate extends Employee {
      * this is a tester method for invoice
      */
     public void /*invoice*/ closeinvoice(String name) throws IOException {
-        thisInvoice.close(name);
+        thisInvoice.closeinv(name);
         //return thisInvoice.toString();
     }
 
@@ -196,6 +196,6 @@ public class SalesAssociate extends Employee {
         andy.LoadFile("test.txt");
         andy.Sell("ZZZ_APPEARS_LAST", -1, 2);
         andy.Sell("", 1, 2);
-        andyInoice.close("tom");
+        andyInoice.closeinv("tom");
     }
 }

@@ -50,31 +50,10 @@ public class Invoice {
         }
     }
 
-    /**
-     * @author Joseph Bermingham
-     * is used in the close method to do the adding properly
-     */
-    private void begin() throws IOException{
-        try {
-
-            Scanner parse = new Scanner(new File(owner + "invoice.txt"));
-           if(parse.hasNext()) {
-               System.out.println("This is owner in Invoice: " + owner);
-               System.out.println(parse.nextLine());
-               System.out.println(parse.nextLine());
-               invoiceList.add(new BikePart(parse.nextLine()));
-           }
-            invoice = new PrintWriter(new FileWriter(owner + "invoice.txt"));
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            invoice.println("Sales Invoice for " + owner + "'s Van Sales, " + dateFormat.format(date));
-            invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * operation that happens after when you sell things to add their cost and information to the array
+     *
      * @param Part The part that you want to addInv to your invoice
      * @author Joseph Bermingham
      */
@@ -115,25 +94,48 @@ public class Invoice {
     }
 
     /**
+     * @author Joseph Bermingham
+     * is used in the close method to do the adding properly
+     */
+    private void begin() throws IOException {
+        try {
+
+            Scanner parse = new Scanner(new File(owner + "invoice.txt"));
+            if (parse.hasNext()) {
+                System.out.println("This is owner in Invoice: " + owner + "\n");
+                System.out.println(parse.nextLine());
+                System.out.println(parse.nextLine());
+                String hold = parse.nextLine();
+                System.out.println("This is hold in Invoice.begin: "+hold);
+                invoiceList.add(new BikePart(hold));
+            }
+            invoice = new PrintWriter(new FileWriter(owner + "invoice.txt"));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            invoice.println("Sales Invoice for " + owner + "'s Van Sales, " + dateFormat.format(date));
+            invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * @param name The Name of the Client/Person buying the parts
      * @return Returns a File With the invoice in it.CURRENTLY TRYING TO HAVE IT RETURN THE COST AS WELL in an ArrayList of objects
      * im not sure if the For Each loop works yet.
      * @author Joseph Bermingham
      */
-    public void close(String name) throws IOException {
-      //  StringBuffer retstring;
+    public void closeinv(String name) throws IOException {
+        //  StringBuffer retstring;
         begin();
-
-
         for (BikePart h : invoiceList) {
             invoice.println(h.toString());
             System.out.println("The part being added to the invoice: " + h.toString());
-           // retstring=new StringBuffer("The part being added to the invoice: " + h.toString());
+            // retstring=new StringBuffer("The part being added to the invoice: " + h.toString());
         }
-        invoice.println("Parts Purchased by " + name + " for $" + cost + "\n");
         //retstring.append("Parts Purchased by " + name + " for $" + cost + "\n");
+        invoice.println("Parts Purchased by bob for $" + cost + "\n");
         invoice.close();
-       // return retstring;
+        // return retstring;
     }
 
     public String getOwner() {

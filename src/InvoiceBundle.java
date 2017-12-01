@@ -26,7 +26,7 @@ public class InvoiceBundle {
             if (a.getOwner().equalsIgnoreCase(AsscName))
                 //todo client name useability?
                 try {
-                    a.close(name);
+                    a.closeinv(name);
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("you have encountered an io error in getInvoice");
