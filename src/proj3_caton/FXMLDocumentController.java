@@ -153,6 +153,9 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("This is PrintInvoice");
         try {
             SalesAssc.closeinvoice("Clients Name");
+            Scanner in = new Scanner(new File(SalesAssc.getFirstName()+"invoice.txt"));
+            while(in.hasNext())
+                SAOut.appendText(in.nextLine()+"\n");
         }catch(IOException e){
             e.printStackTrace();
             SAOut.appendText("IOError in invoice.close");

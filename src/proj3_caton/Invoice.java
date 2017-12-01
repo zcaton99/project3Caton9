@@ -121,15 +121,19 @@ public class Invoice {
      * @author Joseph Bermingham
      */
     public void close(String name) throws IOException {
+      //  StringBuffer retstring;
         begin();
 
 
         for (BikePart h : invoiceList) {
             invoice.println(h.toString());
             System.out.println("The part being added to the invoice: " + h.toString());
+           // retstring=new StringBuffer("The part being added to the invoice: " + h.toString());
         }
         invoice.println("Parts Purchased by " + name + " for $" + cost + "\n");
+        //retstring.append("Parts Purchased by " + name + " for $" + cost + "\n");
         invoice.close();
+       // return retstring;
     }
 
     public String getOwner() {

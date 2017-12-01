@@ -161,9 +161,9 @@ public class SalesAssociate extends Employee {
     /*
      * this is a tester method for invoice
      */
-    public Invoice closeinvoice(String name) throws IOException {
+    public void /*invoice*/ closeinvoice(String name) throws IOException {
         thisInvoice.close(name);
-        return thisInvoice;
+        //return thisInvoice.toString();
     }
 
     /**
