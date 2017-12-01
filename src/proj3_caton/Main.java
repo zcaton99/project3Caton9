@@ -42,7 +42,6 @@ public class Main extends Application {
      * @author Joseph Berminghame
      * this function takes the file of users and adds them to an arraylist of users that is used to log in.
      * It manually adds the system admin every time
-     *
      */
     static void genList() {
         empList.clear();
@@ -53,22 +52,10 @@ public class Main extends Application {
             if (in.hasNext())
                 while (in.hasNext()) {
                     String a = in.nextLine();
-                //    System.out.println("This is a in genList: " +a);
+
                     String[] broken = a.split(",");
-                 //   System.out.println("This is broken[2]: "+broken[2]);
-                    if(broken[2].equalsIgnoreCase("salesassociate")){
-                        empList.add(new SalesAssociate(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
-                    }
-                    else if(broken[2].equalsIgnoreCase("warehouseManager")){
-                        empList.add(new WarehouseManager(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
-                    }
-                    else if(broken[2].equalsIgnoreCase("officemanager")){
-                        empList.add(new officeManager(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
-                    }
-                    else {
-                        System.out.println("");
-                    }
-                   //fname lname utype uname pword email pnumber
+
+                    empList.add(new Employee(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
                 }
 //            for (Employee e:empList) {
 //                System.out.println(e.toString()+"this is in genlist");
