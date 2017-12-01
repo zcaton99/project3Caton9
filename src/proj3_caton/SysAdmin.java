@@ -10,6 +10,10 @@ import java.util.Scanner;
 class SysAdmin extends Employee {
     //String firstName, String lstName, String userName, String Password, String Email, String phonenum
     
+    //To Do:
+    //fix: need to have the arraylist in main update once the users are created. 
+    
+    
     public ArrayList<Employee> users = new ArrayList<>();
     //This must already exist or it creates null pointer exceptions
     private File userFile = new File("users.txt");//This is the file that lists users
