@@ -11,14 +11,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Scanner;
 
 /**
  * @author Josh
@@ -80,6 +78,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField ordercount;
     @FXML
+    private TextField svname;
+    @FXML
     private Button orderbutton;
     @FXML
     private TextField orderlowset;
@@ -89,6 +89,8 @@ public class FXMLDocumentController implements Initializable {
     private CheckBox num;
     @FXML
     private CheckBox quant;
+    @FXML
+    private TextArea SAOut;
 
     //todo attempt further compression
     //This Employee is used to store the currently logged in employee
@@ -104,17 +106,21 @@ public class FXMLDocumentController implements Initializable {
      */
     @FXML
     void Sell(ActionEvent event) throws Exception {
-        steve = new SalesAssociate("aa", "a", "b", "c", "d", "email", "phoneNumber");
-        //steve.Sell();
-        System.out.println(steve.getFirstName());
-        if ((PartName.getText().isEmpty())) {
-            steve.Sell("", Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText()));
-        } else if ((PartNumber.getText().isEmpty())) {
-            steve.Sell(PartName.getText(), -1, Integer.parseInt(Quantity.getText()));
-        } else if (!(PartNumber.getText().isEmpty() && PartName.getText().isEmpty())) {
-            steve.Sell(PartName.getText(), Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText()));
-        } else {
-            display.appendText("Please put in either a name or a number");
+        try {
+            //steve.Sell();
+            System.out.println("This is the sales assc selling things: " + SalesAssc.toString());
+            if ((PartName.getText().isEmpty())) {
+                SAOut.appendText(SalesAssc.Sell("", Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText())));
+
+            } else if ((PartNumber.getText().isEmpty())) {
+                SAOut.appendText(SalesAssc.Sell(PartName.getText(), -1, Integer.parseInt(Quantity.getText())));
+            } else if (!(PartNumber.getText().isEmpty() && PartName.getText().isEmpty())) {
+                SAOut.appendText(SalesAssc.Sell(PartName.getText(), Integer.parseInt(PartNumber.getText()), Integer.parseInt(Quantity.getText())));
+            } else {
+                SAOut.appendText("Please put in either a name or a number");
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -126,8 +132,13 @@ public class FXMLDocumentController implements Initializable {
      */
     @FXML
     void LoadFIle(ActionEvent event) {
-
-        //todo create a salse associate such that i can access the correct one in this method
+        System.out.println(SalesAssc.toString());
+        try {
+           SAOut.appendText(SalesAssc.LoadFile(LoadFileName.getText()));
+        } catch (java.io.IOException e) {
+            //e.printStackTrace();
+            System.out.println("File Not Found");
+        }
 
     }
 
@@ -139,8 +150,17 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     void PrintInvoice(ActionEvent event) {
-        //todo this
-    }
+        System.out.println("This is PrintInvoice");
+        try {
+            SalesAssc.closeinvoice("Clients Name");
+            Scanner in = new Scanner(new File(SalesAssc.getFirstName()+"invoice.txt"));
+            while(in.hasNext())
+                SAOut.appendText(in.nextLine()+"\n");
+        }catch(IOException e){
+            e.printStackTrace();
+            SAOut.appendText("IOError in invoice.close");
+        }
+        }
 
     /**
      * @author Josh Butler
@@ -176,6 +196,10 @@ public class FXMLDocumentController implements Initializable {
      * @throws IOException When there is an io exception
      * @author Josh Butler,Joseph Bermingham
      */
+
+    private static SalesAssociate SalesAssc;
+    private static officeManager OfficeMan;//todo implement office manager fxml bond
+    private final SysAdmin sysAdmin = new SysAdmin();
     @FXML
     private void loginButton(ActionEvent event) throws IOException {
         Stage stage = null;
@@ -183,15 +207,16 @@ public class FXMLDocumentController implements Initializable {
         //todo have these actually create a user and set the employee field to their actual job so we can access it
         String username = Username.getText();
         String password = Password.getText();
-        
+
         if (username.equals("om")) {
-                    stage = (Stage) Login.getScene().getWindow();       //will be deleting this if statement
-                    root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml")); //only here so i can test officemanager while i figure out how to create user
-                }                                                                           
+            stage = (Stage) Login.getScene().getWindow();       //will be deleting this if statement
+            root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml")); //only here so i can test officemanager while i figure out how to create user
+        }
         for (Employee e : Main.empList) {
-            System.out.println("i entered the foreach loop " + e.toString());
-            System.out.println("this is username,pwd " + username + ", " + password);
-            System.out.println("This is what e has" + e.getUsername() + ", " + e.getPassword(true));
+            //testline statements that are no longer needed
+//            System.out.println("i entered the foreach loop " + e.toString());
+//            System.out.println("this is username,pwd " + username + ", " + password);
+//            System.out.println("This is what e has" + e.getUsername() + ", " + e.getPassword(true));
             if (e.getUsername().equalsIgnoreCase(username) && e.getPassword(true).equalsIgnoreCase(password)) {
                 System.out.println(e.getUserType() + " this is a printline test statement");
                 if (e.getUserType().equalsIgnoreCase("systemAdmin")) {
@@ -200,6 +225,7 @@ public class FXMLDocumentController implements Initializable {
                 }
                 if (e.getUserType().equalsIgnoreCase("officeManager")) {
                     //get reference to the button's stage
+                    OfficeMan = new officeManager(e.toString());
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("OfficeManager.fxml"));
@@ -207,8 +233,10 @@ public class FXMLDocumentController implements Initializable {
                 if (e.getUserType().equalsIgnoreCase("salesAssociate")) {
                     stage = (Stage) Login.getScene().getWindow();
                     //load up OTHER FXML document
+                    SalesAssc = new SalesAssociate(e.toString());
+                    System.out.println(SalesAssc + " This is sales associate creatin in login");
                     root = FXMLLoader.load(getClass().getResource("SalesAssociate.fxml"));
-                    System.out.println(root.getId() + " the sales assc root id");
+                    //  System.out.println(root.getId() + " the sales assc root id");
                 }
                 if (e.getUserType().equalsIgnoreCase("WarehouseManager")) {
                     stage = (Stage) Login.getScene().getWindow();
@@ -224,11 +252,15 @@ public class FXMLDocumentController implements Initializable {
         } catch (NullPointerException excep) {
             // excep.printStackTrace();
             System.out.println("no user by that name found");
+            System.out.println("User List Is:");
+            for (Employee e: Main.empList) {
+                System.out.println(e.toStringTest());
+            }
         }
     }
 
 
-    private final SysAdmin sysAdmin = new SysAdmin();
+
 
     /**
      * @param event the button is clicked
@@ -332,9 +364,8 @@ public class FXMLDocumentController implements Initializable {
                 }
                 display.appendText("Part Name: " + pa[0] + "," + " Part Number: " + result + "," + " Price: $" + result2 + "," + " Sales Price: $" + result3 + "," + " On Sale: " + result4 + "," + " Quantity: " + result5 + "\n");
             }
-        }
-        catch(FileNotFoundException fnfe){
-                    display.appendText(fnfe.getMessage());
+        } catch (FileNotFoundException fnfe) {
+            display.appendText(fnfe.getMessage());
         }
     }
 
@@ -343,6 +374,7 @@ public class FXMLDocumentController implements Initializable {
      * @param event on button press
      * @author Josh Butler
      * Displays a specific BikePart by comparing user input to BikePart name, number or a quantity parameter (e.g. >3 or <15).
+     * @throws java.io.IOException
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) throws IOException {
@@ -353,97 +385,128 @@ public class FXMLDocumentController implements Initializable {
         display.appendText("\n");
         if (num.isSelected())
             display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), officeManager.bpDS))); // if user opts to sort by number
-        else if (quant.isSelected()){  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
+        else if (quant.isSelected()) {  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
             String text = partInfo.getText();
             String text2 = partInfo.getText();
             text = text.replaceAll("[<]", ""); // after we have determined if the user has typed a less than or greater than symbol, we ignore the symbols for use.
             text2 = text.replaceAll("[>]", "");
-            if((partInfo.getText().contains(">"))){
-                for (BikePart bp : officeManager.bpDS){
-                    if (bp.getQuantity()>Integer.parseInt(text2)) {
-                        if (bp.getonSale())  
+            if ((partInfo.getText().contains(">"))) {
+                for (BikePart bp : officeManager.bpDS) {
+                    if (bp.getQuantity() > Integer.parseInt(text2)) {
+                        if (bp.getonSale())
                             display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
-                        else                   
+                        else
                             display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getPrice() + "," + " Quantity: " + bp.getQuantity() + "\n");
                     }
                 }
-            }
-            else if((partInfo.getText().contains("<"))){
-                for (BikePart bp : officeManager.bpDS){
-                    if (bp.getQuantity()<Integer.parseInt(text)) {
-                        if (bp.getonSale())  
+            } else if ((partInfo.getText().contains("<"))) {
+                for (BikePart bp : officeManager.bpDS) {
+                    if (bp.getQuantity() < Integer.parseInt(text)) {
+                        if (bp.getonSale())
                             display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
-                        else                   
+                        else
                             display.appendText("Part Name: " + bp.getName() + "," + " Current Price: $" + bp.getPrice() + "," + " Quantity: " + bp.getQuantity() + "\n");
                     }
                 }
-            }
-            else
-            display.appendText((om.examineButtonMethodQuant(Integer.parseInt((text)), officeManager.bpDS)));
-        }
-        else
+            } else
+                display.appendText((om.examineButtonMethodQuant(Integer.parseInt((text)), officeManager.bpDS)));
+        } else
             display.appendText((om.examineButtonMethodname(partInfo.getText(), officeManager.bpDS))); //if user does not choose to sort by quantity or number, this is the default [name]
     }
 
     /**
      * @param event //todo addInv the ability to create a file of the needed parts
-     * @author Josh Butler
-     * this method goes through the bike part warehouse and looks for parts with less than a hardcoded quantity (10)
      * @throws java.lang.InterruptedException
      * @throws java.io.IOException
+     * @author Josh Butler
+     * this method goes through the bike part warehouse and looks for parts with less than a hardcoded quantity (10)
      */
-@FXML
-    public void checkQuant(ActionEvent event) throws InterruptedException, IOException { 
+    @FXML
+    public void checkQuant(ActionEvent event) throws InterruptedException, IOException {
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
         File f = new File(testbpDS.getText());
         officeManager.bpDS2.clear();
         officeManager.bpDS.clear();
         om.updateBPDS(f);
         display.appendText("\n");
-        
-        for (BikePart bp : officeManager.bpDS){
+
+        for (BikePart bp : officeManager.bpDS) {
             if (bp.getQuantity() <= 10 && !Arrays.asList(officeManager.bpDS2).contains(bp)) { //checks to see if the value already exists in the array, if not it can be added. (prevents duplicates)
-                officeManager.bpDS2.add(bp); 
-                if (orderlowset.getText().equals("")){
+                officeManager.bpDS2.add(bp);
+                if (orderlowset.getText().equals("")) {
                     display.appendText("Quantity of " + bp.getName() + " is " + bp.getQuantity() + "," + " it is recommended to order more." + "\n");
                 }
             }
         }
-        if (officeManager.bpDS2.isEmpty()){
-            display.appendText("\n"+"No parts are below 10, you can check for other values by using the examine function and using the < symbol.");
-        } 
-        if (!officeManager.bpDS2.isEmpty()&& (orderlowset.getText().equals(""))){
-            display.appendText("\n"+"1. You may order a set number of all low parts by entering"+"\n"+"the amount in the \"Order Low\" field and selecting \"Check Qauntities\" again."+"\n"+"2. Alternatively, you may order individually to set different amounts per item."+"\n");
+        if (officeManager.bpDS2.isEmpty()) {
+            display.appendText("\n" + "No parts are below 10, you can check for other values by using the examine function and using the < symbol.");
         }
-        if (!officeManager.bpDS2.isEmpty()&& (!orderlowset.getText().equals(""))){ 
-            display.appendText("Bought " + orderlowset.getText() + " of each part below 10."+"\n");
-        }   
-        if(!orderlowset.getText().isEmpty()){
-            for(BikePart bp : officeManager.bpDS2){
+        if (!officeManager.bpDS2.isEmpty() && (orderlowset.getText().equals(""))) {
+            display.appendText("\n" + "1. You may order a set number of all low parts by entering" + "\n" + "the amount in the \"Order Low\" field and selecting \"Check Qauntities\" again." + "\n" + "2. Alternatively, you may order individually to set different amounts per item." + "\n");
+        }
+        if (!officeManager.bpDS2.isEmpty() && (!orderlowset.getText().equals(""))) {
+            display.appendText("Bought " + orderlowset.getText() + " of each part below 10." + "\n");
+        }
+        if (!orderlowset.getText().isEmpty()) {
+            for (BikePart bp : officeManager.bpDS2) {
                 om.orderParts(bp, Integer.parseInt(orderlowset.getText()));
             }
         }
-    } 
-    
+    }
+
     /**
      * @param event on button press
      * @author Josh Butler
      * increments quantity of ordered part
+     * @throws java.io.IOException
      */
     @FXML
-    public void order(ActionEvent event) throws IOException{ //TODO: edit so that bpDS is updated without having to reload file, (clear bpds, insert code from testbpds, exlude prints.)
+    public void order(ActionEvent event) throws IOException { //TODO: edit so that bpDS is updated without having to reload file, (clear bpds, insert code from testbpds, exlude prints.)
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
         File f = new File(testbpDS.getText());
-        officeManager.bpDS.clear();    
-        om.updateBPDS(f);       
-        for(BikePart bp: officeManager.bpDS){
-            if(bp.getNumber()==Integer.parseInt(ordername.getText())){
-                display.appendText("\n"+"Bought " + ordercount.getText() + " " + bp.getName()+"\n");
+        officeManager.bpDS.clear();
+        om.updateBPDS(f);
+        for (BikePart bp : officeManager.bpDS) {
+            if (bp.getNumber() == Integer.parseInt(ordername.getText())) {
+                display.appendText("\n" + "Bought " + ordercount.getText() + " " + bp.getName() + "\n");
                 om.orderParts(bp, Integer.parseInt(ordercount.getText()));
             }
-        }   
+        }
     }
-
+    
+    
+    /**
+     * @param event on button press
+     * @author Josh Butler
+     * sets a commission for an employee, stored on a file
+     */
+    @FXML
+    public void genComm(ActionEvent event){ //TODO: Allow method to print commissions to a file, also will invoices from different days have the same filename?
+        String saname = svname.getText();
+        File file = new File(saname+"invoice.txt");
+        try {
+            Scanner scan = new Scanner(file);
+            String p1 = scan.next(); //words not needed
+            String p2 = scan.next();
+            String p3 = scan.next();
+            String confirmedname = scan.next(); //add a check to compare the saname with confirmed?
+            String p4 = scan.nextLine(); //lines not needed
+            String p5 = scan.nextLine();
+            String p6 = scan.nextLine();
+            String lastline = scan.nextLine(); //isolating last line of text doc
+            String lastWord = lastline.substring(lastline.lastIndexOf(" ")+1); //isolating last word
+            String lastInt = lastWord.replaceAll("[$]", "");    //removing the $ in the string
+            double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
+            String lastFinal = String.valueOf(last);    //Converting back to String to print
+            System.out.println(confirmedname+"  "+lastWord);
+            display.appendText("\n"+confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal);
+        } catch (FileNotFoundException ex) {
+            display.appendText("That file does not exist, try a different employee name."+"\n");
+            //Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+            
     /**
      * @param event on button press
      * @author Josh Butler

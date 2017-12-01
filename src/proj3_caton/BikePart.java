@@ -32,6 +32,15 @@ public class BikePart {
         this.onSale = onSale;
         this.quantity = quantity;
     }
+    public BikePart(String l){
+        String[] broken = l.split(",");
+        this.partName = broken[0];
+        this.partNumber = Integer.parseInt(broken[1]);
+        this.price = Double.parseDouble(broken[2]);
+        this.salesPrice = Double.parseDouble(broken[3]);
+        this.onSale = Boolean.parseBoolean(broken[4]);
+        this.quantity = Integer.parseInt(broken[5]);
+    }
 
     /**
      * returns arguments

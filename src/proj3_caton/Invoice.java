@@ -1,23 +1,30 @@
 package proj3_caton;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
+/**
+ * @author Joseph Bermingham
+ */
 public class Invoice {
-    private PrintWriter invoice;
+    private static PrintWriter invoice;
     private ArrayList<BikePart> invoiceList = new ArrayList<>();
     private boolean created = false;
     private double cost = 0.0;
+    private String owner;
+    Date date = new Date();
+
+    //todo add a date field, add a list of invoices ability
 
     public double getCost() {
         return cost;
     }
-//todo add date functionality
+
     /**
      * @param asscName Name of the associate creating the invoice
      *                 This class manages the formatting and output of arrays.
@@ -25,19 +32,49 @@ public class Invoice {
      * @author Joseph Bermingham
      */
     public Invoice(String asscName) {
-        try {
-            invoice = new PrintWriter(new FileWriter(asscName + "invoice.txt", true));//Should the append be true? that is a question i will answer later
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            Date date = new Date();
-            invoice.println("Sales Invoice for " + asscName + "'s Van Sales, " + dateFormat.format(date));
-            invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+        File check;
+        owner = asscName;
+        check = new File(asscName + "invoice.txt");
+        if (!check.exists()) {
+            try {
+                invoice = new PrintWriter(new FileWriter(asscName + "invoice.txt", true));//Should the append be true? that is a question i will answer later
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                invoice.println("Sales Invoice for " + asscName + "'s Van Sales, " + dateFormat.format(date));
+                invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+                created = true;
+            } catch (IOException e) {
+                System.out.println("IOException in InvoiceCreation");
+            }
+        } else {
             created = true;
-        } catch (IOException e) {
-            System.out.println("IOException in line 30 of Invoice");
         }
     }
 
     /**
+     * @author Joseph Bermingham
+     * is used in the close method to do the adding properly
+     */
+    private void begin() throws IOException{
+        try {
+
+            Scanner parse = new Scanner(new File(owner + "invoice.txt"));
+           if(parse.hasNext()) {
+               System.out.println("This is owner in Invoice: " + owner);
+               System.out.println(parse.nextLine());
+               System.out.println(parse.nextLine());
+               invoiceList.add(new BikePart(parse.nextLine()));
+           }
+            invoice = new PrintWriter(new FileWriter(owner + "invoice.txt"));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            invoice.println("Sales Invoice for " + owner + "'s Van Sales, " + dateFormat.format(date));
+            invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * operation that happens after when you sell things to add their cost and information to the array
      * @param Part The part that you want to addInv to your invoice
      * @author Joseph Bermingham
      */
@@ -70,6 +107,7 @@ public class Invoice {
 
     /**
      * adds the cost of the sold part to cost
+     *
      * @param add the cost of the part you are selling.
      */
     public void addCost(double add) {
@@ -82,12 +120,24 @@ public class Invoice {
      * im not sure if the For Each loop works yet.
      * @author Joseph Bermingham
      */
-    public void close(String name) {
+    public void close(String name) throws IOException {
+      //  StringBuffer retstring;
+        begin();
+
+
         for (BikePart h : invoiceList) {
             invoice.println(h.toString());
+            System.out.println("The part being added to the invoice: " + h.toString());
+           // retstring=new StringBuffer("The part being added to the invoice: " + h.toString());
         }
         invoice.println("Parts Purchased by " + name + " for $" + cost + "\n");
+        //retstring.append("Parts Purchased by " + name + " for $" + cost + "\n");
         invoice.close();
+       // return retstring;
+    }
+
+    public String getOwner() {
+        return owner;
     }
 }
 

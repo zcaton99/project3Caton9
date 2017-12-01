@@ -138,7 +138,7 @@ class SysAdmin extends Employee {
       //  System.out.println(users+" this is users");
         //after everything is complete it writes the users back into the file
         try {
-            PrintWriter p = new PrintWriter(new FileWriter(userFile));//todo removing the appending from this thing to see if it removes duplication
+            PrintWriter p = new PrintWriter(new FileWriter(userFile,true));//todo removing the appending from this thing to see if it removes duplication
             for(Employee usr: users){
                 //p.append(usr.toString());
                 //p.println(usr.toString());

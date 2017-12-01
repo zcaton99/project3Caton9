@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class SalesAssociate extends Employee {
     private ArrayList<BikePart> van = new ArrayList<>();
-    private Invoice thisInvoice = new Invoice(super.getFirstName());
+    private Invoice thisInvoice;
 
     /**
      * @author Joseph Bermingham
@@ -14,46 +14,48 @@ public class SalesAssociate extends Employee {
      * Should update the van, and addInv to a file that is already created with todays date
      */
     //make Sell work with files?
-   void Sell(String partName, int partNumber, int quantity) throws IOException {
+    String Sell(String partName, int partNumber, int quantity) throws IOException {
         double cost = 0.0;
         this.moveToList();
-            /*
-             * if the part name field is empty use this version of seller to decrement the quantity and get the cost of the sale
-             * */
+        BikePart soldPart = null;
+
+        /*
+         * if the part name field is empty use this version of seller to decrement the quantity and get the cost of the sale
+         * */
         if (partName.equals("")) {
             for (int i = 0; i < van.size(); i++) {
                 if (van.get(i).getNumber() == partNumber) {
                     int g = van.get(i).getQuantity();
                     if (g < quantity) {
-                        System.out.println("please put in a more reasonable amount you have " + g + " parts of the part " + van.get(i).getName() + " you can sell by number");
+                        return ("please put in a more reasonable amount you have " + g + " parts of the part " + van.get(i).getName() + " you can sell by number\n" + van.get(i).getNumber());
                     } else {
                         int a = g - quantity;
                         van.get(i).setQuantity(a);
                         cost += ((van.get(i).getPrice()) * quantity);
                         thisInvoice.addCost(cost);
-                        BikePart invoice = new BikePart(van.get(i).getName(), van.get(i).getNumber(), van.get(i).getTruePrice(), van.get(i).getSale(), van.get(i).getonSale(), quantity);
+                        soldPart = new BikePart(van.get(i).getName(), van.get(i).getNumber(), van.get(i).getTruePrice(), van.get(i).getSale(), van.get(i).getonSale(), quantity);
                         //invoice.setQuantity(quantity);
-                        thisInvoice.addInv(invoice);
+                        thisInvoice.addInv(soldPart);
                     }
                 }
             }
         }
-            /*
-             * if part number is "empty" (-1) use this one
-             */
+        /*
+         * if part number is "empty" (-1), use this one
+         */
         if (partNumber == -1) {
             for (int i = 0; i < van.size(); i++) {
                 if (van.get(i).getName().equalsIgnoreCase(partName)) {
                     int g = van.get(i).getQuantity();
                     if (g < quantity) {
-                        System.out.println("please put in a more reasonable amount you have " + g + " of the part " + van.get(i).getName() + " can sell by name");
+                        return ("please put in a more reasonable amount you have " + g + " of the part " + van.get(i).getName() + " can sell by name\n");
                     } else {
                         int a = g - quantity;
                         van.get(i).setQuantity(a);
                         cost += (van.get(i).getPrice() * quantity);
                         thisInvoice.addCost(cost);
-                        BikePart invoice = new BikePart(van.get(i).getName(), van.get(i).getNumber(), van.get(i).getTruePrice(), van.get(i).getSale(), van.get(i).getonSale(), quantity);                        //invoice.setQuantity(quantity);
-                        thisInvoice.addInv(invoice);
+                        soldPart = new BikePart(van.get(i).getName(), van.get(i).getNumber(), van.get(i).getTruePrice(), van.get(i).getSale(), van.get(i).getonSale(), quantity);
+                        thisInvoice.addInv(soldPart);
 
                     }
                 }
@@ -62,6 +64,7 @@ public class SalesAssociate extends Employee {
         //    System.out.println(thisInvoice.getCost() + "the invoices total cost at the end of sell");
         //  System.out.println(van.get(0).toString() + " van sub 0");
         writeToFile(van);
+        return "You Sold " + quantity + " of the Part " + soldPart.getName() + "," + soldPart.getNumber() + "\n";
     }
 
     /**
@@ -69,7 +72,7 @@ public class SalesAssociate extends Employee {
      * when you enter this method it gets the text from the text field and Adds the contents of a file to addInv to this sales associate van
      */
 
-   public  void LoadFile(String fileName) throws IOException {
+    public String LoadFile(String fileName) throws IOException {
         File loadFile = new File(fileName);
         try {
             //  System.out.println("Try has been entered");
@@ -102,12 +105,14 @@ public class SalesAssociate extends Employee {
                 }
                 if (!wasAdded) van.add(in);
             }
+
             writeToFile(van);
+
         } catch (FileNotFoundException e) {
-            System.out.println("File Not Found. Please make sure you are using the correct file in the correct location");
+            return ("File Not Found. Please make sure you are using the correct file \nin the correct location\n");
         }
 
-
+        return "File " + fileName + " Was Successfully loaded \n";
     }
 
 
@@ -117,14 +122,10 @@ public class SalesAssociate extends Employee {
      */
     private void moveToList() {
         van.clear();
-        Scanner whlooker = null;
+        Scanner whlooker;
 
         try {
             whlooker = new Scanner(new File(this.getFirstName() + ".txt"));
-        } catch (java.io.IOException g) {
-            System.out.println("java.io.IOException in line 140 of the Sales Associate class.\n salesAssociatesName.txt not found");
-        }
-        try {
             while (whlooker.hasNext()) {
                 String partString = whlooker.nextLine();
                 String[] broken = partString.split(",");
@@ -136,15 +137,18 @@ public class SalesAssociate extends Employee {
                         Boolean.parseBoolean(broken[4]),
                         Integer.parseInt(broken[5])));
             }
+        } catch (java.io.IOException g) {
+            System.out.println("java.io.IOException in line 140 of the Sales Associate class.\n salesAssociatesName.txt not found");
+
         } catch (NullPointerException e) {
             System.out.println("null pointer exception in WarehouseManager line 114 \n Warehousedb.txt not found, whlooker Uninitialised");
         }
     }
 
     /**
-     * a utility class that adds an arraylist to the users file
-     *
      * @param db The arraylist of bikeparts you want to addInv to the van
+     * @author Joseph Bermingham
+     * a utility class that adds an arraylist to the users file
      */
     private void writeToFile(ArrayList<BikePart> db) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(super.getFirstName() + ".txt"));
@@ -157,9 +161,9 @@ public class SalesAssociate extends Employee {
     /*
      * this is a tester method for invoice
      */
-     public Invoice closeinvoice(String name) {
-       thisInvoice.close(name);
-         return thisInvoice;
+    public void /*invoice*/ closeinvoice(String name) throws IOException {
+        thisInvoice.close(name);
+        //return thisInvoice.toString();
     }
 
     /**
@@ -172,9 +176,14 @@ public class SalesAssociate extends Employee {
      * creates a sales associate and their invoice
      * pretty sure that the writer in here needs to not append
      */
-     public SalesAssociate(String fName, String lName, String uType, String uName, String Pword, String Email, String pNumber) {
+    public SalesAssociate(String fName, String lName, String uType, String uName, String Pword, String Email, String pNumber) {
         super(fName, lName, uType, uName, Pword, Email, pNumber);
         Invoice thisInvoice = new Invoice(fName);
+    }
+
+    SalesAssociate(String e) {
+        super(e);
+        thisInvoice = new Invoice(super.getFirstName());
     }
 
     /**

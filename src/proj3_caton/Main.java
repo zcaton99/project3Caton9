@@ -66,7 +66,7 @@ public class Main extends Application {
                         empList.add(new officeManager(broken[0], broken[1], broken[2], broken[3], broken[4], broken[5], broken[6]));
                     }
                     else {
-                        System.out.println("massive error in main, in.hasNext is true, but it was not cast as a specific employee");
+                        System.out.println("");
                     }
                    //fname lname utype uname pword email pnumber
                 }

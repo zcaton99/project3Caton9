@@ -16,6 +16,9 @@ public class officeManager extends Employee {
     public officeManager(String a, String b, String bb, String c, String d, String e, String f) {
         super(a, b, bb, c, d, e, f);
     }
+    public officeManager(String a){
+        super(a);
+    }
     
     public void updateBPDS(File f) throws FileNotFoundException, IOException{  
         try (BufferedReader reader = new BufferedReader(new FileReader(f))) { //reads the file given 
@@ -47,7 +50,7 @@ public class officeManager extends Employee {
 
     /**
      * findByName compares all BikeParts in the warehouse data set and returns a BikePart if its name is equal to the name given.
-     * @param name
+     * @param name name of the part you are finding
      * @return returns BikePart b
      */
     private static BikePart findByName(String name){
