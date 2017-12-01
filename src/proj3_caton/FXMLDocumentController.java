@@ -11,7 +11,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -135,7 +134,7 @@ public class FXMLDocumentController implements Initializable {
     void LoadFIle(ActionEvent event) {
         System.out.println(SalesAssc.toString());
         try {
-            SAOut.appendText(SalesAssc.LoadFile(LoadFileName.getText()));
+           SAOut.appendText(SalesAssc.LoadFile(LoadFileName.getText()));
         } catch (java.io.IOException e) {
             //e.printStackTrace();
             System.out.println("File Not Found");
@@ -153,19 +152,12 @@ public class FXMLDocumentController implements Initializable {
     void PrintInvoice(ActionEvent event) {
         System.out.println("This is PrintInvoice");
         try {
-            Scanner clientIn = new Scanner(System.in);
-            SAOut.appendText("please enter the clients name in the text field below");
-            String a = clientIn.nextLine();
-            System.out.println("This is a in PrintInvoice: " + a);
-            SalesAssc.closeinvoice(a);
-            Scanner in = new Scanner(new File(SalesAssc.getFirstName() + "invoice.txt"));
-            while (in.hasNext())
-                SAOut.appendText(in.nextLine() + "\n");
-        } catch (IOException e) {
+            SalesAssc.closeinvoice("Clients Name");
+        }catch(IOException e){
             e.printStackTrace();
             SAOut.appendText("IOError in invoice.close");
         }
-    }
+        }
 
     /**
      * @author Josh Butler
@@ -205,7 +197,6 @@ public class FXMLDocumentController implements Initializable {
     private static SalesAssociate SalesAssc;
     private static officeManager OfficeMan;//todo implement office manager fxml bond
     private final SysAdmin sysAdmin = new SysAdmin();
-
     @FXML
     private void loginButton(ActionEvent event) throws IOException {
         Stage stage = null;
@@ -213,7 +204,7 @@ public class FXMLDocumentController implements Initializable {
         //todo have these actually create a user and set the employee field to their actual job so we can access it
         String username = Username.getText();
         String password = Password.getText();
-        //should fix adding users and accessing them in one run
+
         Main.genList();
         if (username.equals("om")) {
             stage = (Stage) Login.getScene().getWindow();       //will be deleting this if statement
@@ -259,12 +250,10 @@ public class FXMLDocumentController implements Initializable {
         } catch (NullPointerException excep) {
             // excep.printStackTrace();
             System.out.println("no user by that name found");
-            System.out.println("LogInButton User List Is:");
-            for (Employee e : Main.empList) {
-                System.out.println(e.toStringTest());
-            }
         }
     }
+
+
 
 
     /**
@@ -377,9 +366,9 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * @param event on button press
-     * @throws java.io.IOException
      * @author Josh Butler
      * Displays a specific BikePart by comparing user input to BikePart name, number or a quantity parameter (e.g. >3 or <15).
+     * @throws java.io.IOException
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) throws IOException {
@@ -461,9 +450,9 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * @param event on button press
-     * @throws java.io.IOException
      * @author Josh Butler
      * increments quantity of ordered part
+     * @throws java.io.IOException
      */
     @FXML
     public void order(ActionEvent event) throws IOException { //TODO: edit so that bpDS is updated without having to reload file, (clear bpds, insert code from testbpds, exlude prints.)
@@ -478,17 +467,17 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
-
-
+    
+    
     /**
      * @param event on button press
      * @author Josh Butler
      * sets a commission for an employee, stored on a file
      */
     @FXML
-    public void genComm(ActionEvent event) { //TODO: Allow method to print commissions to a file, also will invoices from different days have the same filename?
+    public void genComm(ActionEvent event){ //TODO: Allow method to print commissions to a file, also will invoices from different days have the same filename?
         String saname = svname.getText();
-        File file = new File(saname + "invoice.txt");
+        File file = new File(saname+"invoice.txt");
         try {
             Scanner scan = new Scanner(file);
             String p1 = scan.next(); //words not needed
@@ -499,19 +488,19 @@ public class FXMLDocumentController implements Initializable {
             String p5 = scan.nextLine();
             String p6 = scan.nextLine();
             String lastline = scan.nextLine(); //isolating last line of text doc
-            String lastWord = lastline.substring(lastline.lastIndexOf(" ") + 1); //isolating last word
+            String lastWord = lastline.substring(lastline.lastIndexOf(" ")+1); //isolating last word
             String lastInt = lastWord.replaceAll("[$]", "");    //removing the $ in the string
-            double last = Double.parseDouble(lastInt) * .15;  //Converting string to double so that we can calculate *.15
+            double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
             String lastFinal = String.valueOf(last);    //Converting back to String to print
-            System.out.println(confirmedname + "  " + lastWord);
-            display.appendText("\n" + confirmedname + " commission (15% of " + lastWord + ") is: $" + lastFinal);
+            System.out.println(confirmedname+"  "+lastWord);
+            display.appendText("\n"+confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal);
         } catch (FileNotFoundException ex) {
-            display.appendText("That file does not exist, try a different employee name." + "\n");
+            display.appendText("That file does not exist, try a different employee name."+"\n");
             //Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-
+            
     /**
      * @param event on button press
      * @author Josh Butler
