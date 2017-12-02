@@ -522,16 +522,16 @@ public class FXMLDocumentController implements Initializable {
             String p2 = scan.next();
             String p3 = scan.next();
             String confirmedname = scan.next(); //add a check to compare the saname with confirmed?
-            String lastline = tail(file,countLines(saname+"invoice.txt")); //isolating last line of text doc
-            System.out.println(lastline);
+            BufferedReader input = new BufferedReader(new FileReader(file));
+            String lastline = getLastLine(file); //isolating last line of text doc
+            //System.out.println("lastline: "+ lastline);
             String lastWord = lastline.substring(lastline.lastIndexOf(" ")+1); //isolating last word
-            System.out.println(lastWord);
+            //System.out.println("lastWord: "+lastWord);
             String lastInt = lastWord.replaceAll("[$]", "");    //removing the $ in the string
-            //System.out.println(lastInt);           
+            //System.out.println(lastInt);               
             double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
             String lastFinal = String.valueOf(last);    //Converting back to String to print
-            System.out.println(confirmedname+"  "+lastWord);
-            System.out.println("test");
+            //System.out.println(confirmedname+"  "+lastWord);
             display.appendText(confirmedname+" commission (15% of $"+lastInt+") is: $"+lastFinal);
                         
             bw.write(confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal+"\n"); 
@@ -546,71 +546,21 @@ public class FXMLDocumentController implements Initializable {
         }
        
     }
-    public String tail( File file, int lines) { //https://stackoverflow.com/questions/686231/quickly-read-the-last-line-of-a-text-file
-    java.io.RandomAccessFile fileHandler = null; //todo make own method for this
-    try {
-        fileHandler = 
-            new java.io.RandomAccessFile( file, "r" );
-        long fileLength = fileHandler.length() - 1;
-        StringBuilder sb = new StringBuilder();
-        int line = 0;
-
-        for(long filePointer = fileLength; filePointer != -1; filePointer--){
-            fileHandler.seek( filePointer );
-            int readByte = fileHandler.readByte();
-
-             if( readByte == 0xA ) {
-                if (filePointer < fileLength) {
-                    line = line + 1;
-                }
-            } else if( readByte == 0xD ) {
-                if (filePointer < fileLength-1) {
-                    line = line + 1;
-                }
-            }
-            if (line >= lines) {
-                break;
-            }
-            sb.append( ( char ) readByte );
+    /**
+     * @param file
+     * @return String 
+     * @throws IOException 
+     * @author Josh Butler
+     * returns a string of the last line of a file no matter the length, will cause an error ONLY if the last line is blank due to a \n being printed.
+     */
+    public String getLastLine(File file) throws IOException{
+        BufferedReader input = new BufferedReader(new FileReader(file));
+        String last = "error", line;
+        while ((line = input.readLine()) != null) {
+            last = line;
         }
-
-        String lastLine = sb.reverse().toString();
-        return lastLine;
-    } catch( java.io.FileNotFoundException e ) {
-        e.printStackTrace();
-        return null;
-    } catch( java.io.IOException e ) {
-        e.printStackTrace();
-        return null;
+        return last;
     }
-    finally {
-        if (fileHandler != null )
-            try {
-                fileHandler.close();
-            } catch (IOException e) {
-            }
-    }
-}
-    public static int countLines(String filename) throws IOException { //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
-    InputStream is = new BufferedInputStream(new FileInputStream(filename));
-    try {
-        byte[] c = new byte[1024];
-        int count = 0;
-        int readChars = 0;
-        boolean empty = true;
-        while ((readChars = is.read(c)) != -1) {
-            empty = false;
-            for (int i = 0; i < readChars; ++i) {
-                if (c[i] == '\n') {
-                    ++count;
-                }
-            }
-        }
-        return (count == 0 && !empty) ? 1 : count;
-    } finally {
-        is.close();
-    }
-}
             
     /**
      * @param event on button press

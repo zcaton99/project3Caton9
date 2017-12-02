@@ -133,7 +133,7 @@ public class Invoice {
             // retstring=new StringBuffer("The part being added to the invoice: " + h.toString());
         }
         //retstring.append("Parts Purchased by " + name + " for $" + cost + "\n");
-        invoice.println("Parts Purchased by bob for $" + cost + "\n");
+        invoice.println("Parts Purchased by bob for $" + cost);
         invoice.close();
         // return retstring;
     }
