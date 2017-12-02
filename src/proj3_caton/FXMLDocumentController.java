@@ -15,8 +15,11 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Josh
@@ -84,7 +87,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField orderlowset;
     @FXML
-    CheckBox nam;
+    private CheckBox nam;
     @FXML
     private CheckBox num;
     @FXML
@@ -374,12 +377,30 @@ public class FXMLDocumentController implements Initializable {
     public void examineButtonMethod(ActionEvent event) throws IOException {
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
         File f = new File(testbpDS.getText());
-        officeManager.bpDS.clear();
-        om.updateBPDS(f);
+        officeManager.bpDS.clear(); //clears bpds
+        om.updateBPDS(f);   //updates bpds
         display.appendText("\n");
-        if (num.isSelected())
-            display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), officeManager.bpDS))); // if user opts to sort by number
-        else if (quant.isSelected()) {  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
+        if (nam.isSelected() && partInfo.getText().equals("")){
+            Collections.sort(officeManager.bpDS, (BikePart p1, BikePart p2) -> p1.getName().compareTo(p2.getName()));
+            for (BikePart bp : officeManager.bpDS) {
+                display.appendText("Part Name: " + bp.getName() + "," + " Part Number: " + bp.getNumber() + "," + " Price: $" + bp.getPrice() + "," + " Sales Price: $" + bp.getSale() + "," + " On Sale: " + bp.getonSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
+            }
+        }           
+        if (num.isSelected() && !partInfo.getText().equals("")) //if num checkbox is selected AND partinfo box is NOT empty
+            display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), officeManager.bpDS))); // if user opts to examine by number
+        else if (num.isSelected() && partInfo.getText().equals("")){ // if user opts to sort the list by number
+            Collections.sort(officeManager.bpDS, (BikePart p1, BikePart p2) -> p1.getNumber() - p2.getNumber());
+            for (BikePart bp : officeManager.bpDS) {
+                display.appendText("Part Name: " + bp.getName() + "," + " Part Number: " + bp.getNumber() + "," + " Price: $" + bp.getPrice() + "," + " Sales Price: $" + bp.getSale() + "," + " On Sale: " + bp.getonSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
+            }
+        }   
+        else if (quant.isSelected() && partInfo.getText().equals("")) {
+            Collections.sort(officeManager.bpDS, (BikePart p1, BikePart p2) -> p1.getQuantity() - p2.getQuantity());
+            for (BikePart bp : officeManager.bpDS) {
+                display.appendText("Part Name: " + bp.getName() + "," + " Part Number: " + bp.getNumber() + "," + " Price: $" + bp.getPrice() + "," + " Sales Price: $" + bp.getSale() + "," + " On Sale: " + bp.getonSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
+            }
+        }
+        else if (quant.isSelected() && !partInfo.getText().equals("")) {  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
             String text = partInfo.getText();
             String text2 = partInfo.getText();
             text = text.replaceAll("[<]", ""); // after we have determined if the user has typed a less than or greater than symbol, we ignore the symbols for use.
@@ -409,7 +430,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     /**
-     * @param event //todo addInv the ability to create a file of the needed parts
+     * @param event 
      * @throws java.lang.InterruptedException
      * @throws java.io.IOException
      * @author Josh Butler
@@ -455,7 +476,7 @@ public class FXMLDocumentController implements Initializable {
      * @throws java.io.IOException
      */
     @FXML
-    public void order(ActionEvent event) throws IOException { //TODO: edit so that bpDS is updated without having to reload file, (clear bpds, insert code from testbpds, exlude prints.)
+    public void order(ActionEvent event) throws IOException { 
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
         File f = new File(testbpDS.getText());
         officeManager.bpDS.clear();
@@ -475,31 +496,121 @@ public class FXMLDocumentController implements Initializable {
      * sets a commission for an employee, stored on a file
      */
     @FXML
-    public void genComm(ActionEvent event){ //TODO: Allow method to print commissions to a file, also will invoices from different days have the same filename?
+    public void genComm(ActionEvent event) throws IOException{ //TODO: If they sell multiple parts it causes an error. Allow method to print commissions to a file, also will invoices from different days have the same filename?
         String saname = svname.getText();
         File file = new File(saname+"invoice.txt");
+        File comm = new File("Commissions.txt");
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(comm, true);
+        } catch (IOException ex) {
+            System.out.println("IO Exception around line 507 of fxmlcontroller");
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        BufferedWriter bw = new BufferedWriter(fw);
+        if (!comm.exists()) { //if the file does not exsist in project it will then create it
+            try {               
+                comm.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("Added File");
+        }
         try {
             Scanner scan = new Scanner(file);
             String p1 = scan.next(); //words not needed
             String p2 = scan.next();
             String p3 = scan.next();
             String confirmedname = scan.next(); //add a check to compare the saname with confirmed?
-            String p4 = scan.nextLine(); //lines not needed
-            String p5 = scan.nextLine();
-            String p6 = scan.nextLine();
-            String lastline = scan.nextLine(); //isolating last line of text doc
+            String lastline = tail(file,countLines(saname+"invoice.txt")); //isolating last line of text doc
+            System.out.println(lastline);
             String lastWord = lastline.substring(lastline.lastIndexOf(" ")+1); //isolating last word
+            System.out.println(lastWord);
             String lastInt = lastWord.replaceAll("[$]", "");    //removing the $ in the string
+            //System.out.println(lastInt);           
             double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
             String lastFinal = String.valueOf(last);    //Converting back to String to print
             System.out.println(confirmedname+"  "+lastWord);
-            display.appendText("\n"+confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal);
+            System.out.println("test");
+            display.appendText(confirmedname+" commission (15% of $"+lastInt+") is: $"+lastFinal);
+                        
+            bw.write(confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal+"\n"); 
+                    bw.close();
+            
         } catch (FileNotFoundException ex) {
             display.appendText("That file does not exist, try a different employee name."+"\n");
             //Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+       
     }
+    public String tail( File file, int lines) { //https://stackoverflow.com/questions/686231/quickly-read-the-last-line-of-a-text-file
+    java.io.RandomAccessFile fileHandler = null; //todo make own method for this
+    try {
+        fileHandler = 
+            new java.io.RandomAccessFile( file, "r" );
+        long fileLength = fileHandler.length() - 1;
+        StringBuilder sb = new StringBuilder();
+        int line = 0;
+
+        for(long filePointer = fileLength; filePointer != -1; filePointer--){
+            fileHandler.seek( filePointer );
+            int readByte = fileHandler.readByte();
+
+             if( readByte == 0xA ) {
+                if (filePointer < fileLength) {
+                    line = line + 1;
+                }
+            } else if( readByte == 0xD ) {
+                if (filePointer < fileLength-1) {
+                    line = line + 1;
+                }
+            }
+            if (line >= lines) {
+                break;
+            }
+            sb.append( ( char ) readByte );
+        }
+
+        String lastLine = sb.reverse().toString();
+        return lastLine;
+    } catch( java.io.FileNotFoundException e ) {
+        e.printStackTrace();
+        return null;
+    } catch( java.io.IOException e ) {
+        e.printStackTrace();
+        return null;
+    }
+    finally {
+        if (fileHandler != null )
+            try {
+                fileHandler.close();
+            } catch (IOException e) {
+            }
+    }
+}
+    public static int countLines(String filename) throws IOException { //https://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
+    InputStream is = new BufferedInputStream(new FileInputStream(filename));
+    try {
+        byte[] c = new byte[1024];
+        int count = 0;
+        int readChars = 0;
+        boolean empty = true;
+        while ((readChars = is.read(c)) != -1) {
+            empty = false;
+            for (int i = 0; i < readChars; ++i) {
+                if (c[i] == '\n') {
+                    ++count;
+                }
+            }
+        }
+        return (count == 0 && !empty) ? 1 : count;
+    } finally {
+        is.close();
+    }
+}
             
     /**
      * @param event on button press
