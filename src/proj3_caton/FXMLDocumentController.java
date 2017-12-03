@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.PasswordField;
 
 /**
  * @author Josh
@@ -33,7 +34,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField Username;
     @FXML
-    private TextField Password;
+    private PasswordField Password;
     @FXML
     private TextArea display;
     @FXML
