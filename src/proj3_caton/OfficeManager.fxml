@@ -13,11 +13,11 @@
    <children>
       <Button fx:id="OMDisplay" layoutX="214.0" layoutY="52.0" mnemonicParsing="false" onAction="#examineButtonMethod" text="Examine" />
       <TextField fx:id="partInfo" layoutX="18.0" layoutY="52.0" promptText="Examine Info" />
-      <Button fx:id="GenComm" layoutX="139.0" layoutY="283.0" mnemonicParsing="false" onAction="#genComm" prefHeight="25.0" prefWidth="144.0" text="Generate Commission" />
+      <Button fx:id="GenComm" layoutX="142.0" layoutY="299.0" mnemonicParsing="false" onAction="#genComm" prefHeight="25.0" prefWidth="144.0" text="Generate Commission" />
       <TextField fx:id="svname" layoutX="18.0" layoutY="283.0" prefHeight="25.0" prefWidth="117.0" promptText="Employee Name" />
       <TextArea fx:id="OMOut" layoutX="300.0" layoutY="19.0" prefHeight="605.0" prefWidth="622.0" />
-      <Button layoutX="18.0" layoutY="361.0" mnemonicParsing="false" onAction="#Quit" text="Quit" />
-      <Button fx:id="Return" layoutX="111.0" layoutY="361.0" mnemonicParsing="false" onAction="#changeScene" text="Return" />
+      <Button layoutX="18.0" layoutY="593.0" mnemonicParsing="false" onAction="#Quit" text="Quit" />
+      <Button fx:id="Return" layoutX="110.0" layoutY="593.0" mnemonicParsing="false" onAction="#changeScene" text="Return" />
       <TextArea fx:id="display" layoutX="309.0" layoutY="27.0" prefHeight="295.0" prefWidth="605.0" />
       <TextField fx:id="testbpDS" layoutX="18.0" layoutY="17.0" promptText="Load WH file" />
       <Button fx:id="OMDisplay1" layoutX="214.0" layoutY="17.0" mnemonicParsing="false" onAction="#testBPDS" text="Load" />
@@ -29,5 +29,6 @@
       <Button fx:id="orderbutton" layoutX="176.0" layoutY="233.0" mnemonicParsing="false" onAction="#order" text="Order" />
       <TextField fx:id="ordercount" layoutX="140.0" layoutY="233.0" prefHeight="25.0" prefWidth="30.0" promptText="#" />
       <TextField fx:id="orderlowset" layoutX="153.0" layoutY="173.0" prefHeight="31.0" prefWidth="144.0" promptText="Order Low Amnt #" />
+      <TextField fx:id="date" layoutX="18.0" layoutY="317.0" prefHeight="25.0" prefWidth="117.0" promptText="YYYY-MM-DD" />
    </children>
 </AnchorPane>
