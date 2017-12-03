@@ -83,6 +83,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField svname;
     @FXML
+    private TextField date;
+    @FXML
     private Button orderbutton;
     @FXML
     private TextField orderlowset;
@@ -498,7 +500,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public void genComm(ActionEvent event) throws IOException{ //TODO: If they sell multiple parts it causes an error. Allow method to print commissions to a file, also will invoices from different days have the same filename?
         String saname = svname.getText();
-        File file = new File(saname+"invoice.txt");
+        String fecha = date.getText();
+        File file = new File(saname+fecha+"invoice.txt");
         File comm = new File("Commissions.txt");
         FileWriter fw = null;
         try {
