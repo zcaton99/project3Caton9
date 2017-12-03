@@ -1,0 +1,5 @@
+zach,wayne,WarehouseManager,waynezach,password,zach@mail.com,1231231234
+bob,robertson,SaleAssociate,robertsonbob,password,rob@mail.com,1231231234
+jim,smith,OfficeManager,smithjim,password,jim@mail.com,1231231234
+brad,smith,WarehouseManager,smithbrad,password1,brad@mail.com,1231231234
+summer,time,OfficeManager,timesummer,password,summer@mail.com,1231231234
