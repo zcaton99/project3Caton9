@@ -32,7 +32,8 @@ public class BikePart {
         this.onSale = onSale;
         this.quantity = quantity;
     }
-    public BikePart(String l){
+
+    public BikePart(String l) {
         String[] broken = l.split(",");
         this.partName = broken[0];
         this.partNumber = Integer.parseInt(broken[1]);
@@ -40,6 +41,17 @@ public class BikePart {
         this.salesPrice = Double.parseDouble(broken[3]);
         this.onSale = Boolean.parseBoolean(broken[4]);
         this.quantity = Integer.parseInt(broken[5]);
+    }
+
+    public static boolean isBikePart(String l) {
+        String[] broken = l.split(",");
+        try {
+            BikePart test = new BikePart(broken[0], Integer.parseInt(broken[1]), Double.parseDouble(broken[2]),
+                    Double.parseDouble(broken[3]), Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]));
+        }catch(Exception e){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -65,7 +77,8 @@ public class BikePart {
             return price;
         }
     }
-    public double getTruePrice(){
+
+    public double getTruePrice() {
         return price;
     }
 

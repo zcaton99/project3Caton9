@@ -110,9 +110,12 @@ public class Invoice {
                 System.out.println("This is owner in Invoice: " + owner + "\n");
                 String hold = parse.nextLine();
                 System.out.println("This is hold in Invoice.begin: " + hold);
-                invoiceList.add(new BikePart(hold));
+                if(BikePart.isBikePart(hold)){
+                    invoiceList.add(new BikePart(hold));
+                }
+
             }
-            invoice = new PrintWriter(new FileWriter(owner + "invoice.txt"));
+            invoice = new PrintWriter(new FileWriter(owner + dateFormat.format(date) + "invoice.txt"), true);;
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             invoice.println("Sales Invoice for " + owner + "'s Van Sales, " + dateFormat.format(date));
             invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
