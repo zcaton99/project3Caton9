@@ -11,6 +11,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -137,7 +138,7 @@ public class FXMLDocumentController implements Initializable {
     void LoadFIle(ActionEvent event) {
         System.out.println(SalesAssc.toString());
         try {
-           SAOut.appendText(SalesAssc.LoadFile(LoadFileName.getText()));
+            SAOut.appendText(SalesAssc.LoadFile(LoadFileName.getText()));
         } catch (java.io.IOException e) {
             //e.printStackTrace();
             System.out.println("File Not Found");
@@ -156,11 +157,11 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("This is PrintInvoice");
         try {
             SalesAssc.closeinvoice("Clients Name");
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             SAOut.appendText("IOError in invoice.close");
         }
-        }
+    }
 
     /**
      * @author Josh Butler
@@ -200,6 +201,7 @@ public class FXMLDocumentController implements Initializable {
     private static SalesAssociate SalesAssc;
     private static officeManager OfficeMan;//todo implement office manager fxml bond
     private final SysAdmin sysAdmin = new SysAdmin();
+
     @FXML
     private void loginButton(ActionEvent event) throws IOException {
         Stage stage = null;
@@ -216,8 +218,8 @@ public class FXMLDocumentController implements Initializable {
         for (Employee e : Main.empList) {
             //testline statements that are no longer needed
 //            System.out.println("i entered the foreach loop " + e.toString());
-//            System.out.println("this is username,pwd " + username + ", " + password);
-//            System.out.println("This is what e has" + e.getUsername() + ", " + e.getPassword(true));
+            //System.out.println("this is username,pwd " + username + ", " + password);
+            System.out.println("This is what e has " + e.getUsername() + ", " + e.getPassword(true));
             if (e.getUsername().equalsIgnoreCase(username) && e.getPassword(true).equalsIgnoreCase(password)) {
                 System.out.println(e.getUserType() + " this is a printline test statement");
                 if (e.getUserType().equalsIgnoreCase("systemAdmin")) {
@@ -255,8 +257,6 @@ public class FXMLDocumentController implements Initializable {
             System.out.println("no user by that name found");
         }
     }
-
-
 
 
     /**
@@ -369,9 +369,9 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * @param event on button press
+     * @throws java.io.IOException
      * @author Josh Butler
      * Displays a specific BikePart by comparing user input to BikePart name, number or a quantity parameter (e.g. >3 or <15).
-     * @throws java.io.IOException
      */
     @FXML
     public void examineButtonMethod(ActionEvent event) throws IOException {
@@ -380,27 +380,25 @@ public class FXMLDocumentController implements Initializable {
         officeManager.bpDS.clear(); //clears bpds
         om.updateBPDS(f);   //updates bpds
         display.appendText("\n");
-        if (nam.isSelected() && partInfo.getText().equals("")){
+        if (nam.isSelected() && partInfo.getText().equals("")) {
             Collections.sort(officeManager.bpDS, (BikePart p1, BikePart p2) -> p1.getName().compareTo(p2.getName()));
             for (BikePart bp : officeManager.bpDS) {
                 display.appendText("Part Name: " + bp.getName() + "," + " Part Number: " + bp.getNumber() + "," + " Price: $" + bp.getPrice() + "," + " Sales Price: $" + bp.getSale() + "," + " On Sale: " + bp.getonSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
             }
-        }           
+        }
         if (num.isSelected() && !partInfo.getText().equals("")) //if num checkbox is selected AND partinfo box is NOT empty
             display.appendText((om.examineButtonMethodNum(Integer.parseInt((partInfo.getText())), officeManager.bpDS))); // if user opts to examine by number
-        else if (num.isSelected() && partInfo.getText().equals("")){ // if user opts to sort the list by number
+        else if (num.isSelected() && partInfo.getText().equals("")) { // if user opts to sort the list by number
             Collections.sort(officeManager.bpDS, (BikePart p1, BikePart p2) -> p1.getNumber() - p2.getNumber());
             for (BikePart bp : officeManager.bpDS) {
                 display.appendText("Part Name: " + bp.getName() + "," + " Part Number: " + bp.getNumber() + "," + " Price: $" + bp.getPrice() + "," + " Sales Price: $" + bp.getSale() + "," + " On Sale: " + bp.getonSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
             }
-        }   
-        else if (quant.isSelected() && partInfo.getText().equals("")) {
+        } else if (quant.isSelected() && partInfo.getText().equals("")) {
             Collections.sort(officeManager.bpDS, (BikePart p1, BikePart p2) -> p1.getQuantity() - p2.getQuantity());
             for (BikePart bp : officeManager.bpDS) {
                 display.appendText("Part Name: " + bp.getName() + "," + " Part Number: " + bp.getNumber() + "," + " Price: $" + bp.getPrice() + "," + " Sales Price: $" + bp.getSale() + "," + " On Sale: " + bp.getonSale() + "," + " Quantity: " + bp.getQuantity() + "\n");
             }
-        }
-        else if (quant.isSelected() && !partInfo.getText().equals("")) {  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
+        } else if (quant.isSelected() && !partInfo.getText().equals("")) {  //had to put implementation here because returning once is not the goal for when asking for any parts less than or greater
             String text = partInfo.getText();
             String text2 = partInfo.getText();
             text = text.replaceAll("[<]", ""); // after we have determined if the user has typed a less than or greater than symbol, we ignore the symbols for use.
@@ -430,7 +428,7 @@ public class FXMLDocumentController implements Initializable {
     }
 
     /**
-     * @param event 
+     * @param event
      * @throws java.lang.InterruptedException
      * @throws java.io.IOException
      * @author Josh Butler
@@ -471,12 +469,12 @@ public class FXMLDocumentController implements Initializable {
 
     /**
      * @param event on button press
+     * @throws java.io.IOException
      * @author Josh Butler
      * increments quantity of ordered part
-     * @throws java.io.IOException
      */
     @FXML
-    public void order(ActionEvent event) throws IOException { 
+    public void order(ActionEvent event) throws IOException {
         officeManager om = new officeManager("a", "b", "bb", "c", "d", "email", "867-867-5309");
         File f = new File(testbpDS.getText());
         officeManager.bpDS.clear();
@@ -488,17 +486,17 @@ public class FXMLDocumentController implements Initializable {
             }
         }
     }
-    
-    
+
+
     /**
      * @param event on button press
      * @author Josh Butler
      * sets a commission for an employee, stored on a file
      */
     @FXML
-    public void genComm(ActionEvent event) throws IOException{ //TODO: If they sell multiple parts it causes an error. Allow method to print commissions to a file, also will invoices from different days have the same filename?
+    public void genComm(ActionEvent event) throws IOException { //TODO: If they sell multiple parts it causes an error. Allow method to print commissions to a file, also will invoices from different days have the same filename?
         String saname = svname.getText();
-        File file = new File(saname+"invoice.txt");
+        File file = new File(saname + "invoice.txt");
         File comm = new File("Commissions.txt");
         FileWriter fw = null;
         try {
@@ -509,7 +507,7 @@ public class FXMLDocumentController implements Initializable {
         }
         BufferedWriter bw = new BufferedWriter(fw);
         if (!comm.exists()) { //if the file does not exsist in project it will then create it
-            try {               
+            try {
                 comm.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -525,35 +523,36 @@ public class FXMLDocumentController implements Initializable {
             BufferedReader input = new BufferedReader(new FileReader(file));
             String lastline = getLastLine(file); //isolating last line of text doc
             //System.out.println("lastline: "+ lastline);
-            String lastWord = lastline.substring(lastline.lastIndexOf(" ")+1); //isolating last word
+            String lastWord = lastline.substring(lastline.lastIndexOf(" ") + 1); //isolating last word
             //System.out.println("lastWord: "+lastWord);
             String lastInt = lastWord.replaceAll("[$]", "");    //removing the $ in the string
             //System.out.println(lastInt);               
-            double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
+            double last = Double.parseDouble(lastInt) * .15;  //Converting string to double so that we can calculate *.15
             String lastFinal = String.valueOf(last);    //Converting back to String to print
             //System.out.println(confirmedname+"  "+lastWord);
-            display.appendText(confirmedname+" commission (15% of $"+lastInt+") is: $"+lastFinal);
-                        
-            bw.write(confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal+"\n"); 
-                    bw.close();
-            
+            display.appendText(confirmedname + " commission (15% of $" + lastInt + ") is: $" + lastFinal);
+
+            bw.write(confirmedname + " commission (15% of " + lastWord + ") is: $" + lastFinal + "\n");
+            bw.close();
+
         } catch (FileNotFoundException ex) {
-            display.appendText("That file does not exist, try a different employee name."+"\n");
+            display.appendText("That file does not exist, try a different employee name." + "\n");
             //Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
     }
+
     /**
      * @param file
-     * @return String 
-     * @throws IOException 
+     * @return String
+     * @throws IOException
      * @author Josh Butler
      * returns a string of the last line of a file no matter the length, will cause an error ONLY if the last line is blank due to a \n being printed.
      */
-    public String getLastLine(File file) throws IOException{
+    public String getLastLine(File file) throws IOException {
         BufferedReader input = new BufferedReader(new FileReader(file));
         String last = "error", line;
         while ((line = input.readLine()) != null) {
@@ -561,7 +560,7 @@ public class FXMLDocumentController implements Initializable {
         }
         return last;
     }
-            
+
     /**
      * @param event on button press
      * @author Josh Butler

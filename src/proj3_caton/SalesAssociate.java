@@ -53,7 +53,7 @@ public class SalesAssociate extends Employee {
                         int a = g - quantity;
                         van.get(i).setQuantity(a);
                         cost += (van.get(i).getPrice() * quantity);
-                        System.out.println("Cost in SA.sell: "+cost);
+                        System.out.println("Cost in SA.sell: " + cost);
                         thisInvoice.addCost(cost);
                         soldPart = new BikePart(van.get(i).getName(), van.get(i).getNumber(), van.get(i).getTruePrice(), van.get(i).getSale(), van.get(i).getonSale(), quantity);
                         thisInvoice.addInv(soldPart);
@@ -70,52 +70,57 @@ public class SalesAssociate extends Employee {
 
     /**
      * @author Joseph Bermingham
-     * when you enter this method it gets the text from the text field and Adds the contents of a file to addInv to this sales associate van
+     * when you enter this method it gets the text from the text field and Adds the contents of a file to addInv to this sales associate van from the main warehouse
      */
 
     public String LoadFile(String fileName) throws IOException {
+        WarehouseManager a = new WarehouseManager();
         File loadFile = new File(fileName);
         try {
             //  System.out.println("Try has been entered");
             Scanner input = new Scanner(loadFile);
             ArrayList<BikePart> addList = new ArrayList<>();
-            this.moveToList();
+            moveToList();
             // System.out.println(check.get(0).toString());
             //while there are parts in to be added break them up and addInv them to an arraylist of bike parts
             while (input.hasNext()) {
+
                 String partString = input.nextLine();
                 String[] broken = partString.split(",");
-                //adds a bike part to the addList
-                addList.add((new BikePart(broken[0],
+                BikePart d = new BikePart(broken[0],
                         Integer.parseInt(broken[1]),
                         Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
-                        Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]))));
-            }
-
-            for (BikePart in : addList) {
-                boolean wasAdded = false;
-                for (BikePart wh : van) {
-                    if (wh != null)
-                        if (wh.getName().equalsIgnoreCase(in.getName()) && in.getNumber() == wh.getNumber()) {
-                            wh.setQuantity(wh.getQuantity() + in.getQuantity());
-                            wh.setPrice(in.getTruePrice());
-                            wh.setonSale(in.getonSale());
-                            wh.setSalesPrice(in.getSale());
-                            wasAdded = true;
-                        }
+                        Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]));
+                if (a.findNumberDec(d.getNumber(), d.getQuantity())) {
+                    addList.add((new BikePart(broken[0],
+                            Integer.parseInt(broken[1]),
+                            Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
+                            Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]))));
                 }
-                if (!wasAdded) van.add(in);
+
+                for (BikePart in : addList) {
+                    boolean wasAdded = false;
+                    for (BikePart wh : van) {
+                        if (wh != null)
+                            if (wh.getName().equalsIgnoreCase(in.getName()) && in.getNumber() == wh.getNumber()) {
+                                wh.setQuantity(wh.getQuantity() + in.getQuantity());
+                                wh.setPrice(in.getTruePrice());
+                                wh.setonSale(in.getonSale());
+                                wh.setSalesPrice(in.getSale());
+                                wasAdded = true;
+                            }
+                    }
+                    if (!wasAdded)
+                        van.add(in);
+                }
+                writeToFile(van);
             }
-
-            writeToFile(van);
-
         } catch (FileNotFoundException e) {
             return ("File Not Found. Please make sure you are using the correct file \nin the correct location\n");
         }
 
         return "File " + fileName + " Was Successfully loaded \n";
     }
-
 
     /**
      * @author Joseph Bermingham

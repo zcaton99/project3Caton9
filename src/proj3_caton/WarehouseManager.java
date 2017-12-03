@@ -140,6 +140,18 @@ public class WarehouseManager extends Employee {
         return part;
     }
 
+    public boolean findNumberDec(int number,int quant) {
+      moveToList();
+      boolean part = false;
+       for (BikePart b : warehouse) {
+            if (b.getNumber() == number&&b.getQuantity()>=quant) {
+                System.out.println(b.toString());
+                part = true;
+                b.quantity=(b.quantity-quant);
+            }
+        }
+        return part;
+    }
     /**
      * changes field that is An array list containing all of the parts in the warehouse
      *
