@@ -537,7 +537,7 @@ public class FXMLDocumentController implements Initializable {
             //System.out.println(confirmedname+"  "+lastWord);
             display.appendText(confirmedname+" commission (15% of $"+lastInt+") is: $"+lastFinal);
                         
-            bw.write(confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal+"\n"); 
+            bw.write(fecha+"\r\n"+confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal+"\r\n"+"\r\n"); 
                     bw.close();
             
         } catch (FileNotFoundException ex) {
