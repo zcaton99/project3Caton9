@@ -18,7 +18,7 @@ public class Invoice {
     private double cost = 0.0;
     private String owner;
     Date date = new Date();
-
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     //todo add a date field, add a list of invoices ability
 
     public double getCost() {
@@ -37,10 +37,12 @@ public class Invoice {
         check = new File(asscName + "invoice.txt");
         if (!check.exists()) {
             try {
-                invoice = new PrintWriter(new FileWriter(asscName + "invoice.txt", true));//Should the append be true? that is a question i will answer later
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+                invoice = new PrintWriter(new FileWriter(asscName + dateFormat.format(date) + "invoice.txt"), true);
+                ;//Should the append be true? that is a question i will answer later
                 invoice.println("Sales Invoice for " + asscName + "'s Van Sales, " + dateFormat.format(date));
                 invoice.println("PartName   PartNumber  Price   Sales   Price    Quantity   TotalCost");
+
                 created = true;
             } catch (IOException e) {
                 System.out.println("IOException in InvoiceCreation");
@@ -57,11 +59,13 @@ public class Invoice {
      * @param Part The part that you want to addInv to your invoice
      * @author Joseph Bermingham
      */
+    boolean hasthings=false;
     void addInv(BikePart Part) {
         // System.out.println(Part.getQuantity() + " the incoming parts quantity");
         if (created) {
             boolean found = false;
             boolean noRep = true;
+            hasthings=true;
             for (int i = 0; i < invoiceList.size(); i++) {
                 if (invoiceList.get(i).getNumber() == Part.getNumber() && noRep) {
                     BikePart a = invoiceList.get(i);
@@ -100,13 +104,12 @@ public class Invoice {
     private void begin() throws IOException {
         try {
 
-            Scanner parse = new Scanner(new File(owner + "invoice.txt"));
-            if (parse.hasNext()) {
+            Scanner parse = new Scanner(new File(owner + dateFormat.format(date)) + "invoice.txt");
+            if (parse.hasNext()&&hasthings) {
+
                 System.out.println("This is owner in Invoice: " + owner + "\n");
-                System.out.println(parse.nextLine());
-                System.out.println(parse.nextLine());
                 String hold = parse.nextLine();
-                System.out.println("This is hold in Invoice.begin: "+hold);
+                System.out.println("This is hold in Invoice.begin: " + hold);
                 invoiceList.add(new BikePart(hold));
             }
             invoice = new PrintWriter(new FileWriter(owner + "invoice.txt"));
