@@ -140,14 +140,14 @@ public class WarehouseManager extends Employee {
         return part;
     }
 
-    public boolean findNumberDec(int number,int quant) {
+    public boolean findNumberbool(int number,int quant) {
       moveToList();
       boolean part = false;
        for (BikePart b : warehouse) {
             if (b.getNumber() == number&&b.getQuantity()>=quant) {
                 System.out.println(b.toString());
                 part = true;
-                b.quantity=(b.quantity-quant);
+                //b.quantity=(b.quantity-quant);
             }
         }
         return part;

@@ -84,21 +84,25 @@ public class SalesAssociate extends Employee {
             // System.out.println(check.get(0).toString());
             //while there are parts in to be added break them up and addInv them to an arraylist of bike parts
             while (input.hasNext()) {
-
                 String partString = input.nextLine();
                 String[] broken = partString.split(",");
                 BikePart d = new BikePart(broken[0],
                         Integer.parseInt(broken[1]),
                         Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
                         Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]));
-                if (a.findNumberDec(d.getNumber(), d.getQuantity())) {
+
+                if (a.findNumberbool(d.getNumber(), 0)) {
+                    System.out.println("this is a.findnumber being true");
                     addList.add((new BikePart(broken[0],
                             Integer.parseInt(broken[1]),
                             Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
                             Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]))));
+                } else {
+                 //   System.out.println("this is a.findunbmer being false");
                 }
 
                 for (BikePart in : addList) {
+                    System.out.println("this is test in addpart "+in.toString());
                     boolean wasAdded = false;
                     for (BikePart wh : van) {
                         if (wh != null)
@@ -158,8 +162,10 @@ public class SalesAssociate extends Employee {
      */
     private void writeToFile(ArrayList<BikePart> db) throws IOException {
         PrintWriter writer = new PrintWriter(new FileWriter(super.getFirstName() + ".txt"));
+        System.out.println("\n \n************************************************");
         for (BikePart h : db) {
             writer.println(h.toString());
+            System.out.println(h.toString());
         }
         writer.close();
     }
