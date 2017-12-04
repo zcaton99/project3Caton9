@@ -74,51 +74,45 @@ public class SalesAssociate extends Employee {
      */
 
     public String LoadFile(String fileName) throws IOException {
-        WarehouseManager a = new WarehouseManager();
+        WarehouseManager whMan = new WarehouseManager();
         File loadFile = new File(fileName);
+
         try {
             //  System.out.println("Try has been entered");
             Scanner input = new Scanner(loadFile);
             ArrayList<BikePart> addList = new ArrayList<>();
             moveToList();
             // System.out.println(check.get(0).toString());
+
             //while there are parts in to be added break them up and addInv them to an arraylist of bike parts
             while (input.hasNext()) {
                 String partString = input.nextLine();
-                String[] broken = partString.split(",");
-                BikePart d = new BikePart(broken[0],
-                        Integer.parseInt(broken[1]),
-                        Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
-                        Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]));
+                BikePart bikePart = new BikePart(partString);
 
-                if (a.findNumberbool(d.getNumber(), 0)) {
-                    System.out.println("this is a.findnumber being true");
-                    addList.add((new BikePart(broken[0],
-                            Integer.parseInt(broken[1]),
-                            Double.parseDouble(broken[2]), Double.parseDouble(broken[3]),
-                            Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]))));
-                } else {
-                 //   System.out.println("this is a.findunbmer being false");
+                if (whMan.findNumberbool(bikePart.getNumber(), bikePart.getQuantity())) {
+                    System.out.println("this is whman.findnumber being true");
+                    BikePart a = new BikePart(partString);
+                    addList.add(a);
                 }
-
-                for (BikePart in : addList) {
-                    System.out.println("this is test in addpart "+in.toString());
-                    boolean wasAdded = false;
-                    for (BikePart wh : van) {
-                        if (wh != null)
-                            if (wh.getName().equalsIgnoreCase(in.getName()) && in.getNumber() == wh.getNumber()) {
-                                wh.setQuantity(wh.getQuantity() + in.getQuantity());
-                                wh.setPrice(in.getTruePrice());
-                                wh.setonSale(in.getonSale());
-                                wh.setSalesPrice(in.getSale());
-                                wasAdded = true;
-                            }
-                    }
-                    if (!wasAdded)
-                        van.add(in);
-                }
-                writeToFile(van);
             }
+            for (BikePart in : addList) {
+                System.out.println("This is test in addpart: " + in.toString());
+                boolean wasAdded = false;
+                for (BikePart wh : van) {
+                    if (wh != null)
+                        if (wh.getName().equalsIgnoreCase(in.getName()) && in.getNumber() == wh.getNumber()) {
+                            wh.setQuantity(wh.getQuantity() + in.getQuantity());
+                            wh.setPrice(in.getTruePrice());
+                            wh.setonSale(in.getonSale());
+                            wh.setSalesPrice(in.getSale());
+                            wasAdded = true;
+                        }
+                }
+                if (!wasAdded)
+                    System.out.println("This is van.add(in): " + in.toString());
+                van.add(in);
+            }
+            writeToFile(van);
         } catch (FileNotFoundException e) {
             return ("File Not Found. Please make sure you are using the correct file \nin the correct location\n");
         }

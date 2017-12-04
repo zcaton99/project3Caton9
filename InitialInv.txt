@@ -1,5 +1,5 @@
-AAAFIRSTAAA,111111,100.0,4.0,false,30
-a,1,100.0,1.0,true,100
+AAAFIRSTAAA,111111,100.0,4.0,false,1
+a,1,100.0,1.0,true,0
 2womensBibsMedium,1234567909,110.0,99.0,false,30
 womensJacketMedium,1234567911,120.0,95.0,false,30
 mensJacketMedium,1234567910,120.0,95.0,false,30

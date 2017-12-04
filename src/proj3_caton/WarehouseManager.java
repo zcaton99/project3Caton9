@@ -38,7 +38,6 @@ public class WarehouseManager extends Employee {
 
     /**
      * @param fileName The name of the file you want added to warehousedb.txt. MUST HAVE .TXT on the end
-     *                 State: untested, pulls file that you want to addInv, but DOES NOT addInv that to the warehouse
      * @author Joseph Bermingham
      */
     public void addfile(String fileName) {
@@ -140,6 +139,12 @@ public class WarehouseManager extends Employee {
         return part;
     }
 
+    /**
+     * @auth Joseph Bermingham
+     * @param number the id number of the part you are looking up
+     * @param quant i dont know yet
+     * @return returns true iff there is a part with the right id number and you have the correct ammount
+     */
     public boolean findNumberbool(int number,int quant) {
       moveToList();
       boolean part = false;
