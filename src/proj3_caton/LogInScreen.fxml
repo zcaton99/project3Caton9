@@ -24,11 +24,11 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="456.0" prefWidth="526.0" style="-fx-background-image: url('file:C:/Users/Josh/Desktop/login.jpg');">
+      <AnchorPane prefHeight="321.0" prefWidth="666.0" style="-fx-background-image: url('file:C:/Users/Jubco/Desktop/login.jpg');">
          <children>
-            <Button fx:id="Login" layoutX="89.0" layoutY="142.0" mnemonicParsing="false" onAction="#loginButton" text="Login" />
-            <TextField fx:id="Username" layoutX="41.0" layoutY="45.0" promptText="Username" />
-            <PasswordField fx:id="Password" layoutX="41.0" layoutY="85.0" promptText="Password" />
+            <Button fx:id="Login" layoutX="220.0" layoutY="145.0" mnemonicParsing="false" onAction="#loginButton" text="Login" />
+            <TextField fx:id="Username" layoutX="155.0" layoutY="45.0" promptText="Username" />
+            <PasswordField fx:id="Password" layoutX="155.0" layoutY="84.0" promptText="Password" />
          </children>
       </AnchorPane>
    </children>

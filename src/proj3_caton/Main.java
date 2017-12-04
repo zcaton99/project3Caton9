@@ -20,7 +20,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("LogInScreen.fxml"));
         SysAdmin bob = new SysAdmin();
         primaryStage.setTitle("Log In");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 501, 321));
         primaryStage.show();
     }
 
