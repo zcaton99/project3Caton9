@@ -62,7 +62,7 @@ public class officeManager extends Employee {
     /**
      * this method goes through the bike part warehouse and looks for parts with less than a hardcoded quantity (10)
      * @param bpDS
-     * //todo addInv the ability to create a file of the needed parts
+     * 
      * @return string of bikeparts that have a quantity below 10
      */
     public String checkQuant(ArrayList<BikePart> bpDS) {
@@ -120,8 +120,7 @@ public class officeManager extends Employee {
         return("");
     }
    
-    public void orderParts(BikePart bp, int count){ //TODO edit the regular order command so that BPDS will show updated changes without having to reaload file.
-        File f = new File("initialinv.txt");
+    public void orderParts(BikePart bp, int count, File f){ 
         int orderpart = bp.getNumber();
                     try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
                         ArrayList<BikePart> bpArray2 = new ArrayList<>();

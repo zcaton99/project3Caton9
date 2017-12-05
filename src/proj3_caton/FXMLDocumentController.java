@@ -467,7 +467,7 @@ public class FXMLDocumentController implements Initializable {
         }
         if (!orderlowset.getText().isEmpty()) {
             for (BikePart bp : officeManager.bpDS2) {
-                om.orderParts(bp, Integer.parseInt(orderlowset.getText()));
+                om.orderParts(bp, Integer.parseInt(orderlowset.getText()),f);
             }
         }
     }
@@ -487,7 +487,7 @@ public class FXMLDocumentController implements Initializable {
         for (BikePart bp : officeManager.bpDS) {
             if (bp.getNumber() == Integer.parseInt(ordername.getText())) {
                 display.appendText("\n" + "Bought " + ordercount.getText() + " " + bp.getName() + "\n");
-                om.orderParts(bp, Integer.parseInt(ordercount.getText()));
+                om.orderParts(bp, Integer.parseInt(ordercount.getText()),f);
             }
         }
     }
