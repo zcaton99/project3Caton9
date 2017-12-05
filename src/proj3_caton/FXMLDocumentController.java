@@ -13,9 +13,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.*;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -85,6 +88,12 @@ public class FXMLDocumentController implements Initializable {
     private TextField svname;
     @FXML
     private TextField date;
+    @FXML
+    private TextField svname2;
+    @FXML
+    private TextField date2;
+    @FXML
+    private TextField date3;
     @FXML
     private Button orderbutton;
     @FXML
@@ -536,9 +545,9 @@ public class FXMLDocumentController implements Initializable {
             double last = Double.parseDouble(lastInt)*.15;  //Converting string to double so that we can calculate *.15
             String lastFinal = String.valueOf(last);    //Converting back to String to print
             //System.out.println(confirmedname+"  "+lastWord);
-            display.appendText(confirmedname+" commission (15% of $"+lastInt+") is: $"+lastFinal);
+            display.appendText(confirmedname+" commission (15% of $"+lastInt+") is: $"+lastFinal+"\n");
                         
-            bw.write(fecha+"\r\n"+confirmedname+" commission (15% of "+lastWord+") is: $"+lastFinal+"\r\n"+"\r\n"); 
+            bw.write(fecha+","+confirmedname+","+lastFinal+"\r\n"); 
                     bw.close();
             
         } catch (FileNotFoundException ex) {
@@ -547,8 +556,44 @@ public class FXMLDocumentController implements Initializable {
             
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+    }
+    
+    boolean isWithinRange(Date testDate, Date endDate, Date startDate) {
+        return !(testDate.before(startDate) || testDate.after(endDate));
+}
+    
+    public void genComm2(ActionEvent event) throws IOException, ParseException{
+        ArrayList<Comm> ca = new ArrayList();
+        String saname = svname2.getText();
+        String fecha = date2.getText();
+        String fechados = date3.getText();
+        File file = new File(saname+fecha+"invoice.txt");
+        File comm = new File("Commissions.txt");
+        FileWriter fw = null;
+        //Date testDate = new SimpleDateFormat("YYY-MM-DD").parse(date2.getText());
+        Date startDate = new SimpleDateFormat("YYY-MM-DD").parse(date2.getText());
+        Date endDate = new SimpleDateFormat("YYY-MM-DD").parse(date3.getText());
+        double endtotal = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(comm))) { //reads the file given 
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] pa = line.split(",");
+                String datey = pa[0];
+                String name = pa[1];
+                String total = pa[2];
+                Comm c = new Comm(pa[0],pa[1],pa[2]);
+                ca.add(c);               
+            }
+            for (Comm c : ca){
+                Date testDate = new SimpleDateFormat("YYY-MM-DD").parse(c.getDate());
+                if (isWithinRange(testDate, startDate, endDate)){
+                    endtotal= endtotal+Double.parseDouble(c.getTotal());
+                    System.out.print(endtotal);                   
+                }
+            }
+            display.appendText("Total Commissions over |" + fecha +"| and |"+ fechados +"| is: " + endtotal);
         }
-       
     }
     /**
      * @param file

@@ -30,5 +30,9 @@
       <TextField fx:id="ordercount" layoutX="140.0" layoutY="233.0" prefHeight="25.0" prefWidth="30.0" promptText="#" />
       <TextField fx:id="orderlowset" layoutX="153.0" layoutY="173.0" prefHeight="31.0" prefWidth="144.0" promptText="Order Low Amnt #" />
       <TextField fx:id="date" layoutX="18.0" layoutY="317.0" prefHeight="25.0" prefWidth="117.0" promptText="YYYY-MM-DD" />
+      <TextField fx:id="svname2" layoutX="18.0" layoutY="386.0" prefHeight="25.0" prefWidth="117.0" promptText="Employee Name" />
+      <TextField fx:id="date2" layoutX="19.0" layoutY="417.0" prefHeight="25.0" prefWidth="117.0" promptText="YYYY-MM-DD" />
+      <TextField fx:id="date3" layoutX="19.0" layoutY="448.0" prefHeight="25.0" prefWidth="117.0" promptText="YYYY-MM-DD" />
+      <Button fx:id="GenComm2" layoutX="142.0" layoutY="417.0" mnemonicParsing="false" onAction="#genComm2" prefHeight="25.0" prefWidth="144.0" text="Commission Over Span" />
    </children>
 </AnchorPane>
