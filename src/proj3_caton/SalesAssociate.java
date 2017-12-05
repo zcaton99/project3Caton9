@@ -76,7 +76,6 @@ public class SalesAssociate extends Employee {
     public String LoadFile(String fileName) throws IOException {
         WarehouseManager whMan = new WarehouseManager();
         File loadFile = new File(fileName);
-
         try {
             //  System.out.println("Try has been entered");
             Scanner input = new Scanner(loadFile);
@@ -87,12 +86,12 @@ public class SalesAssociate extends Employee {
             //while there are parts in to be added break them up and addInv them to an arraylist of bike parts
             while (input.hasNext()) {
                 String partString = input.nextLine();
+                System.out.println("while loop issues? PartString: "+partString);
                 BikePart bikePart = new BikePart(partString);
-
                 if (whMan.findNumberbool(bikePart.getNumber(), bikePart.getQuantity())) {
-                    System.out.println("this is whman.findnumber being true");
-                    BikePart a = new BikePart(partString);
+                    BikePart a = whMan.partCheck(bikePart);
                     addList.add(a);
+                    System.out.println("DEBUGLINE");
                 }
             }
             for (BikePart in : addList) {
@@ -108,16 +107,18 @@ public class SalesAssociate extends Employee {
                             wasAdded = true;
                         }
                 }
-                if (!wasAdded)
+                if (!wasAdded) {
                     System.out.println("This is van.add(in): " + in.toString());
-                van.add(in);
+                    van.add(in);
+                }
             }
+            whMan.writeToFile();
             writeToFile(van);
         } catch (FileNotFoundException e) {
             return ("File Not Found. Please make sure you are using the correct file \nin the correct location\n");
         }
 
-        return "File " + fileName + " Was Successfully loaded \n";
+        return "File " + fileName + ".txt Was Successfully loaded \n";
     }
 
     /**
@@ -159,7 +160,7 @@ public class SalesAssociate extends Employee {
         System.out.println("\n \n************************************************");
         for (BikePart h : db) {
             writer.println(h.toString());
-            System.out.println(h.toString());
+          //  System.out.println("This is what SA is writing to their file: "+h.toString());
         }
         writer.close();
     }
@@ -199,9 +200,7 @@ public class SalesAssociate extends Employee {
     public static void main(String[] args) throws Exception {
         SalesAssociate andy = new SalesAssociate("andy", "a", "b", "c", "d", "email", "867-867-5309");
         Invoice andyInoice = new Invoice("Andy");
-        andy.LoadFile("test.txt");
-        andy.Sell("ZZZ_APPEARS_LAST", -1, 2);
-        andy.Sell("", 1, 2);
+        andy.LoadFile("SmallInventory.txt");
         andyInoice.closeinv("tom");
     }
 }

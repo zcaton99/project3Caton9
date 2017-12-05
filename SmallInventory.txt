@@ -1,3 +1,4 @@
-2womensBibsMedium,1234567909,110.00,99.00,false,1
-womensJacketMedium,1234567911,120.00,95.00,false,2
-mensJacketMedium,1234567910,120.00,95.00,false,3
+AAAFIRSTAAA,111111,100.0,4.0,false,2
+2womensBibsMedium,1234567909,110.0,99.0,false,30
+womensJacketMedium,1234567911,120.0,95.0,false,30
+mensJacketMedium,1234567910,120.0,95.0,false,30

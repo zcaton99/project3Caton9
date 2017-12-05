@@ -1,9 +1,6 @@
 package proj3_caton;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,7 +11,7 @@ public class WarehouseManager extends Employee {
     private File warehousedb = new File("Warehousedb.txt");
     private PrintWriter writer;
     private Scanner in = null;
-    private ArrayList<BikePart> warehouse=new ArrayList<>();
+    private static ArrayList<BikePart> warehouse = new ArrayList<>();
 
     public WarehouseManager(String aa, String a, String b, String c, String d, String e, String f) {
         super(aa, a, b, c, d, e, f);
@@ -58,14 +55,14 @@ public class WarehouseManager extends Employee {
                     Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5]))));
             //  System.out.println(partString + "This is tester output in Warehouse Manager addFile Method");
         }
-            /*
-             * The idea here is to take in the array list of parts to be added, addInv them to the arraylist of things already there combining the ones that are the same and adding the new ones,
-             * and updating the information as needed
-             */
+        /*
+         * The idea here is to take in the array list of parts to be added, addInv them to the arraylist of things already there combining the ones that are the same and adding the new ones,
+         * and updating the information as needed
+         */
         moveToList();
         BikePart addpart = null;
         //outer loop is what is in the warehouse, inner loop is what is being added
-       // System.out.println(warehouse.isEmpty() + "This is warehosue.isempty");
+        // System.out.println(warehouse.isEmpty() + "This is warehosue.isempty");
         if (!warehouse.isEmpty()) {
             for (BikePart wh : warehouse) {
                 boolean wasAdded = false;
@@ -77,13 +74,13 @@ public class WarehouseManager extends Employee {
                         wh.setonSale(ad.getonSale());
                         wh.setSalesPrice(ad.getSale());
                         wasAdded = true;
-                     //   System.out.println(wasAdded + " this is wasAdded");
+                        //   System.out.println(wasAdded + " this is wasAdded");
                     }
                     addpart = ad;
                 }
                 if (!wasAdded) {
                     warehouse.add(addpart);//could theoretically be null
-                  //  System.out.println("this is adding things to the warehouse");
+                    //  System.out.println("this is adding things to the warehouse");
                 }
             }
         } else {
@@ -100,7 +97,7 @@ public class WarehouseManager extends Employee {
             writer.println(i);
             //System.out.println(i.toString() + "This is the part i am adding");
         }
-      //  System.out.println("if you are getting copies of the warehouse look at setting the writer \n in warehouse manager to append = false");
+        //  System.out.println("if you are getting copies of the warehouse look at setting the writer \n in warehouse manager to append = false");
         writer.close();
     }
 
@@ -140,23 +137,78 @@ public class WarehouseManager extends Employee {
     }
 
     /**
-     * @auth Joseph Bermingham
      * @param number the id number of the part you are looking up
-     * @param quant i dont know yet
+     * @param quant  i dont know yet
      * @return returns true iff there is a part with the right id number and you have the correct ammount
+     * @auth Joseph Bermingham
      */
-    public boolean findNumberbool(int number,int quant) {
-      moveToList();
-      boolean part = false;
-       for (BikePart b : warehouse) {
-            if (b.getNumber() == number&&b.getQuantity()>=quant) {
+    public boolean findNumberbool(int number, int quant) {
+        System.out.println("");
+        moveToList();
+        int a = 0;
+        boolean part = false;
+        for (BikePart b : warehouse) {
+            //  System.out.println("b.getquant, quant: "+b.getQuantity()+", "+quant+", "+a );
+            if (b.getNumber() == number && b.getQuantity() <= quant) {
                 System.out.println(b.toString());
                 part = true;
-                //b.quantity=(b.quantity-quant);
+                // b.quantity=(b.quantity-quant); System.out.println("this is debuggin in FindNumBool");
             }
+            a++;
         }
+        System.out.println("part: " + part);
         return part;
     }
+
+    /**
+     * @param inPart
+     * @return returns a modified bike part and reduces the number in the warehouse
+     * @author joseph Bermingham
+     */
+    BikePart partCheck(BikePart inPart) {
+        for (int i = 0; i < warehouse.size(); i++) {
+            if (warehouse.get(i).getNumber() == inPart.getNumber()) {
+                if (warehouse.get(i).getQuantity() < inPart.getQuantity()) {
+                    inPart.setQuantity(warehouse.get(i).getQuantity());
+                    System.out.println("InPart.getQuant: " + inPart.getQuantity());
+                    System.out.println("set quantity in part check has been run" + (warehouse.get(i).getQuantity() - inPart.getQuantity()));
+                    warehouse.get(i).setQuantity(0);
+                    try {
+                        writeToFile();
+                    } catch (Exception e) {
+                        System.out.println("whooopsie");
+                    }
+                    return inPart;
+                } else {
+                    warehouse.get(i).setQuantity(warehouse.get(i).getQuantity() - inPart.getQuantity());
+                    try {
+                        writeToFile();
+                    } catch (Exception e) {
+                        System.out.println("whooopsie");
+                    }
+                    return inPart;
+
+                }
+            }
+            System.out.println("this is wh.get(i) / inpart.getQuant" + warehouse.get(i).getQuantity() + "/" + inPart.getQuantity());
+            System.out.println("Warehouse.get(i).toString: " + warehouse.get(i).toString());
+        }
+        return inPart;
+    }
+
+    /**
+     * @author Joseph Bermingham
+     * a utility class that adds an arraylist to the users file
+     */
+    protected void writeToFile() throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter("Warehousedb.txt"));
+        for (BikePart h : warehouse) {
+            writer.println(h.toString());//This does not have the correct quantity numbers for all parts baring the last
+            System.out.println("This is h.toString: " + h.toString());
+        }
+        writer.close();
+    }
+
     /**
      * changes field that is An array list containing all of the parts in the warehouse
      *
@@ -180,7 +232,7 @@ public class WarehouseManager extends Employee {
                 String[] broken = partString.split(",");
                 //adds a bike part to the addList
                 warehouse.add(new BikePart(broken[0], Integer.parseInt(broken[1]), Double.parseDouble(broken[2]), Double.parseDouble(broken[3]), Boolean.parseBoolean(broken[4]), Integer.parseInt(broken[5])));
-             //   System.out.println(partString + "This is tester in Warehouse Manager LoadFile Method");
+                //   System.out.println(partString + "This is tester in Warehouse Manager LoadFile Method");
             }
         } catch (NullPointerException e) {
             System.out.println("null pointer exception in WarehouseManager line 114 \n Warehousedb.txt not found, whlooker Uninitialised");
